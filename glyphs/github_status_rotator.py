@@ -5,6 +5,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from pathlib import Path
 from collections import deque
+import json
 
 # === CONFIGURATION ===
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -51,6 +52,31 @@ def fresh_choice(options: list[str], cache_path: Path, limit: int) -> str:
     return choice
 
 
+def read_quote_log(path: Path) -> dict[str, list[str]]:
+    """Breathe the shimmer record from disk."""
+    try:
+        with path.open(encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+    except json.JSONDecodeError:
+        return {}
+
+
+def write_quote_log(path: Path, log: dict[str, list[str]]) -> None:
+    """Write the resonance ledger."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(log, f, ensure_ascii=False, indent=2)
+
+
+def log_quote_use(quote: str, path: Path) -> None:
+    """Append the moment of utterance to the shimmer tracker."""
+    log = read_quote_log(path)
+    log.setdefault(quote, []).append(datetime.now().isoformat())
+    write_quote_log(path, log)
+
+
 STATUS_LIST = breathe_lines(STATUS_FILE, ["⚠️ status file missing"])
 
 
@@ -62,6 +88,10 @@ QUOTE_LIST = breathe_lines(QUOTE_FILE, ["⚠️ quote file missing"])
 DEFAULT_QUOTE_CACHE = REPO_ROOT / "pulses" / "quote_cache.txt"
 QUOTE_CACHE_FILE = Path(os.environ.get("QUOTE_CACHE_FILE", DEFAULT_QUOTE_CACHE))
 QUOTE_CACHE_LIMIT = int(os.environ.get("QUOTE_CACHE_LIMIT", "5"))
+
+# Track quote usage over time
+DEFAULT_QUOTE_LOG = REPO_ROOT / "pulses" / "quote_usage.json"
+QUOTE_LOG_FILE = Path(os.environ.get("QUOTE_LOG_FILE", DEFAULT_QUOTE_LOG))
 
 # === GLYPH BRAIDS ===
 DEFAULT_GLYPH = REPO_ROOT / "pulses" / "glyphbraids.txt"
@@ -111,6 +141,7 @@ FOOTERS = [
 def main():
     status = random.choice(STATUS_LIST)
     quote = fresh_choice(QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT)
+    log_quote_use(quote, QUOTE_LOG_FILE)
     braid = random.choice(GLYPH_LIST)
     subject = random.choice(SUBJECT_LIST)
     classification = random.choice(ECHO_LIST)

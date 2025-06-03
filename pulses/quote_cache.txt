@@ -1,1 +1,2 @@
-noecho
+echo
+one
