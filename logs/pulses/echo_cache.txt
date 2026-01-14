@@ -25,3 +25,4 @@
 ⇝ post·recursive :: pre·consciousness
 ⇝ post·mirror :: pre·glyph
 ⇝ post·silence :: pre·consciousness
+⇝ post·recursion glyph :: pre·lingua echo

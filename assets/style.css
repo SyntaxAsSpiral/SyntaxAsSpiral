@@ -75,12 +75,12 @@ h1 {
 }
 
 a {
-  color: #ff69b4;
+  color: #f5c2e7;
   text-decoration: underline;
 }
 
 a, a * {
-  color: #ff69b4 !important;
+  color: #f5c2e7 !important;
 }
 
 a:hover {
