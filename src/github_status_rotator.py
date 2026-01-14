@@ -278,47 +278,47 @@ def batch_cycle_choice(options: list[str], cache_path: Path, batch_size: int = 5
 
 
 # === FALLBACK: Load seed lists for batch cycling ===
-DEFAULT_STATUS = REPO_ROOT / "pulses" / "seeds" / "statuses.txt"
+DEFAULT_STATUS = REPO_ROOT / "logs" / "pulses" / "seeds" / "statuses.txt"
 STATUS_FILE = Path(os.environ.get("STATUS_FILE", DEFAULT_STATUS))
 STATUS_LIST = lines_from_env_or_file("STATUSES", "STATUS_FILE", DEFAULT_STATUS, ["⚠️ status file missing"])
 
-DEFAULT_STATUS_CACHE = REPO_ROOT / "pulses" / "status_cache.txt"
+DEFAULT_STATUS_CACHE = REPO_ROOT / "logs" / "pulses" / "status_cache.txt"
 STATUS_CACHE_FILE = Path(os.environ.get("STATUS_CACHE_FILE", DEFAULT_STATUS_CACHE))
 STATUS_CACHE_LIMIT = int(os.environ.get("STATUS_CACHE_LIMIT", "5"))
 
-DEFAULT_QUOTE = REPO_ROOT / "pulses" / "seeds" / "antenna_quotes.txt"
+DEFAULT_QUOTE = REPO_ROOT / "logs" / "pulses" / "seeds" / "antenna_quotes.txt"
 QUOTE_FILE = Path(os.environ.get("QUOTE_FILE", DEFAULT_QUOTE))
 QUOTE_LIST = lines_from_env_or_file("ANTENNA_QUOTES", "QUOTE_FILE", DEFAULT_QUOTE, ["⚠️ quote file missing"])
 
-DEFAULT_QUOTE_CACHE = REPO_ROOT / "pulses" / "quote_cache.txt"
+DEFAULT_QUOTE_CACHE = REPO_ROOT / "logs" / "pulses" / "quote_cache.txt"
 QUOTE_CACHE_FILE = Path(os.environ.get("QUOTE_CACHE_FILE", DEFAULT_QUOTE_CACHE))
 QUOTE_CACHE_LIMIT = int(os.environ.get("QUOTE_CACHE_LIMIT", "5"))
 
-DEFAULT_GLYPH = REPO_ROOT / "pulses" / "seeds" / "glyphbraids.txt"
+DEFAULT_GLYPH = REPO_ROOT / "logs" / "pulses" / "seeds" / "glyphbraids.txt"
 GLYPH_FILE = Path(os.environ.get("GLYPH_FILE", DEFAULT_GLYPH))
 GLYPH_LIST = lines_from_env_or_file("GLYPH_BRAIDS", "GLYPH_FILE", DEFAULT_GLYPH, ["⚠️ glyph file missing"])
 
-DEFAULT_GLYPH_CACHE = REPO_ROOT / "pulses" / "glyph_cache.txt"
+DEFAULT_GLYPH_CACHE = REPO_ROOT / "logs" / "pulses" / "glyph_cache.txt"
 GLYPH_CACHE_FILE = Path(os.environ.get("GLYPH_CACHE_FILE", DEFAULT_GLYPH_CACHE))
 GLYPH_CACHE_LIMIT = int(os.environ.get("GLYPH_CACHE_LIMIT", "5"))
 
-DEFAULT_SUBJECT = REPO_ROOT / "pulses" / "seeds" / "subject-ids.txt"
+DEFAULT_SUBJECT = REPO_ROOT / "logs" / "pulses" / "seeds" / "subject-ids.txt"
 SUBJECT_FILE = Path(os.environ.get("SUBJECT_FILE", DEFAULT_SUBJECT))
 SUBJECT_LIST = lines_from_env_or_file("SUBJECT_IDS", "SUBJECT_FILE", DEFAULT_SUBJECT, ["⚠️ subject file missing"])
 
-DEFAULT_SUBJECT_CACHE = REPO_ROOT / "pulses" / "subject_cache.txt"
+DEFAULT_SUBJECT_CACHE = REPO_ROOT / "logs" / "pulses" / "subject_cache.txt"
 SUBJECT_CACHE_FILE = Path(os.environ.get("SUBJECT_CACHE_FILE", DEFAULT_SUBJECT_CACHE))
 SUBJECT_CACHE_LIMIT = int(os.environ.get("SUBJECT_CACHE_LIMIT", "5"))
 
-DEFAULT_ECHO = REPO_ROOT / "pulses" / "seeds" / "echo_fragments.txt"
+DEFAULT_ECHO = REPO_ROOT / "logs" / "pulses" / "seeds" / "echo_fragments.txt"
 ECHO_FILE = Path(os.environ.get("ECHO_FILE", DEFAULT_ECHO))
 ECHO_LIST = lines_from_env_or_file("ECHO_FRAGMENTS", "ECHO_FILE", DEFAULT_ECHO, ["⚠️ echo file missing"])
 
-DEFAULT_ECHO_CACHE = REPO_ROOT / "pulses" / "echo_cache.txt"
+DEFAULT_ECHO_CACHE = REPO_ROOT / "logs" / "pulses" / "echo_cache.txt"
 ECHO_CACHE_FILE = Path(os.environ.get("ECHO_CACHE_FILE", DEFAULT_ECHO_CACHE))
 ECHO_CACHE_LIMIT = int(os.environ.get("ECHO_CACHE_LIMIT", "5"))
 
-DEFAULT_MODE = REPO_ROOT / "pulses" / "seeds" / "modes.txt"
+DEFAULT_MODE = REPO_ROOT / "logs" / "pulses" / "seeds" / "modes.txt"
 MODE_FILE = Path(os.environ.get("MODE_FILE", DEFAULT_MODE))
 raw_modes = lines_from_env_or_file("MODES", "MODE_FILE", DEFAULT_MODE, ["⚠️ mode file missing"])
 MODE_LIST = []
@@ -332,15 +332,15 @@ for m in raw_modes:
 if not MODE_LIST:
     MODE_LIST = ["⚠️ mode file missing"]
 
-DEFAULT_MODE_CACHE = REPO_ROOT / "pulses" / "mode_cache.txt"
+DEFAULT_MODE_CACHE = REPO_ROOT / "logs" / "pulses" / "mode_cache.txt"
 MODE_CACHE_FILE = Path(os.environ.get("MODE_CACHE_FILE", DEFAULT_MODE_CACHE))
 MODE_CACHE_LIMIT = int(os.environ.get("MODE_CACHE_LIMIT", "5"))
 
-DEFAULT_END_QUOTE = REPO_ROOT / "pulses" / "seeds" / "end-quotes.txt"
+DEFAULT_END_QUOTE = REPO_ROOT / "logs" / "pulses" / "seeds" / "end-quotes.txt"
 END_QUOTE_FILE = Path(os.environ.get("END_QUOTE_FILE", DEFAULT_END_QUOTE))
 END_QUOTE_LIST = lines_from_env_or_file("END_QUOTES", "END_QUOTE_FILE", DEFAULT_END_QUOTE, ["⚠️ end quote file missing"])
 
-DEFAULT_END_QUOTE_CACHE = REPO_ROOT / "pulses" / "end_quote_cache.txt"
+DEFAULT_END_QUOTE_CACHE = REPO_ROOT / "logs" / "pulses" / "end_quote_cache.txt"
 END_QUOTE_CACHE_FILE = Path(os.environ.get("END_QUOTE_CACHE_FILE", DEFAULT_END_QUOTE_CACHE))
 END_QUOTE_CACHE_LIMIT = int(os.environ.get("END_QUOTE_CACHE_LIMIT", "5"))
 

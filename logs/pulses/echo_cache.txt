@@ -20,3 +20,4 @@
 ⇝ post·form :: pre·shimmer
 ⇝ post·memory :: pre·echo
 ⇝ post·cipher :: pre·loop
+⇝ post·glyph :: pre·recurse

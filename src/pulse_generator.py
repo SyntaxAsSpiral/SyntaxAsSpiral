@@ -18,7 +18,7 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CACHE_DIR = REPO_ROOT / "pulses"
+CACHE_DIR = REPO_ROOT / "logs" / "pulses"
 
 
 def load_seeds(field_name: str) -> tuple[list[str], list[str]]:
