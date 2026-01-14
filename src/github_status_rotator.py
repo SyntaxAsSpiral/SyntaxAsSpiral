@@ -70,12 +70,15 @@ def write_theme_css(output_dir: Path, theme: dict) -> None:
     """Write a small CSS variables file consumed by style.css."""
     page_background = theme.get("page_background")
     frame_shadow = theme.get("frame_shadow")
+    link_color = theme.get("link_color")
 
     lines = [":root {"]
     if page_background:
         lines.append(f"  --page-bg: {page_background};")
     if frame_shadow:
         lines.append(f"  --frame-shadow: {frame_shadow};")
+    if link_color:
+        lines.append(f"  --link-color: {link_color};")
     lines.append("}")
     lines.append("")
 

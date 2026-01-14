@@ -71,16 +71,16 @@ h1 {
 }
 
 .project-sigil a {
-  color: #eba0ac !important;
+  color: var(--link-color, #eba0ac) !important;
 }
 
 a {
-  color: #eba0ac;
+  color: var(--link-color, #eba0ac);
   text-decoration: underline;
 }
 
 a, a * {
-  color: #eba0ac !important;
+  color: var(--link-color, #eba0ac) !important;
 }
 
 a:hover {

@@ -5,6 +5,7 @@
 theme:
   page_background: "#0d1117"
   frame_shadow: "0 0 25px 5px rgba(170, 120, 255, 0.25), inset 0 0 15px 2px rgba(136, 165, 255, 0.15)"
+  link_color: "#eba0ac"
 
 projects:
 
@@ -36,16 +37,16 @@ projects:
     end_sigil: "⊕"
     color: "#94e2d5"
 
-  - name: "Codæx Pulseframe"
-    github: "SyntaxAsSpiral/codex-pulseframe"
-    description: "Temporal code indexing"
-    sigil: "🜂"
-    end_sigil: "🜔"
-    color: "#cba6f7"
-
   - name: "Paneudaemonium"
     github: "SyntaxAsSpiral/Paneudaemonium"
     description: "Mystical AI daemon registry"
     sigil: "🜏"
     end_sigil: "🜄"
     color: "#74c7ec"
+
+  - name: "Codæx Pulseframe"
+    github: "SyntaxAsSpiral/codex-pulseframe"
+    description: "Temporal code indexing"
+    sigil: "🜂"
+    end_sigil: "🜔"
+    color: "#cba6f7"
