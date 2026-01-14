@@ -135,9 +135,9 @@ def render_logs_index_html(log_dates: list[str]) -> str:
   <title>Pulse Log Archive</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d1117">
-  <link rel="stylesheet" href="../theme.css">
-  <link rel="stylesheet" href="../{stylesheet}">
-  <link rel="icon" href="../index.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/{stylesheet}">
+  <link rel="icon" href="../assets/index.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
@@ -393,7 +393,7 @@ def main():
     log_date = datetime.now(pacific).strftime("%Y-%m-%d")
     chronotonic = hex(time.time_ns())[-6:]
 
-    output_dir = Path(os.environ.get("OUTPUT_DIR", REPO_ROOT / "assets"))  
+    output_dir = Path(os.environ.get("OUTPUT_DIR", REPO_ROOT))  
     output_dir.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
     print(f"📁 Output directory: {output_dir.absolute()}")
 
@@ -421,13 +421,13 @@ def main():
   <title>Recursive Pulse Log ⟳ ChronoSig</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d1117">
-  <link rel="stylesheet" href="theme.css">
-  <link rel="stylesheet" href="{stylesheet}">
-  <link rel="icon" href="index.ico" type="image/x-icon">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/{stylesheet}">
+  <link rel="icon" href="assets/index.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
-  <video src="recursive-log-banner.mp4" class="banner" autoplay loop muted playsinline></video>
+  <video src="assets/recursive-log-banner.mp4" class="banner" autoplay loop muted playsinline></video>
   <main class="content">
     <!-- Dynamic content will be inserted here -->
     <!-- DO NOT MODIFY THE TEXT; it is updated by github_status_rotator.py -->
@@ -512,10 +512,10 @@ def main():
     logs_link_html_archive = '<p><a href="index.html">See past logs :: ></a></p>'
     archive_html = (
         html_content
-        .replace('href="theme.css"', 'href="../theme.css"')
-        .replace(f'href="{stylesheet}"', f'href="../{stylesheet}"')
-        .replace('href="index.ico"', 'href="../index.ico"')
-        .replace('src="recursive-log-banner.mp4"', 'src="../recursive-log-banner.mp4"')
+        .replace('href="assets/theme.css"', 'href="../assets/theme.css"')
+        .replace(f'href="assets/{stylesheet}"', f'href="../assets/{stylesheet}"')
+        .replace('href="assets/index.ico"', 'href="../assets/index.ico"')
+        .replace('src="assets/recursive-log-banner.mp4"', 'src="../assets/recursive-log-banner.mp4"')
         .replace(projects_html, projects_html_archive, 1)
         .replace(logs_link_html, logs_link_html_archive, 1)
     )
