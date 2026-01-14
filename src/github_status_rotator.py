@@ -7,6 +7,7 @@ Uses LLM-based pulse generator with fallback to batch cycling.
 import os
 import time
 import yaml
+import requests
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -341,8 +342,33 @@ def main():
     if PULSE_GENERATOR_AVAILABLE:
         from pulse_generator import load_llm_config
         llm_config = load_llm_config()
-        if not llm_config.get("base_url"):
-            llm_config = None  # Disable LLM if config incomplete
+        
+        # Fast-fail: if LLM configured, verify it's reachable before proceeding
+        if llm_config.get("base_url"):
+            print(f"🔧 Testing LLM connection at {llm_config['base_url']}...")
+            try:
+                # Warmup call to verify model is loaded and responding
+                endpoint = f"{llm_config['base_url']}/chat/completions"
+                headers = {"Content-Type": "application/json"}
+                if llm_config.get("api_key"):
+                    headers["Authorization"] = f"Bearer {llm_config['api_key']}"
+                
+                warmup_body = {
+                    "model": llm_config["model"],
+                    "messages": [{"role": "user", "content": "Say hello in 3 words."}],
+                    "temperature": 0.1
+                }
+                
+                response = requests.post(endpoint, json=warmup_body, headers=headers, timeout=30)
+                response.raise_for_status()
+                print(f"  ✓ LLM responding (model: {llm_config['model']})")
+            except Exception as e:
+                print(f"✗ FATAL: LLM configured but unreachable at {llm_config['base_url']}")
+                print(f"  Error: {e}")
+                print("  Either start LMStudio or remove LLM_BASE_URL from config to use batch cycling")
+                sys.exit(1)
+        else:
+            llm_config = None  # No base_url = disable LLM
     
     # Generate pulse fields in parallel (LLM with fallback)
     print("🌀 Generating pulse fields...")
@@ -400,7 +426,7 @@ def main():
     stylesheet = os.environ.get("STYLESHEET", "style.css")
 
     theme = load_theme()
-    write_theme_css(output_dir, theme)
+    write_theme_css(output_dir / "assets", theme)
 
     subject_fonts = [
         "Recursive",
@@ -504,6 +530,27 @@ def main():
             f.write("\n")
     
     print(f"✅ index.html updated with status: {status}")
+
+    # === UPDATE README.md ===
+    readme_path = REPO_ROOT / "README.md"
+    try:
+        with readme_path.open("r", encoding="utf-8") as f:
+            readme_content = f.read()
+        
+        # Update chronohex in README
+        import re
+        updated_readme = re.sub(
+            r'### 🌀 Current Recursive Pulse Log ⟳ ChronoSig ⟐ `[^`]+`',
+            f'### 🌀 Current Recursive Pulse Log ⟳ ChronoSig ⟐ [`{chronotonic}`](https://lexemancy.com/)',
+            readme_content
+        )
+        
+        with readme_path.open("w", encoding="utf-8") as f:
+            f.write(updated_readme)
+        
+        print(f"✅ README.md updated with chronohex: {chronotonic}")
+    except Exception as e:
+        print(f"⚠️ Failed to update README.md: {e}")
 
     # === ARCHIVE DAILY LOG + REBUILD INDEX ===
     logs_dir = output_dir / "logs"
