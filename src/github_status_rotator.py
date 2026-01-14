@@ -413,14 +413,14 @@ def get_pulse_value(field_name: str, fallback_list: list[str], cache_path: Path,
 
 def generate_field_worker(args: tuple) -> tuple[str, str]:
     """Worker function for parallel generation."""
-    field_name, seed_file, fallback_list, cache_path, cache_limit, llm_config = args
+    field_name, seed_file, fallback_list, cache_path, cache_limit, active_backend = args
     
-    if PULSE_GENERATOR_AVAILABLE and llm_config and llm_config.get("base_url"):
+    if PULSE_GENERATOR_AVAILABLE and active_backend:
         from pulse_generator import load_seeds, generate_with_llm
         import random
         seed_examples, cache_examples = load_seeds(seed_file)
         if seed_examples or cache_examples:
-            generated = generate_with_llm(seed_file, seed_examples, cache_examples, llm_config)
+            generated = generate_with_llm(seed_file, seed_examples, cache_examples, active_backend)
             if generated:
                 # Write to cache to preserve LLM outputs (no trimming)
                 cache = read_cache(cache_path)
@@ -441,37 +441,23 @@ def main():
     projects_html_archive = render_projects_html(projects, local_link_prefix="../")
     
     # Load LLM config once (not 7 times!)
-    llm_config = None
+    active_backend = None
     if PULSE_GENERATOR_AVAILABLE:
-        from pulse_generator import load_llm_config
+        from pulse_generator import load_llm_config, select_active_backend
         llm_config = load_llm_config()
         
-        # Fast-fail: if LLM configured, verify it's reachable before proceeding
-        if llm_config.get("base_url"):
-            print(f"🔧 Testing LLM connection at {llm_config['base_url']}...")
-            try:
-                # Warmup call to verify model is loaded and responding
-                endpoint = f"{llm_config['base_url']}/chat/completions"
-                headers = {"Content-Type": "application/json"}
-                if llm_config.get("api_key"):
-                    headers["Authorization"] = f"Bearer {llm_config['api_key']}"
-                
-                warmup_body = {
-                    "model": llm_config["model"],
-                    "messages": [{"role": "user", "content": "Say hello in 3 words."}],
-                    "temperature": 0.1
-                }
-                
-                response = requests.post(endpoint, json=warmup_body, headers=headers, timeout=30)
-                response.raise_for_status()
-                print(f"  ✓ LLM responding (model: {llm_config['model']})")
-            except Exception as e:
-                print(f"✗ FATAL: LLM configured but unreachable at {llm_config['base_url']}")
-                print(f"  Error: {e}")
-                print("  Either start LMStudio or remove LLM_BASE_URL from config to use batch cycling")
-                sys.exit(1)
-        else:
-            llm_config = None  # No base_url = disable LLM
+        # Fast-fail: test both backends, exit if both unreachable
+        print(f"🔧 Testing LLM backends...")
+        active_backend = select_active_backend(llm_config)
+        
+        if active_backend is None:
+            print(f"✗ FATAL: Both primary and fallback LLM backends unreachable")
+            print(f"  Primary: {llm_config['primary']['base_url']}")
+            print(f"  Fallback: {llm_config['fallback']['base_url']}")
+            print("  Either start LMStudio or check OpenRouter API key in secrets.env")
+            sys.exit(1)
+        
+        print(f"  ✓ Using {active_backend['provider']} backend")
     
     # Generate pulse fields in parallel (LLM with fallback)
     print("🌀 Generating pulse fields...")
@@ -489,11 +475,11 @@ def main():
     
     # Generate in parallel (max 2 workers to avoid rate limits)
     results = {}
-    if llm_config and PULSE_GENERATOR_AVAILABLE:
+    if active_backend and PULSE_GENERATOR_AVAILABLE:
         # Parallel LLM generation (limited to 2 for LMStudio/OpenRouter compatibility)
         with ThreadPoolExecutor(max_workers=2) as executor:
             futures = {
-                executor.submit(generate_field_worker, (field_name, seed_file, fallback_list, cache_path, cache_limit, llm_config)): field_name
+                executor.submit(generate_field_worker, (field_name, seed_file, fallback_list, cache_path, cache_limit, active_backend)): field_name
                 for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args
             }
             
@@ -503,7 +489,7 @@ def main():
     else:
         # Sequential fallback
         for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args:
-            value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, llm_config)
+            value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, None)
             results[field_name] = value
     
     status = results.get("status", "")

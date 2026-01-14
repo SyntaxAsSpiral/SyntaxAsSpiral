@@ -178,8 +178,11 @@ schtasks /run /tn "PulseLogUpdater"
 ### Fast-Fail Enforcement
 - LLM configured but unreachable = immediate exit
 - No silent degradation to batch cycling
-- Timestamp on page = health indicator
+- **NO FALLBACK TO CACHE/RANDOM SELECTION** - if LLM fails, the page does NOT update
+- Timestamp on page = health indicator (stale timestamp = visible failure signal)
 - Read-only startup health checks (no data creation for smoke tests)
+- **NEVER hide failure behind "graceful degradation"** - failure must be visible and loud
+- The absence of a fresh pulse IS the error message to the operator
 
 ### Recursive Feedback Loop
 - LLM outputs append to cache files (no trimming - grows indefinitely)

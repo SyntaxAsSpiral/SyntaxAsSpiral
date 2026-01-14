@@ -87,50 +87,69 @@ def sample_seeds(seed_examples: list[str], cache_examples: list[str], seed_count
 
 
 def load_llm_config() -> dict:
-    """Load LLM configuration from .dev/.env or environment variables."""
-    # Try to find .dev/.env
-    env_path = find_workspace_env()
-    if env_path:
-        try:
-            from dotenv import load_dotenv
-            load_dotenv(env_path, override=True)  # override=True to prioritize .env over existing env vars
+    """Load LLM configuration from repo .env and secrets.env."""
+    repo_root = Path(__file__).resolve().parents[1]
+    
+    try:
+        from dotenv import load_dotenv
+        
+        # Load repo's .env first (config)
+        env_path = repo_root / ".env"
+        if env_path.exists():
+            load_dotenv(env_path, override=True)
             print(f"📁 Loaded config from: {env_path}")
-            
-            # Also load secrets.env if it exists (for API keys)
-            secrets_path = env_path.parent / "secrets.env"
-            if secrets_path.exists():
-                load_dotenv(secrets_path, override=True)
-                print(f"🔑 Loaded secrets from: {secrets_path}")
-        except ImportError:
-            # dotenv not available, rely on environment variables
-            print("⚠️ python-dotenv not available, using environment variables only")
-        except Exception as e:
-            print(f"⚠️ Failed to load .env from {env_path}: {e}")
+        
+        # Then load secrets.env to override with API keys
+        secrets_path = repo_root / "secrets.env"
+        if secrets_path.exists():
+            load_dotenv(secrets_path, override=True)
+            print(f"🔑 Loaded secrets from: {secrets_path}")
+    except ImportError:
+        print("⚠️ python-dotenv not available, using environment variables only")
+    except Exception as e:
+        print(f"⚠️ Failed to load .env: {e}")
+    
+    # Load dual backend configuration
+    primary_provider = os.getenv("LLM_PRIMARY_PROVIDER", "openrouter").lower()
+    fallback_provider = os.getenv("LLM_FALLBACK_PROVIDER", "lmstudio").lower()
+    
+    # Get API keys based on provider
+    primary_api_key = ""
+    if primary_provider == "openrouter":
+        primary_api_key = os.getenv("OPENROUTER_API_KEY", "")
+    elif primary_provider == "lmstudio":
+        primary_api_key = os.getenv("LMSTUDIO_API_KEY", "")
     else:
-        print("⚠️ No .dev/.env file found, using defaults and environment variables")
+        primary_api_key = os.getenv("LLM_API_KEY", "")
     
-    provider = os.getenv("LLM_PROVIDER", "lmstudio").lower()
-    api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENROUTER_API_KEY") or os.getenv("LMSTUDIO_API_KEY", "")
-    base_url = os.getenv("LLM_BASE_URL", "")
+    fallback_api_key = ""
+    if fallback_provider == "lmstudio":
+        fallback_api_key = os.getenv("LMSTUDIO_API_KEY", "")
+    elif fallback_provider == "openrouter":
+        fallback_api_key = os.getenv("OPENROUTER_API_KEY", "")
+    else:
+        fallback_api_key = os.getenv("LLM_API_KEY", "")
     
-    # Resolve default URLs if not provided
-    if not base_url:
-        defaults = {
-            "openrouter": "https://openrouter.ai/api/v1",
-            "lmstudio": "http://localhost:1234/v1",
-            "pollinations": "https://text.pollinations.ai/openai",
-        }
-        base_url = defaults.get(provider, "")
+    primary_config = {
+        "provider": primary_provider,
+        "base_url": os.getenv("LLM_PRIMARY_BASE_URL", "https://openrouter.ai/api/v1"),
+        "model": os.getenv("LLM_PRIMARY_MODEL", "google/gemini-2.0-flash-exp:free"),
+        "api_key": primary_api_key,
+    }
     
-    model = os.getenv("LLM_MODEL", "gpt-oss-20b-heretic" if provider == "lmstudio" else ("openrouter/anthropic/claude-3.5-sonnet" if provider == "openrouter" else "gpt-oss-20b-heretic"))
+    fallback_config = {
+        "provider": fallback_provider,
+        "base_url": os.getenv("LLM_FALLBACK_BASE_URL", "http://localhost:1234/v1"),
+        "model": os.getenv("LLM_FALLBACK_MODEL", "gpt-oss-20b-heretic"),
+        "api_key": fallback_api_key,
+    }
     
-    print(f"🔧 LLM Config: provider={provider}, base_url={base_url}, model={model}")
+    print(f"🔧 Primary LLM: provider={primary_config['provider']}, base_url={primary_config['base_url']}, model={primary_config['model']}")
+    print(f"🔧 Fallback LLM: provider={fallback_config['provider']}, base_url={fallback_config['base_url']}, model={fallback_config['model']}")
     
     return {
-        "provider": provider,
-        "api_key": api_key,
-        "base_url": base_url,
-        "model": model,
+        "primary": primary_config,
+        "fallback": fallback_config,
     }
 
 
@@ -161,6 +180,71 @@ def find_workspace_env() -> Optional[Path]:
             break
         dir = parent
     
+    return None
+
+
+def test_llm_backend(backend_config: dict) -> bool:
+    """
+    Test if an LLM backend is reachable.
+    Returns True if backend responds, False otherwise.
+    """
+    if not backend_config.get("base_url"):
+        return False
+    
+    endpoint = f"{backend_config['base_url']}/chat/completions"
+    headers = {"Content-Type": "application/json"}
+    
+    if backend_config.get("api_key"):
+        headers["Authorization"] = f"Bearer {backend_config['api_key']}"
+    
+    warmup_body = {
+        "model": backend_config["model"],
+        "messages": [{"role": "user", "content": "Say hello in 3 words."}],
+        "temperature": 0.1
+    }
+    
+    try:
+        response = requests.post(endpoint, json=warmup_body, headers=headers, timeout=30)
+        response.raise_for_status()
+        return True
+    except requests.exceptions.HTTPError as e:
+        print(f"  ⚠️ HTTP {e.response.status_code}: {e}")
+        try:
+            error_data = e.response.json()
+            print(f"  Response: {error_data}")
+        except:
+            print(f"  Response: {e.response.text[:200]}")
+        return False
+    except Exception as e:
+        print(f"  ⚠️ Connection failed: {e}")
+        return False
+
+
+def select_active_backend(config: dict) -> Optional[dict]:
+    """
+    Select active backend with fallback logic:
+    1. Try primary (OpenRouter)
+    2. Fall back to fallback (LMStudio) if primary unreachable
+    3. Return None if both unreachable (triggers fast-fail)
+    """
+    primary = config["primary"]
+    fallback = config["fallback"]
+    
+    # Try primary first
+    print(f"🔌 Testing primary backend ({primary['provider']})...")
+    if test_llm_backend(primary):
+        print(f"  ✓ Primary backend responding (model: {primary['model']})")
+        return primary
+    
+    print(f"  ✗ Primary unreachable, trying fallback...")
+    
+    # Try fallback
+    print(f"🔌 Testing fallback backend ({fallback['provider']})...")
+    if test_llm_backend(fallback):
+        print(f"  ✓ Fallback backend responding (model: {fallback['model']})")
+        return fallback
+    
+    print(f"  ✗ Fallback also unreachable")
     return None
 
 
@@ -275,7 +359,7 @@ Generate a single new end quote (1-2 sentences max, poetic, mystical) that maint
         return None
 
 
-def generate_pulse_field(field_name: str, fallback_to_random: bool = True, config: dict = None) -> Optional[str]:
+def generate_pulse_field(field_name: str, fallback_to_random: bool = True, config: dict = None, active_backend: dict = None) -> Optional[str]:
     """
     Generate a new pulse field value using LLM.
     Falls back to random seed selection if LLM unavailable.
@@ -284,23 +368,20 @@ def generate_pulse_field(field_name: str, fallback_to_random: bool = True, confi
     if not seed_examples and not cache_examples:
         return None
     
-    # Use provided config or load fresh
-    if config is None:
-        config = load_llm_config()
+    # If no active backend provided, select one from config
+    if active_backend is None:
+        if config is None:
+            config = load_llm_config()
+        active_backend = select_active_backend(config)
     
-    # LMStudio doesn't require API key, so only check base_url
-    if not config["base_url"]:
+    # If no backend available, fall back to random
+    if active_backend is None:
         if fallback_to_random:
-            # Fallback to random from combined pool
             all_examples = seed_examples + cache_examples
             return random.choice(all_examples) if all_examples else None
         return None
     
-    # For LMStudio, API key is optional
-    if config["provider"] == "lmstudio" and not config["api_key"]:
-        config["api_key"] = ""  # LMStudio doesn't require auth
-    
-    generated = generate_with_llm(field_name, seed_examples, cache_examples, config)
+    generated = generate_with_llm(field_name, seed_examples, cache_examples, active_backend)
     
     if generated:
         return generated
@@ -327,19 +408,26 @@ FIELD_MAPPINGS = {
 
 def generate_all_pulse_fields() -> dict[str, Optional[str]]:
     """Generate all pulse fields and return as dictionary."""
-    # Load config once
+    # Load config and select active backend once
     config = load_llm_config()
+    active_backend = select_active_backend(config)
+    
+    # Fast-fail: no backend = no generation = no page update
+    if active_backend is None:
+        print("✗ FATAL: No LLM backend available")
+        return None
     
     results = {}
     
     for seed_file, field_key in FIELD_MAPPINGS.items():
         print(f"Generating {field_key}...")
-        value = generate_pulse_field(seed_file, fallback_to_random=True, config=config)
+        value = generate_pulse_field(seed_file, fallback_to_random=False, active_backend=active_backend)
         results[field_key] = value
         if value:
             print(f"  ✓ {value[:60]}...")
         else:
-            print(f"  ⚠️ Failed to generate {field_key}")
+            print(f"  ✗ Failed to generate {field_key}")
+            return None  # Fast-fail on any generation failure
     
     return results
 
