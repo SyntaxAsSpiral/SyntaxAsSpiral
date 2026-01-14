@@ -387,9 +387,9 @@ def generate_field_worker(args: tuple) -> tuple[str, str]:
     if PULSE_GENERATOR_AVAILABLE and llm_config and llm_config.get("base_url"):
         from pulse_generator import load_seeds, generate_with_llm
         import random
-        seeds = load_seeds(seed_file)
-        if seeds:
-            generated = generate_with_llm(seed_file, seeds, llm_config)
+        seed_examples, cache_examples = load_seeds(seed_file)
+        if seed_examples or cache_examples:
+            generated = generate_with_llm(seed_file, seed_examples, cache_examples, llm_config)
             if generated:
                 # Write to cache to preserve LLM outputs (no trimming)
                 cache = read_cache(cache_path)

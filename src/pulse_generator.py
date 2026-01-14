@@ -18,27 +18,72 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SEEDS_DIR = REPO_ROOT / "pulses" / "seeds"
+CACHE_DIR = REPO_ROOT / "pulses"
 
 
-def load_seeds(field_name: str) -> list[str]:
-    """Load all seed lines from a seed file."""
-    seed_file = SEEDS_DIR / f"{field_name}.txt"
+def load_seeds(field_name: str) -> tuple[list[str], list[str]]:
+    """
+    Load seed and cache examples from cache file.
+    Returns (seed_examples, cache_examples) tuple.
+    """
+    # Map field names to cache file names
+    cache_file_map = {
+        "statuses": "status_cache.txt",
+        "antenna_quotes": "quote_cache.txt",
+        "glyphbraids": "glyph_cache.txt",
+        "subject-ids": "subject_cache.txt",
+        "echo_fragments": "echo_cache.txt",
+        "modes": "mode_cache.txt",
+        "end-quotes": "end_quote_cache.txt",
+    }
+    
+    cache_file = CACHE_DIR / cache_file_map.get(field_name, f"{field_name}_cache.txt")
+    
     try:
-        with seed_file.open(encoding="utf-8") as f:
-            seeds = [line.strip() for line in f if line.strip()]
-        return seeds
+        with cache_file.open(encoding="utf-8") as f:
+            content = f.read()
+        
+        # Parse sections
+        seed_examples = []
+        cache_examples = []
+        
+        if "<-- slice: seed-->" in content:
+            parts = content.split("<-- slice: seed-->")
+            if len(parts) > 1:
+                seed_section = parts[1].split("<-- slice: cache-->")[0] if "<-- slice: cache-->" in parts[1] else parts[1]
+                seed_examples = [line.strip() for line in seed_section.strip().split("\n") if line.strip()]
+        
+        if "<-- slice: cache-->" in content:
+            parts = content.split("<-- slice: cache-->")
+            if len(parts) > 1:
+                cache_section = parts[1]
+                cache_examples = [line.strip() for line in cache_section.strip().split("\n") if line.strip()]
+        
+        return seed_examples, cache_examples
+        
     except FileNotFoundError:
-        print(f"⚠️ Seed file not found: {seed_file}")
-        return []
+        print(f"⚠️ Cache file not found: {cache_file}")
+        return [], []
 
 
-def sample_seeds(seeds: list[str], count: int = 5) -> list[str]:
-    """Sample exactly N random seeds from the pool."""
-    if not seeds:
-        return []
-    count = min(count, len(seeds))
-    return random.sample(seeds, count)
+def sample_seeds(seed_examples: list[str], cache_examples: list[str], seed_count: int = 3, cache_count: int = 3) -> list[str]:
+    """
+    Sample examples from seed and cache pools.
+    Returns seed_count from seeds + up to cache_count from cache (whatever's available).
+    """
+    samples = []
+    
+    # Sample from seeds
+    if seed_examples:
+        actual_seed_count = min(seed_count, len(seed_examples))
+        samples.extend(random.sample(seed_examples, actual_seed_count))
+    
+    # Sample from cache (up to cache_count, whatever's available)
+    if cache_examples:
+        actual_cache_count = min(cache_count, len(cache_examples))
+        samples.extend(random.sample(cache_examples, actual_cache_count))
+    
+    return samples
 
 
 def load_llm_config() -> dict:
@@ -113,16 +158,16 @@ def find_workspace_env() -> Optional[Path]:
     return None
 
 
-def generate_with_llm(field_name: str, seeds: list[str], config: dict) -> Optional[str]:
+def generate_with_llm(field_name: str, seed_examples: list[str], cache_examples: list[str], config: dict) -> Optional[str]:
     """
-    Generate new content using LLM with seed examples.
+    Generate new content using LLM with seed and cache examples.
     Uses HTTP requests to OpenAI-compatible endpoint.
     """
-    if not seeds:
+    if not seed_examples and not cache_examples:
         return None
     
-    # Sample exactly 5 random seeds
-    examples = sample_seeds(seeds, 5)
+    # Sample 3 from seed + up to 3 from cache
+    examples = sample_seeds(seed_examples, cache_examples, seed_count=3, cache_count=3)
     
     # Build field-specific prompts
     prompts = {
@@ -229,8 +274,8 @@ def generate_pulse_field(field_name: str, fallback_to_random: bool = True, confi
     Generate a new pulse field value using LLM.
     Falls back to random seed selection if LLM unavailable.
     """
-    seeds = load_seeds(field_name)
-    if not seeds:
+    seed_examples, cache_examples = load_seeds(field_name)
+    if not seed_examples and not cache_examples:
         return None
     
     # Use provided config or load fresh
@@ -240,21 +285,24 @@ def generate_pulse_field(field_name: str, fallback_to_random: bool = True, confi
     # LMStudio doesn't require API key, so only check base_url
     if not config["base_url"]:
         if fallback_to_random:
-            return random.choice(seeds)
+            # Fallback to random from combined pool
+            all_examples = seed_examples + cache_examples
+            return random.choice(all_examples) if all_examples else None
         return None
     
     # For LMStudio, API key is optional
     if config["provider"] == "lmstudio" and not config["api_key"]:
         config["api_key"] = ""  # LMStudio doesn't require auth
     
-    generated = generate_with_llm(field_name, seeds, config)
+    generated = generate_with_llm(field_name, seed_examples, cache_examples, config)
     
     if generated:
         return generated
     
     # Fallback to random seed
     if fallback_to_random:
-        return random.choice(seeds)
+        all_examples = seed_examples + cache_examples
+        return random.choice(all_examples) if all_examples else None
     
     return None
 
