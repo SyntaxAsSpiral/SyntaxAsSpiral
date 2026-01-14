@@ -95,6 +95,12 @@ def load_llm_config() -> dict:
             from dotenv import load_dotenv
             load_dotenv(env_path, override=True)  # override=True to prioritize .env over existing env vars
             print(f"📁 Loaded config from: {env_path}")
+            
+            # Also load secrets.env if it exists (for API keys)
+            secrets_path = env_path.parent / "secrets.env"
+            if secrets_path.exists():
+                load_dotenv(secrets_path, override=True)
+                print(f"🔑 Loaded secrets from: {secrets_path}")
         except ImportError:
             # dotenv not available, rely on environment variables
             print("⚠️ python-dotenv not available, using environment variables only")
@@ -166,8 +172,8 @@ def generate_with_llm(field_name: str, seed_examples: list[str], cache_examples:
     if not seed_examples and not cache_examples:
         return None
     
-    # Sample 3 from seed + up to 3 from cache
-    examples = sample_seeds(seed_examples, cache_examples, seed_count=3, cache_count=3)
+    # Sample 5 from seed + up to 5 from cache
+    examples = sample_seeds(seed_examples, cache_examples, seed_count=5, cache_count=5)
     
     # Build field-specific prompts
     prompts = {
@@ -243,7 +249,7 @@ Generate a single new end quote (1-2 sentences max, poetic, mystical) that maint
         "messages": [
             {"role": "user", "content": prompt}
         ],
-        "temperature": 0.8,  # Creative but coherent
+        "temperature": 1.2,  # High creativity for mystical variation
         # NO max_tokens - let LLM generate naturally
     }
     

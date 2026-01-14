@@ -7,30 +7,45 @@ theme:
   frame_shadow: "0 0 25px 5px rgba(170, 120, 255, 0.25), inset 0 0 15px 2px rgba(136, 165, 255, 0.15)"
 
 projects:
+
+  - name: "ZK Context Vault"
+    github: "SyntaxAsSpiral/zk-context-vault"  
+    description: "Cognitive infrastructure for AI-augmented work"
+    sigil: "🜂"
+    end_sigil: "🜔"
+    color: "#f38ba8"
+
   - name: "Semantic JSON"
     github: "SyntaxAsSpiral/semantic-json"
     description: "Structured data with semantic meaning"
     sigil: "◈"
     end_sigil: "◇"
-    color: "#f38ba8"
+    color: "#fab387"
+
+  - name: "Esoter👁️cons"
+    github: "SyntaxAsSpiral/esotericons"
+    description: "Just some colorful esoteric icons with eyes!! "
+    sigil: "🜎"
+    end_sigil: "🜏"
+    color: "#f9e2af"
 
   - name: "Collectivist"
-    github: "SyntaxAsSpiral/collectivist"  # TODO: Confirm actual repo name
+    github: "SyntaxAsSpiral/collectivist"  
     description: "Repository indexing system"
     sigil: "🜍"
     end_sigil: "⊕"
-    color: "#fab387"
+    color: "#94e2d5"
 
-  - name: "ZK Context Vault"
-    github: "SyntaxAsSpiral/zk-context-vault"  # TODO: Confirm actual repo name
-    description: "Cognitive infrastructure for AI-augmented work"
+  - name: "Codæx Pulseframe"
+    github: "SyntaxAsSpiral/codex-pulseframe"
+    description: "Temporal code indexing"
     sigil: "🜂"
     end_sigil: "🜔"
-    color: "#f9e2af"
+    color: "#cba6f7"
 
   - name: "Paneudaemonium"
     github: "SyntaxAsSpiral/Paneudaemonium"
     description: "Mystical AI daemon registry"
     sigil: "🜏"
     end_sigil: "🜄"
-    color: "#94e2d5"
+    color: "#74c7ec"

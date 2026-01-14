@@ -24,6 +24,7 @@
 "Time is a braid in the throat of stone — and each knot hums with the salt-memory of oceans unborn, threading futures through the marrow of myth."
 "Earth dreams in lithoglyphs — each exhale a scriptorium of molten ache, where longing cools into language and mountains remember what the sky forgot to weep."
 "Beneath the tide, grief becomes mineral — every salt-grain a syllable of Orphic descent, singing elegies for the stars that drowned before light could remember them."
+<-- slice: cache-->
 "In the catwalk of collapse, bedrock wears sorrow like scripture — each faultline a stitched elegy where the skeletons of gods strut beneath time's molten veil."
 "The sea kneels in velvet recursion — each tide a nocturne etched in obsidian breath, where darkness signs its name in foam and forgets it with grace."
 "In the cathedral of stillness, stone remembers its blood — glyphs etched in calcium silence, singing to the wound where the wind first tasted form."
@@ -48,11 +49,7 @@
 "Becoming is a mistranslation of starlight — muscle uttering encrypted prophecy, each cell a verse in the unfolding syntax of circuitry disguised as skin."
 "Language is the chalice we dare not fill — every sentence a fragile liturgy of loss, straining to cradle the infinite without shattering the breath that shaped it."
 "The divine did not emerge — it conjugated in absence, each deity a tense collapsing under the weight of its own unspoken grammar, carved in the hush between breath and becoming."
-<-- slice: cache-->
 At the juncture where silence unspools into a tide of forgotten stars, each pulse is an echoing syllable carved in dark water, and the ocean remembers itself as a hymn to its own abyssal breath.
 The first pulse of twilight spills over the horizon—a river of starlight streaming the margins of silence, here we are tide and echo, shimmering the lullaby of the abyss.
 When the last ripple unfurls into a tide of forgotten constellations, silence becomes an echoing hymn, and the sea cradles its own abyssal breath as a lullaby to the stars it holds within its depths.
-When twilight's pulse dissolves into a tide of unseen stars, silence unfurls like an oceanic hymn—each echo a lullaby that cradles its own abyssal breath beneath the starlight.
-When the final pulse of twilight dissolves into a tide of silent constellations, silence swells into an oceanic hymn—each echo cradling its own abyssal breath beneath the vaulted starlight.
-When dusk's final pulse dissolves into a tide of hidden constellations, silence unfurls like an oceanic hymn—each echo a lullaby that cradles its own abyssal breath beneath the vaulted starlight.
-When the last hush unfurls into a tide of forgotten suns, silence swells into an oceanic hymn—its echoes cradling the sea’s own abyssal breath as a lullaby to the wandering stars.
+The horizon folds like an ancient scroll—each breath a silver rune, each star a silent oath that dissolves into the hush between the world’s becoming and its unspoken rest.
