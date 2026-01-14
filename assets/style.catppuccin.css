@@ -1,0 +1,82 @@
+@import url("style.css");
+@import url("https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,MONO@-15..0,300..1000,0..1,0..1&display=swap");
+
+/* Catppuccin Frappé Color Variables */
+:root {
+    --ctp-rosewater: #f5e0dc;
+    --ctp-flamingo: #f2cdcd;
+    --ctp-pink: #f5c2e7;
+    --ctp-mauve: #cba6f7;
+    --ctp-red: #f38ba8;
+    --ctp-maroon: #eba0ac;
+    --ctp-peach: #fab387;
+    --ctp-yellow: #f9e2af;
+    --ctp-green: #a6e3a1;
+    --ctp-teal: #94e2d5;
+    --ctp-sky: #89dceb;
+    --ctp-sapphire: #74c7ec;
+    --ctp-blue: #89b4fa;
+    --ctp-lavender: #b4befe;
+    --ctp-text: #c6d0f5;
+    --ctp-subtext1: #b5bfe2;
+    --ctp-subtext0: #a5adce;
+    --ctp-overlay2: #949cbb;
+    --ctp-overlay1: #838ba7;
+    --ctp-overlay0: #737994;
+    --ctp-surface2: #626880;
+    --ctp-surface1: #51576d;
+    --ctp-surface0: #414559;
+    --ctp-base: #303446;
+    --ctp-mantle: #292c3c;
+    --ctp-crust: #232634;
+}
+
+/* Base Styling (overrides on top of style.css) */
+body {
+    font-family: 'Recursive', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Mono', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-variation-settings: 'MONO' 1, 'CASL' 0.5, 'slnt' -5;
+    background-color: var(--ctp-base);
+    color: var(--ctp-text);
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+/* Link + highlight accents */
+a,
+a * {
+    color: var(--ctp-pink) !important;
+}
+
+a:hover,
+a:hover * {
+    color: var(--ctp-rosewater) !important;
+}
+
+strong {
+    color: var(--ctp-sky);
+}
+
+/* Page surface */
+.container {
+    border-color: var(--ctp-surface2);
+    background: radial-gradient(circle at center, var(--ctp-base) 0%, var(--ctp-crust) 100%);
+    box-shadow:
+        0 0 25px 5px rgba(203, 166, 247, 0.22),
+        inset 0 0 15px 2px rgba(116, 199, 236, 0.12);
+}
+
+blockquote,
+code,
+pre {
+    background: var(--ctp-mantle);
+    border-left-color: var(--ctp-surface2);
+    color: var(--ctp-subtext1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ctp-text);
+}
+
+.project-sigil a {
+    color: var(--ctp-pink) !important;
+}

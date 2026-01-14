@@ -1,0 +1,349 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,MONO@0,300..1000,1,1&display=swap');
+
+body {
+  background-color: var(--page-bg, #0d1117);
+  color: #c9d1d9;
+  font-family: 'Fira Sans', 'Segoe UI', 'Liberation Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 880px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border: 2px solid #30363d;
+  border-radius: 20px;
+  box-shadow: var(
+    --frame-shadow,
+    0 0 25px 5px rgba(170, 120, 255, 0.25),
+    inset 0 0 15px 2px rgba(136, 165, 255, 0.15)
+  );
+  background:
+    radial-gradient(circle at center, #0d1117 0%, #0a0d12 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before,
+.container::after {
+  content: "🜏";
+  position: absolute;
+  font-size: 1.4rem;
+  color: #a89adc;
+  text-shadow: 0 0 6px rgba(170, 120, 255, 0.6);
+}
+
+.container::before {
+  top: -1.4rem;
+  left: -1.4rem;
+  content: "🜃";
+}
+
+.container::after {
+  bottom: -1.4rem;
+  right: -1.4rem;
+  content: "🜔";
+}
+
+main.content {
+  line-height: 1.75;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #e6edf3;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  /* center the page titles in silent symmetry */
+  text-align: center;
+}
+
+.project-sigil {
+  font-family: "Recursive", 'Fira Sans', 'Segoe UI', 'Liberation Sans', sans-serif;
+  color: #e6edf3;
+  font-optical-sizing: auto;
+  font-variation-settings: "CASL" 1, "MONO" 1;
+}
+
+.project-sigil a {
+  color: #ff69b4 !important;
+}
+
+a {
+  color: #ff69b4;
+  text-decoration: underline;
+}
+
+a, a * {
+  color: #ff69b4 !important;
+}
+
+a:hover {
+  color: #ff85c1;
+  text-decoration: underline;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #30363d;
+  margin: 2em 0;
+}
+
+ul, ol {
+  margin-left: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+li {
+  margin-bottom: 0.4em;
+}
+
+em {
+  color: inherit;
+  font-style: italic;
+}
+
+strong {
+  color: #89CFF0;
+  font-weight: 600;
+}
+
+blockquote {
+  color: #8b949e;
+  border-left: 4px solid #30363d;
+  padding-left: 16px;
+  margin: 1em 0;
+  background: #161b22;
+  border-radius: 6px;
+  font-style: italic;
+}
+
+code, pre {
+  background: #161b22;
+  color: #8b949e;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-family: 'Fira Mono', 'Consolas', 'Liberation Mono', monospace;
+}
+
+
+.banner {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  object-fit: cover;
+}
+
+/* fading pulse for recursive ellipsis */
+.ellipsis {
+  display: inline-block;
+  animation: shimmerDots 1.8s infinite ease-in-out;
+  opacity: 0.8;
+}
+
+@keyframes shimmerDots {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+/* veil dynamic text */
+.veil {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: none;
+  box-shadow: none;
+  transition: opacity 1s ease-in-out;
+  font-family: "Cinzel Decorative", serif;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba(170, 120, 255, 0.65);
+}
+.glyph {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  color: #aaa;
+  text-align: center;
+}
+
+footer.veil-footer {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* center any invocation that needs symmetrical focus */
+.centerfold {
+  text-align: center;
+}
+
+
+
+/* nudge first heading to kiss the banner */
+.banner-flush {
+  margin-top: 0.25rem;
+}
+
+/* luminous pulse for codex portals */
+a.codex-link:hover {
+  text-shadow: 0 0 4px #f0b3ff, 0 0 6px #9ff;
+  transform: scale(1.02);
+}
+
+#paneudaemonium-sigils {
+  margin-top: 3rem;
+  font-family: 'Spectral', serif;
+  width: 100%;
+}
+
+#paneudaemonium-sigils .daemon-entry {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 1.25rem;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-left: 3px solid #cba6f7;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.daemon-avatar {
+  flex-shrink: 0;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background-color: #222;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(203, 166, 247, 0.5);
+}
+
+.daemon-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.daemon-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.daemon-glyph {
+  font-size: 1.5rem;
+  opacity: 0.8;
+  color: #ffffff;
+  display: inline-block;
+  vertical-align: middle; /* 👈 key fix */
+  margin-right: 0.4rem;   /* optional spacing tweak */
+}
+
+.daemon-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.daemon-title {
+  color: #f9e2af;
+}
+
+.daemon-title-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+/* individualized daemon hues */
+.daemon-title.aemexsomnus { color: #cba6f7; }
+.daemon-title.pentasophos { color: #94e2d5; }
+.daemon-title.mondaemon { color: #fcb0ff; }
+.daemon-title.chromasorix { color: #f9e2af; }
+.daemon-title.grammaton { color: #b4befe; }
+.daemon-title.lexarthim { color: #fab387; }
+.daemon-title.tesselai { color: #a6adc8; }
+.daemon-title.glyphonia { color: #d782ff; }
+
+.daemon-subtitle {
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  color: #b4befe;
+}
+
+.daemon-tarot {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.9rem;
+  color: #f38ba8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+  opacity: 0.85;
+  text-shadow: 0 0 4px rgba(243, 139, 168, 0.4);
+}
+
+.tarot-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f9e2af;
+  text-shadow: 0 0 6px rgba(249, 226, 175, 0.5);
+}
+
+/* placeholder daemon titles */
+.daemon-title.placeholder { color: #89dceb; }
+
+/* placeholder daemon entries */
+.daemon-entry.placeholder {
+  opacity: 0.75;
+  border-left-color: #7dc4e4;
+  background: linear-gradient(140deg, rgba(125, 196, 228, 0.03), rgba(125, 196, 228, 0.01));
+}
+
+.daemon-description {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #bac2de;
+  line-height: 1.45;
+  font-family: 'EB Garamond', serif;
+}
+
+.daemon-links {
+  margin-top: 0.4rem;
+  font-family: 'EB Garamond', serif;
+  letter-spacing: 0.04em;
+  color: #94e2d5;
+}
+
+.daemon-quote {
+  font-style: italic;
+  margin-top: 0.6rem;
+  color: #cdd6f4;
+  border-left: 2px solid #7f849c;
+  padding-left: 0.75rem;
+  font-family: 'Cormorant Infant', serif;
+  font-size: 0.95rem;
+}

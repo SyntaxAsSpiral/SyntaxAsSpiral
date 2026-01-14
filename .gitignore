@@ -1,0 +1,10 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+src/__pycache__/
+
+# Note: Seeds, cache, and config ARE tracked in main branch
+# Pages branch filters to only assets/ for public deployment

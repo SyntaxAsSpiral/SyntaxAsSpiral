@@ -1,0 +1,105 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Website: Generate Test index.html",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "src/github_status_rotator.py"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "nu",
+                        "args": ["-c"]
+                    }
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Generate test index.html using pulse generator (LLM with fallback)"
+        },
+        {
+            "label": "Website: Test Pulse Generator",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "src/pulse_generator.py"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "nu",
+                        "args": ["-c"]
+                    }
+                }
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Test LLM-based pulse generation for all fields"
+        },
+        {
+            "label": "Website: Run Tests",
+            "type": "shell",
+            "command": "pytest",
+            "args": [
+                "src/test_rotator.py",
+                "-v"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "nu",
+                        "args": ["-c"]
+                    }
+                }
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Run pytest tests for rotator script"
+        }
+    ]
+}

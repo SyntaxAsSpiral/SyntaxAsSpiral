@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug: Generate index.html",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/github_status_rotator.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Debug: Test Pulse Generator",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/pulse_generator.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        }
+    ]
+}

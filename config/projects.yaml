@@ -1,0 +1,32 @@
+# Project Registry for lexemancy.com homepage
+# Each project appears on the homepage with sigil, name, and GitHub link
+
+# Optional theme knobs (consumed by the generator -> assets/theme.css)
+theme:
+  page_background: "#0d1117"
+  frame_shadow: "0 0 25px 5px rgba(170, 120, 255, 0.25), inset 0 0 15px 2px rgba(136, 165, 255, 0.15)"
+
+projects:
+  - name: "Semantic JSON"
+    github: "SyntaxAsSpiral/semantic-json"
+    description: "Structured data with semantic meaning"
+    sigil: "◈"
+    color: "#f38ba8"
+
+  - name: "Collectivist"
+    github: "SyntaxAsSpiral/collectivist"  # TODO: Confirm actual repo name
+    description: "Repository indexing system"
+    sigil: "🜍"
+    color: "#fab387"
+
+  - name: "ZK Context Vault"
+    github: "SyntaxAsSpiral/zk-context-vault"  # TODO: Confirm actual repo name
+    description: "Cognitive infrastructure for AI-augmented work"
+    sigil: "🜂"
+    color: "#f9e2af"
+
+  - name: "Paneudaemonium"
+    github: "SyntaxAsSpiral/Paneudaemonium"
+    description: "Mystical AI daemon registry"
+    sigil: "🜏"
+    color: "#94e2d5"
