@@ -592,6 +592,24 @@ def main():
         if not index_html.endswith("\n"):
             f.write("\n")
 
+    # === GIT COMMIT AND PUSH ===
+    import subprocess
+    try:
+        # Stage all changes
+        subprocess.run(["git", "add", "-A"], cwd=REPO_ROOT, check=True, capture_output=True)
+        
+        # Commit with chronohex in message
+        commit_msg = f"🌀 Pulse update ⟳ {chronotonic}"
+        subprocess.run(["git", "commit", "-m", commit_msg], cwd=REPO_ROOT, check=True, capture_output=True)
+        
+        # Push to origin
+        subprocess.run(["git", "push"], cwd=REPO_ROOT, check=True, capture_output=True)
+        
+        print(f"✅ Changes committed and pushed: {commit_msg}")
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️ Git operation failed: {e}")
+        # Don't exit - page was updated successfully even if git fails
+
 
 if __name__ == "__main__":
     main()
