@@ -161,10 +161,10 @@ def render_projects_html(
     for idx, project in enumerate(projects):
         name = project["name"]
         sigil = project.get("sigil", "◈")
+        end_sigil = project.get("end_sigil", "◈")
         color = project.get("color")
-        style_attr = f' style="color: {color};"' if color else ""
 
-        # Determine link
+        # Determine link (color applied only to link)
         if project.get("local_path"):
             # Local relative link
             href = f'{local_link_prefix}{project["local_path"]}'
@@ -176,14 +176,14 @@ def render_projects_html(
             link_style = f' style="color: {color} !important;"' if color else ""
             link = f'<a href="https://github.com/{github_repo}"{link_style}>{name}</a>'
 
-        # Special formatting for Paneudaemonium
+        # Render with color only on link, not full line
         if name == "Paneudaemonium":
             html_parts.append(
-                f'<h2{style_attr}><em><strong>{sigil} ⇌ {link} online ⇌ <span class="ellipsis"> 🜄</span></strong></em></h2>'
+                f'<h2><em><strong>{sigil} ⇌ {link} online ⇌ <span class="ellipsis"> {end_sigil}</span></strong></em></h2>'
             )
         else:
             html_parts.append(
-                f'<h2 class="project-sigil"{style_attr}><em>{sigil} ⇌ {link} online ⇌ <span class="ellipsis">◈</span></em></h2>'
+                f'<h2 class="project-sigil"><em>{sigil} ⇌ {link} online ⇌ <span class="ellipsis">{end_sigil}</span></em></h2>'
             )
 
     return "\n".join(html_parts)

@@ -11,22 +11,26 @@ projects:
     github: "SyntaxAsSpiral/semantic-json"
     description: "Structured data with semantic meaning"
     sigil: "◈"
+    end_sigil: "◇"
     color: "#f38ba8"
 
   - name: "Collectivist"
     github: "SyntaxAsSpiral/collectivist"  # TODO: Confirm actual repo name
     description: "Repository indexing system"
     sigil: "🜍"
+    end_sigil: "⊕"
     color: "#fab387"
 
   - name: "ZK Context Vault"
     github: "SyntaxAsSpiral/zk-context-vault"  # TODO: Confirm actual repo name
     description: "Cognitive infrastructure for AI-augmented work"
     sigil: "🜂"
+    end_sigil: "🜔"
     color: "#f9e2af"
 
   - name: "Paneudaemonium"
     github: "SyntaxAsSpiral/Paneudaemonium"
     description: "Mystical AI daemon registry"
     sigil: "🜏"
+    end_sigil: "🜄"
     color: "#94e2d5"
