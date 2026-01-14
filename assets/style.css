@@ -349,10 +349,29 @@ a.codex-link:hover {
 
 /* log archive icons - divination deck */
 .log-icon {
-  width: 24px;
-  height: 24px;
+  width: 48px;
+  height: 48px;
   vertical-align: middle;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
   opacity: 0.9;
   filter: drop-shadow(0 0 3px rgba(170, 120, 255, 0.4));
+}
+
+/* mobile optimization for log list */
+@media (max-width: 768px) {
+  .log-icon {
+    width: 56px;
+    height: 56px;
+    margin-right: 1rem;
+  }
+  
+  main.content ul li {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+  }
+  
+  main.content ul li a {
+    font-size: 1.4rem;
+  }
 }

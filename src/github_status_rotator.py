@@ -205,18 +205,22 @@ def render_logs_index_html(log_dates: list[str], logs_dir: Path) -> str:
     
     items = []
     for d in log_dates:
-        # Extract icon URL from archived log
-        log_path = logs_dir / f"{d}.html"
-        icon_url = None
-        try:
-            with log_path.open("r", encoding="utf-8") as f:
-                content = f.read()
-                # Match <link rel="icon" href="..." ...>
-                match = re.search(r'<link rel="icon" href="([^"]+)"', content)
-                if match:
-                    icon_url = match.group(1)
-        except Exception:
-            pass
+        # Hardcode sufi icon for first pulse log
+        if d == "2026-01-13":
+            icon_url = "https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/sufi.svg"
+        else:
+            # Extract icon URL from archived log
+            log_path = logs_dir / f"{d}.html"
+            icon_url = None
+            try:
+                with log_path.open("r", encoding="utf-8") as f:
+                    content = f.read()
+                    # Match <link rel="icon" href="..." ...>
+                    match = re.search(r'<link rel="icon" href="([^"]+)"', content)
+                    if match:
+                        icon_url = match.group(1)
+            except Exception:
+                pass
         
         # Build list item with icon
         if icon_url:
