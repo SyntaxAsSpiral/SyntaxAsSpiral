@@ -195,11 +195,32 @@ def render_projects_html(
     return "\n".join(html_parts)
 
 
-def render_logs_index_html(log_dates: list[str]) -> str:
-    """Render a simple logs index page listing available daily log snapshots."""
-    items = "\n".join(f'      <li><a href="{d}.html">{d}</a></li>' for d in log_dates)
-    if not items:
-        items = "      <li><em>No logs yet.</em></li>"
+def render_logs_index_html(log_dates: list[str], logs_dir: Path) -> str:
+    """Render a simple logs index page listing available daily log snapshots with icons."""
+    import re
+    
+    items = []
+    for d in log_dates:
+        # Extract icon URL from archived log
+        log_path = logs_dir / f"{d}.html"
+        icon_url = None
+        try:
+            with log_path.open("r", encoding="utf-8") as f:
+                content = f.read()
+                # Match <link rel="icon" href="..." ...>
+                match = re.search(r'<link rel="icon" href="([^"]+)"', content)
+                if match:
+                    icon_url = match.group(1)
+        except Exception:
+            pass
+        
+        # Build list item with icon
+        if icon_url:
+            items.append(f'      <li><img src="{icon_url}" class="log-icon" alt=""> <a href="{d}.html">{d}</a></li>')
+        else:
+            items.append(f'      <li><a href="{d}.html">{d}</a></li>')
+    
+    items_html = "\n".join(items) if items else "      <li><em>No logs yet.</em></li>"
 
     stylesheet = os.environ.get("STYLESHEET", "style.css")
 
@@ -220,7 +241,7 @@ def render_logs_index_html(log_dates: list[str]) -> str:
     <h1>Pulse Log Archive</h1>
     <p><a href="../index.html">Back to latest</a></p>
     <ul>
-{items}
+{items_html}
     </ul>
   </main>
 </div>
@@ -691,7 +712,7 @@ def main():
         existing_dates.append(stem)
 
     existing_dates = sorted(set(existing_dates), reverse=True)
-    index_html = render_logs_index_html(existing_dates)
+    index_html = render_logs_index_html(existing_dates, logs_dir)
     index_path = logs_dir / "index.html"
     with index_path.open("w", encoding="utf-8") as f:
         f.write(index_html)

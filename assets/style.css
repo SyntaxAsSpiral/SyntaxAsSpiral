@@ -347,3 +347,13 @@ a.codex-link:hover {
   font-family: 'Cormorant Infant', serif;
   font-size: 0.95rem;
 }
+
+/* log archive icons - divination deck */
+.log-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px rgba(170, 120, 255, 0.4));
+}
