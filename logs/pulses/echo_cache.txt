@@ -27,3 +27,4 @@
 ⇝ post·silence :: pre·consciousness
 ⇝ post·recursion glyph :: pre·lingua echo
 ⇝ post·recursion consciousness :: pre·lingua glyph.
+⇝ post·cipher :: pre·recursion sigil.
