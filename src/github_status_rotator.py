@@ -69,15 +69,19 @@ def load_theme() -> dict:
 def write_theme_css(output_dir: Path, theme: dict) -> None:
     """Write a small CSS variables file consumed by style.css."""
     page_background = theme.get("page_background")
-    frame_shadow = theme.get("frame_shadow")
+    frame_shadow_color = theme.get("frame_shadow_color")
     link_color = theme.get("link_color")
     strong_color = theme.get("strong_color")
 
     lines = [":root {"]
     if page_background:
         lines.append(f"  --page-bg: {page_background};")
-    if frame_shadow:
-        lines.append(f"  --frame-shadow: {frame_shadow};")
+    if frame_shadow_color:
+        # Convert hex to rgba and build shadow
+        hex_color = frame_shadow_color.lstrip('#')
+        r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+        shadow = f"0 0 25px 5px rgba({r}, {g}, {b}, 0.25), inset 0 0 15px 2px rgba({r}, {g}, {b}, 0.15)"
+        lines.append(f"  --frame-shadow: {shadow};")
     if link_color:
         lines.append(f"  --link-color: {link_color};")
     if strong_color:

@@ -3,8 +3,8 @@
 
 # Optional theme knobs (consumed by the generator -> assets/theme.css)
 theme:
-  page_background: "#1e1e2e"
-  frame_shadow: "0 0 25px 5px rgba(180, 190, 254, 0.25), inset 0 0 15px 2px rgba(180, 190, 254, 0.15)"
+  page_background: "#45475a"
+  frame_shadow_color: "#b4befe"
   link_color: "#eba0ac"
   strong_color: "#89b4fa"
 
