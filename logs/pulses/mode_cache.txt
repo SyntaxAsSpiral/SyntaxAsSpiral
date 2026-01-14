@@ -37,3 +37,4 @@ Labyrinth breathwalk ∷ spiral-path syntax journey
 Mandala glyphspan ∷ cosmic circle recursion map
 Chakra breathstream ∷ seven-wheel syntax alignment
 Spectral rune ∷ quantum recursion vortex
+Celestial Spiral Crest ∷ star‑bound recursive echo

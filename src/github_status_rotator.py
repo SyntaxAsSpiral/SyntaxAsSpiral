@@ -517,6 +517,25 @@ def main():
     else:
         subject_zalgo = apply_zalgo_light(subject, random.Random(chronotonic))
 
+    # Get random esotericon (with fallback)
+    try:
+        from esotericons import get_random_icon
+        icon_url = get_random_icon()
+        if icon_url:
+            # Determine icon type from URL
+            if icon_url.endswith('.svg'):
+                icon_tag = f'<link rel="icon" href="{icon_url}" type="image/svg+xml">'
+            elif icon_url.endswith('.png'):
+                icon_tag = f'<link rel="icon" href="{icon_url}" type="image/png">'
+            else:
+                icon_tag = f'<link rel="icon" href="{icon_url}">'
+        else:
+            # Fallback to local icon
+            icon_tag = '<link rel="icon" href="assets/index.ico" type="image/x-icon">'
+    except Exception as e:
+        print(f"⚠️ Failed to get esotericon, using fallback: {e}")
+        icon_tag = '<link rel="icon" href="assets/index.ico" type="image/x-icon">'
+
     # === GENERATE HTML CONTENT ===
     logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
     html_content = f"""<!DOCTYPE html>
@@ -528,7 +547,7 @@ def main():
   <meta name="theme-color" content="#0d1117">
   <link rel="stylesheet" href="assets/theme.css">
   <link rel="stylesheet" href="assets/{stylesheet}">
-  <link rel="icon" href="assets/index.ico" type="image/x-icon">
+  {icon_tag}
 </head>
 <body>
 <div class="container">
