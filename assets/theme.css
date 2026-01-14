@@ -1,6 +1,6 @@
 :root {
-  --page-bg: #181825;
+  --page-bg: #11111b;
   --frame-shadow: 0 0 25px 5px rgba(203, 166, 247, 0.25), inset 0 0 15px 2px rgba(203, 166, 247, 0.15);
   --link-color: #eba0ac;
-  --strong-color: #b4befe;
+  --strong-color: #89b4fa;
 }
