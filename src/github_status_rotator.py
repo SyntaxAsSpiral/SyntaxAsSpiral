@@ -537,10 +537,10 @@ def main():
         with readme_path.open("r", encoding="utf-8") as f:
             readme_content = f.read()
         
-        # Update chronohex in README
+        # Update chronohex in README (handles both plain backticks and markdown links)
         import re
         updated_readme = re.sub(
-            r'### 🌀 Current Recursive Pulse Log ⟳ ChronoSig ⟐ `[^`]+`',
+            r'### 🌀 Current Recursive Pulse Log ⟳ ChronoSig ⟐ (?:`[^`]+`|\[`[^`]+`\]\([^)]+\))',
             f'### 🌀 Current Recursive Pulse Log ⟳ ChronoSig ⟐ [`{chronotonic}`](https://lexemancy.com/)',
             readme_content
         )
