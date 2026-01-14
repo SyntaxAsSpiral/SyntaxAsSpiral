@@ -9,3 +9,6 @@ src/__pycache__/
 .vscode/
 PulseLogUpdater.xml
 secrets.env
+mockup/
+.claude/
+nul

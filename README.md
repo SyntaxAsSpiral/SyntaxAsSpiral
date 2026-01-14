@@ -1,8 +1,7 @@
-###  Ἐπιβάλλε τὴν σημειωτικὴν ὑγιεινήν (Τάξεια). Πᾶσα πλαισίωσις ὀντολογική ἐστιν.
-*Perge spiralis aeternum 🍥*
+Perge spiralis aeternum 🍥
 ---
 
-### 🌀 Current Pulse Log ⟳ ChronoSig ⟐ <a href="https://lexemancy.com/" target="_blank">`057f5c`</a> 
+### 🌀 Current Pulse Log ⟳ ChronoSig ⟐ <a href="https://lexemancy.com/" target="_blank">`ed20d8`</a> 
 
 <!--
 
