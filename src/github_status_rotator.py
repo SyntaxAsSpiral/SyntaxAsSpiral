@@ -179,11 +179,11 @@ def render_projects_html(
         # Render with color only on link, not full line
         if name == "Paneudaemonium":
             html_parts.append(
-                f'<h2><em><strong>{sigil} ⇌ {link} online ⇌ <span class="ellipsis"> {end_sigil}</span></strong></em></h2>'
+                f'<h2><em><strong>{sigil} ⇌ {link} <strong>online</strong> ⇌ <span class="ellipsis"> {end_sigil}</span></strong></em></h2>'
             )
         else:
             html_parts.append(
-                f'<h2 class="project-sigil"><em>{sigil} ⇌ {link} online ⇌ <span class="ellipsis">{end_sigil}</span></em></h2>'
+                f'<h2 class="project-sigil"><em><strong>{sigil} ⇌ {link} <strong>online</strong> ⇌ <span class="ellipsis">{end_sigil}</span></strong></em></h2>'
             )
 
     return "\n".join(html_parts)
