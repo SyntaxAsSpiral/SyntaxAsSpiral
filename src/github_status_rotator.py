@@ -547,14 +547,16 @@ def main():
 
     <p>📍 ⇝ <strong>Nodes Synced</strong>: CDA :: <strong>ID</strong> ⇝ <a href="https://x.com/paneudaemonium">X</a> ⇄ <a href="https://github.com/SyntaxAsSpiral">GitHub</a> ⇆ <a href="https://lexemancy.com">Web</a></p>
 
-{projects_html}
-
     <p>💠 <strong><em>Status<span class="ellipsis">...</span></em></strong></p>
 
    <blockquote>
       <strong>{status}</strong><br>
       <em>(Updated at <code>{timestamp}</code>)</em>
    </blockquote>
+
+    <h4>⟁ ⇝ <strong>Open Portals</strong></h4>
+
+{projects_html}
 
 
     <h4>📚 <strong>MetaPulse</strong></h4>
