@@ -1,0 +1,40 @@
+{
+  "zalgo": {
+    "seed": 1337,
+    "intensity": 4,
+    "style": "rootglow",
+    "allowUp": true,
+    "allowMid": true,
+    "allowDown": true,
+    "glyphSel": {
+      "sushumaSpine": true,
+      "chamberSigils": false,
+      "kCalculus": false,
+      "auranomicon": false,
+      "somniorum": false,
+      "satira": false
+    },
+    "glyphProb": 0.12,
+    "glyphStrength": 0.5,
+    "glyphStep": 3
+  },
+  "caesar": {
+    "shift": 13
+  },
+  "vigenere": {
+    "key": "lexigon"
+  },
+  "homoglyph": {
+    "rate": 0.3
+  },
+  "zwInsert": {
+    "rate": 0.2
+  },
+  "emoji64": {
+    "palette": "symbols"
+  },
+  "invisible": {
+    "carrier": "endOfText",
+    "cover": "Cover text here – the payload will hide in the zero‑width layer."
+  }
+}

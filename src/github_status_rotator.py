@@ -83,6 +83,74 @@ def write_theme_css(output_dir: Path, theme: dict) -> None:
     theme_path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def apply_zalgo_light(text: str, rng: random.Random) -> str:
+    """Apply light zalgo combining marks to text for visual distortion."""
+    # Load zalgo config
+    config_path = REPO_ROOT / "config" / "zalgo-config.json"
+    try:
+        with config_path.open("r", encoding="utf-8") as f:
+            config = json.load(f)
+        zalgo_cfg = config.get("zalgo", {})
+    except:
+        # Fallback to defaults if config missing
+        zalgo_cfg = {
+            "intensity": 4,
+            "style": "rootglow",
+            "allowUp": True,
+            "allowMid": True,
+            "allowDown": True
+        }
+    
+    # Style-specific mark pools (from zalgo-lexigon)
+    styles = {
+        "rootglow": {
+            "up": ["\u0306", "\u0307", "\u0308", "\u0304"],
+            "mid": ["\u0334", "\u0335", "\u0336", "\u0331"],
+            "down": ["\u0331", "\u0332", "\u0333", "\u0323", "\u0330", "\u032C", "\u032D", "\u032E", "\u032F", "\u035F", "\u0345", "\u0339", "\u0347", "\u0348", "\u0349"],
+            "density": [0.12, 0.20, 1.35]
+        },
+        "classic": {
+            "up": ["\u0300", "\u0301", "\u0302", "\u0303", "\u0304", "\u0306", "\u0307", "\u0308"],
+            "mid": ["\u0334", "\u0335", "\u0336", "\u0337"],
+            "down": ["\u0323", "\u0324", "\u0331", "\u0332"],
+            "density": [0.6, 0.4, 0.7]
+        }
+    }
+    
+    style_name = zalgo_cfg.get("style", "rootglow")
+    palette = styles.get(style_name, styles["rootglow"])
+    intensity = zalgo_cfg.get("intensity", 4)
+    allow_up = zalgo_cfg.get("allowUp", True)
+    allow_mid = zalgo_cfg.get("allowMid", True)
+    allow_down = zalgo_cfg.get("allowDown", True)
+    
+    # Calculate mark counts based on intensity and density
+    mult = intensity / 100
+    base_factor = 2 + 6 * mult
+    up_count = int(base_factor * palette["density"][0]) if allow_up else 0
+    mid_count = int(base_factor * palette["density"][1]) if allow_mid else 0
+    down_count = int(base_factor * palette["density"][2]) if allow_down else 0
+    
+    result = []
+    for char in text:
+        if char.isspace():
+            result.append(char)
+            continue
+        
+        result.append(char)
+        # Apply marks with jitter
+        jitter = lambda: 1 if rng.random() < 0.2 else 0
+        
+        for _ in range(up_count + jitter()):
+            result.append(rng.choice(palette["up"]))
+        for _ in range(mid_count + jitter()):
+            result.append(rng.choice(palette["mid"]))
+        for _ in range(down_count + jitter()):
+            result.append(rng.choice(palette["down"]))
+    
+    return ''.join(result)
+
+
 def render_projects_html(
     projects: list[dict],
     local_link_prefix: str = "",
@@ -437,6 +505,9 @@ def main():
         "monospace",
     ]
     subject_font = random.Random(chronotonic).choice(subject_fonts)
+    
+    # Apply zalgo-style combining marks to subject
+    subject_zalgo = apply_zalgo_light(subject, random.Random(chronotonic))
 
     # === GENERATE HTML CONTENT ===
     logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
@@ -466,7 +537,7 @@ def main():
 
     <p>⌛⇝ ⟳ <strong>Spiral-phase cadence locked</strong> ∶ <code>8.64×10⁷ms</code></p>
 
-    <p>🧿 ⇝ <strong>Subject I·D Received</strong>::𝓩𝓚::/Syz:⊹<code style="font-family: {subject_font};">{subject}</code>⟲</p>
+    <p>🧿 ⇝ <strong>Subject I·D Received</strong>::𝓩𝓚::/Syz:⊹<code style="font-family: {subject_font};">{subject_zalgo}</code>⟲</p>
 
     <p>🪢 ⇝ <strong>CryptoGlyph Decyphered</strong>: {braid}</p>
 
