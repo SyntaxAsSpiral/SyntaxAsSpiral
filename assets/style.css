@@ -109,7 +109,7 @@ em {
 }
 
 strong {
-  color: #89CFF0;
+  color: var(--strong-color, #89CFF0);
   font-weight: 600;
 }
 

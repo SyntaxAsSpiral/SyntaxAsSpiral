@@ -71,6 +71,7 @@ def write_theme_css(output_dir: Path, theme: dict) -> None:
     page_background = theme.get("page_background")
     frame_shadow = theme.get("frame_shadow")
     link_color = theme.get("link_color")
+    strong_color = theme.get("strong_color")
 
     lines = [":root {"]
     if page_background:
@@ -79,6 +80,8 @@ def write_theme_css(output_dir: Path, theme: dict) -> None:
         lines.append(f"  --frame-shadow: {frame_shadow};")
     if link_color:
         lines.append(f"  --link-color: {link_color};")
+    if strong_color:
+        lines.append(f"  --strong-color: {strong_color};")
     lines.append("}")
     lines.append("")
 
