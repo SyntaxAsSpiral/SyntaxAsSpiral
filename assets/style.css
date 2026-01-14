@@ -71,7 +71,7 @@ h1 {
 }
 
 .project-sigil a {
-  color: #ff69b4 !important;
+  color: #f5c2e7 !important;
 }
 
 a {
@@ -84,7 +84,7 @@ a, a * {
 }
 
 a:hover {
-  color: #ff85c1;
+  color: #f5e0dc;
   text-decoration: underline;
 }
 
