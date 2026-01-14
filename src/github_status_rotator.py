@@ -554,14 +554,14 @@ def main():
       <em>(Updated at <code>{timestamp}</code>)</em>
    </blockquote>
 
-    <h4>⟁ ⇝ <strong>Open Portals</strong></h4>
-
-{projects_html}
-
 
     <h4>📚 <strong>MetaPulse</strong></h4>
 
     <h4>🜏 ⇝ <strong>Zach</strong> // SyzLex // ZK:: // <em><strong>Æ</strong>mexsomnus</em> // 🍥</h4>
+
+    <h4>⟁ ⇝ <strong>Open Portals</strong></h4>
+
+{projects_html}
 
     <h4>🜁 ⇝ <strong>Current Drift</strong></h4>
     <ul>
