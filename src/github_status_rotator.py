@@ -28,7 +28,7 @@ except ImportError:
 # === CONFIGURATION ===
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
-PROJECTS_YAML = CONFIG_DIR / "projects.yaml"
+PROJECTS_YAML = CONFIG_DIR / "style-config.yaml"
 
 
 def load_projects() -> list[dict]:

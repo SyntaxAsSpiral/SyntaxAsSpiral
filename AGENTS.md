@@ -50,9 +50,9 @@ root/
 
 **Do NOT use for:**
 - Direct CSS modifications (use `assets/style.css`)
-- Theme color changes (use `config/projects.yaml`)
+- Theme color changes (use `config/style-config.yaml`)
 
-### `config/projects.yaml`
+### `config/style-config.yaml`
 **Purpose**: Direct configuration of page elements without touching CSS.
 
 **Structure:**
@@ -203,7 +203,7 @@ schtasks /run /tn "PulseLogUpdater"
 
 ### When modifying page content:
 1. Check `config/index.md` for structure documentation
-2. Update `config/projects.yaml` for project/theme changes
+2. Update `config/style-config.yaml` for project/theme changes
 3. Modify `src/github_status_rotator.py` for HTML generation logic
 4. Never edit `index.html` or `README.md` directly (auto-generated)
 
@@ -240,7 +240,7 @@ schtasks /run /tn "PulseLogUpdater"
 
 ### Safe to Edit:
 - `config/index.md`
-- `config/projects.yaml`
+- `config/style-config.yaml`
 - `config/zalgo-config.json`
 - `assets/style.css`
 - Seed sections in `logs/pulses/*_cache.txt`
@@ -266,7 +266,7 @@ schtasks /run /tn "PulseLogUpdater"
 - Intensity and mark types configurable
 
 ### Theme System
-- CSS variables generated from `config/projects.yaml`
+- CSS variables generated from `config/style-config.yaml`
 - Written to `assets/theme.css` on each run
 - Supports: page background, frame shadow, link color, strong color
 - Project-specific colors apply only to project name links

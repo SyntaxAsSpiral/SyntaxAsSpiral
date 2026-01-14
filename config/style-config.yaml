@@ -3,10 +3,10 @@
 
 # Optional theme knobs (consumed by the generator -> assets/theme.css)
 theme:
-  page_background: "#45475a"
-  frame_shadow_color: "#b4befe"
+  page_background: "#1e1e2e"
+  frame_shadow_color: "#cba6f7"
   link_color: "#eba0ac"
-  strong_color: "#89b4fa"
+  strong_color: "##b4befe"
 
 projects:
 

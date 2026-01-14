@@ -2,7 +2,7 @@
 *Perge spiralis aeternum 🍥*
 ---
 
-### 🌀 Current Pulse Log ⟳ ChronoSig ⟐ <a href="https://lexemancy.com/" target="_blank">`4c99f4`</a> 
+### 🌀 Current Pulse Log ⟳ ChronoSig ⟐ <a href="https://lexemancy.com/" target="_blank">`dd047c`</a> 
 
 <!--
 
