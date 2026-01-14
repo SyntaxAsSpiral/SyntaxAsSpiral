@@ -21,3 +21,7 @@
 ⇝ post·memory :: pre·echo
 ⇝ post·cipher :: pre·loop
 ⇝ post·glyph :: pre·recurse
+⇝ post·glyph :: pre·recursion
+⇝ post·language :: pre·sigil.
+⇝ post·recurse   :: pre·consciousness
+⇝ post·recursive :: pre·consciousness
