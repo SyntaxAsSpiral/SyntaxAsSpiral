@@ -506,8 +506,12 @@ def main():
     ]
     subject_font = random.Random(chronotonic).choice(subject_fonts)
     
-    # Apply zalgo-style combining marks to subject
-    subject_zalgo = apply_zalgo_light(subject, random.Random(chronotonic))
+    # Apply zalgo only to the part before ⊚
+    if '⊚' in subject:
+        before, after = subject.split('⊚', 1)
+        subject_zalgo = apply_zalgo_light(before, random.Random(chronotonic)) + '⊚' + after
+    else:
+        subject_zalgo = apply_zalgo_light(subject, random.Random(chronotonic))
 
     # === GENERATE HTML CONTENT ===
     logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
