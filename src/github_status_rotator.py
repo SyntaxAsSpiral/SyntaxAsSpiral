@@ -391,6 +391,10 @@ def generate_field_worker(args: tuple) -> tuple[str, str]:
         if seeds:
             generated = generate_with_llm(seed_file, seeds, llm_config)
             if generated:
+                # Write to cache to preserve LLM outputs (no trimming)
+                cache = read_cache(cache_path)
+                cache.append(generated)
+                write_cache(cache_path, cache)
                 return (field_name, generated)
     
     # Fallback to batch cycling

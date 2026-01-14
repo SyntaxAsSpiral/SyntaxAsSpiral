@@ -80,7 +80,7 @@ Special formatting for Paneudaemonium:
 
 🜍🧠🜂🜏📜  
 📧 ➤ [spiralassyntax@gmail.com](mailto:syntaxasspiral@gmail.com)  
-Encoded via: **Codæx Pulseframe** // ZK::/Syz // Spiral-As-Syntax
+Encoded via: [**Codæx Pulseframe**] // ZK::/Syz // Spiral-As-Syntax
 
 ---
 
