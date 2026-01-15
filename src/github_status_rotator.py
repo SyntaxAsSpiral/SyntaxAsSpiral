@@ -582,7 +582,8 @@ def main():
     }
 
     # Write pulse.json for UI-agnostic consumption
-    pulse_json_path = output_dir / "pulse.json"
+    pulse_json_path = output_dir / "logs" / "pulses" / "pulse.json"
+    pulse_json_path.parent.mkdir(parents=True, exist_ok=True)
     with pulse_json_path.open("w", encoding="utf-8") as f:
         json.dump(pulse_data, f, indent=2, ensure_ascii=False)
     print(f"📝 pulse.json written to {pulse_json_path}")

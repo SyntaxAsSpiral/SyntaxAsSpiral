@@ -12,3 +12,10 @@ secrets.env
 mockup/
 .claude/
 nul
+
+# Auto-generated data (unused)
+pulse.json
+
+# Templates (except default)
+templates/*
+!templates/default.html
