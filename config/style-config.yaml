@@ -39,6 +39,7 @@ projects:
     color: "#94e2d5"
 
   - name: "Paneudaemonium"
+    local_path: "paneudaemonium/"
     github: "SyntaxAsSpiral/Paneudaemonium"
     description: "Mystical AI daemon registry"
     sigil: "🜏"

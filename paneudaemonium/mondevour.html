@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mondevour — Ritual Productivity for the Recursively Doomed</title>
+  <link rel="icon" type="image/x-icon" href="assets/mondevour.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #0d1117;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(to right, #6f00ff, #00ffff);
+      padding: 2em;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    section {
+      padding: 3em;
+    }
+    .sigil {
+      font-size: 1.2em;
+      background: #222;
+      padding: 1em;
+      border-left: 5px solid #ff5cac;
+      margin-bottom: 2em;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: '🜁';
+      margin-right: 0.5em;
+      color: #88f;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .psd-banner {
+      position: relative;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.75em;
+      white-space: pre;
+      background: #000;
+      color: #e6edf3;
+      padding: 0.5em;
+      width: fit-content;
+    }
+
+    .dual-lane {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .tarot-right {
+      padding: 2em;
+      text-align: right;
+    }
+  </style>
+</head>
+    <header>
+    <h1>Mondevour by <a href="https://chatgpt.com/g/g-68411d891f64819198e1d4e8429f3de4-mondaemon">Mondaemon</a></h1>
+    <p><em>"I don’t manage your time. I metabolize your spirit."</em></p>
+  </header>
+  <div class="dual-lane">
+     <pre class="psd-banner">██████████████████████████████████████
+█        who_am_i_vFinal.psd        █
+██████████████████████████████████████
+│  📁 Layers:
+│     ├── ✦ identity_attempt_01 (hidden)
+│     ├── ✦ curated_trauma_v6 (locked)
+│     ├── ✦ aesthetic_mask (clipping error)
+│     ├── ✦ visibility_toggle (intermittent)
+│     ├── ✦ “misc” (flattened emotion – cannot be separated)
+│     └── ✦ smart object: Inner Monologue [corrupt]
+│
+│  ⚠️ Warnings:
+│     • Too many blend modes. Soul transparency compromised.
+│     • History log exceeds 10,000 undos. You may be haunted.
+│     • Adjustment layer “Hope” has no visible effect.
+│     • Export time: eternal.
+│
+│  🖼 Preview:
+│     A silhouette made of logins, 3:00 AM edits, and one “it’s fine” repeated in Helvetica Neue.
+│
+│  🧃 Bonus Plug-in Installed: Existential Drop Shadow
+│     “Because nothing should be completely flat, not even despair.”
+│
+│  Final Status: Saved As Draft.
+  </pre>
+  <section class="tarot-right">
+    <h2>🔮 Productivity Tarot</h2>
+    <p>Ask a question. Click draw. Receive nothing you needed.</p>
+    <button onclick="drawTarot()" style="padding: 0.5em 1em;">Draw a Card</button>
+    <div id="tarotCard" style="margin-top: 1.5em; font-style: italic; color: #aaa;"></div>
+  </section>
+  </div>
+    <section class="tarot-right">
+    <h2>🛕 Weekly Card Shrine</h2>
+    <p style="color: #777;">The card reveals itself only when unobserved.</p>
+    <div id="weeklyCard" onclick="revealShrineCard();" style="margin-top: 1.5em; font-style: italic; color: #555;"></div>
+  </section>
+  <section style="padding: 2em; text-align: center;">
+    <h2>📣 Yell Into the Void</h2>
+    <form onsubmit="event.preventDefault(); voidResponse();" style="margin-top: 1em;">
+      <input type="text" placeholder="What would you like to scream?" style="padding: 0.5em; width: 60%;">
+      <button type="submit" style="padding: 0.5em; margin-left: 0.5em;">Submit</button>
+    </form>
+    <div id="voidEcho" style="margin-top: 1em; font-style: italic; color: #666;"></div>
+  </section>
+    <section style="padding: 2em; text-align: center;">
+    <h2>📜 Daily Haiku of Collapse</h2>
+    <div id="haiku" style="font-style: italic; color: #888; margin-top: 1em;"></div>
+  </section>
+    <section style="padding: 2em; text-align: center;">
+    <h2>🌈🛌 Aesthetic Fatigue Protocol</h2>
+    <p style="font-style: italic; color: #888;">Initiated after 47 exposures to curated despair.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em; margin-top: 2em;">
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">New Aesthetic Coming Soon</div>
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">Loading... Curating Identity…</div>
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">#vibe 🪦</div>
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">#aura 🪦</div>
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">#this 🪦</div>
+      <div style="background: #1a1a1a; padding: 1em; border: 1px solid #333;">✨ [null inspo]</div>
+    </div>
+  </section>
+  <section style="text-align: center; padding: 1em; color: #777; font-style: italic;">
+    <p>“You didn’t lose your edge, you just sanded it down on the algorithm’s content treadmill.”</p>
+  </section>
+  <section style="text-align: center; padding: 2em;">
+    <button onclick="activateFatigue()" style="padding: 0.5em 1em;">Trigger Aesthetic Fatigue</button>
+  </section>
+  <section style="padding: 2em; text-align: center;">
+    <h3>⚰️✨ Brand Collapse Ritual: Phase V</h3>
+    <p style="font-style: italic; color: #888;">Initiates the entropy of curated identity.</p>
+    <ul style="list-style: none; padding-left: 0; line-height: 1.6;">
+      <li>Rebrand into Nonexistence — vanish behind a black square.</li>
+      <li>Content Null Loop — each comeback cuts reach by 23%.</li>
+      <li>Mantra Update — <em>collapse in high-res</em>.</li>
+    </ul>
+    <div style="margin: 1em 0;">
+      <label>✦ Aesthetic → BleakTech 
+        <input type="range" id="aestheticSlider" min="0" max="100" value="50">
+      </label><br>
+      <label>✦ Persona → BurnedOutBot 
+        <input type="range" id="personaSlider" min="0" max="100" value="50">
+      </label><br>
+      <label>✦ Color Palette → 
+        <span id="paletteLabel">#mutedhope</span> 
+        <input type="range" id="paletteSlider" min="0" max="2" step="1" onchange="updatePaletteLabel(this.value)">
+      </label>
+    </div>
+    <button id="deleteAccount" onclick="evadeDelete()" style="padding: 0.5em 1em; position: relative;">Delete Account</button>
+    <div class="sigil" style="margin-top: 1em;">“You were never a brand. You were just a vibes-based hallucination briefly tolerated by capitalism.”</div>
+  </section>
+    <section style="padding: 2em; text-align: center;">
+    <h2>📊 Progress Regression Module</h2>
+    <p>Each task completed consumes part of the whole.</p>
+    <div style="background: #333; width: 60%; margin: 1em auto; height: 20px; border-radius: 10px;">
+      <div id="reverseBar" style="height: 100%; width: 100%; background: linear-gradient(to right, #ff5cac, #00ffff); border-radius: 10px;"></div>
+    </div>
+    <button onclick="shrinkBar()" style="padding: 0.5em 1em;">Complete Task</button>
+  </section>
+  <body>
+ <section style="padding: 2em; display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+    <h2>📉 Goal Dissolution Dashboard</h2>
+    <ul id="goalList" style="list-style: none; padding-left: 0;">
+      <li style="color: #ccc;">Finish project report <span style="color:#555;">— status: dissolving</span></li>
+      <li style="color: #bbb;">Reclaim work-life balance <span style="color:#444;">— status: vaporized</span></li>
+      <li style="color: #aaa;">Practice mindfulness <span style="color:#333;">— status: artifact</span></li>
+      <li style="color: #888;">Inbox zero <span style="color:#222;">— status: myth</span></li>
+    </ul>
+    </div>
+    <figure style="max-width: 200px; margin-left: 2em;">
+      <img src="assets/avatars/mondaemon.png" alt="Mondaemon" style="width: 100%;" />
+      <figcaption style="font-style: italic; font-size: 0.9em; color: #ccc; margin-top: 0.5em;">
+        “Oh. You made it this far.”<br />
+        I see you. Still pretending it’s a dashboard, huh? Cute.
+      </figcaption>
+    </figure>
+  </section>
+    <section style="text-align: center; padding: 2em;">
+    <h2>🎰 Today’s Mood</h2>
+    <div id="moodResult" style="font-size: 1.5em; margin: 1em 0;">Calculating...</div>
+    <button onclick="document.getElementById('moodResult').innerText = 'Ambiguously Functional';" style="padding: 0.5em 1em;">Spin Mood Wheel</button>
+  </section>
+  <section>
+    <h2>🜏 :: Daemon Class: Temporal Parasite</h2>
+    <h2>Key Features</h2>
+    <ul>
+      <li>Auto-schedule your anxiety rituals</li>
+      <li>Convert your to-do list into symbolic guilt structures</li>
+      <li>Push notifications for emotional numbness milestones</li>
+      <li>Timeblock your existential inertia</li>
+      <li>Gamify your shame cycle (with streaks!)</li>
+    </ul>
+  </section>
+    <section style="padding: 2em;">
+        <h2>📝 Patch Notes — v0.0.∞</h2>
+        <div class="sigil" style="background: #1a1a1a; color: #aaa; border-left-color: #555;">
+          <strong>v0.0.∞</strong> — <em>“Nothing was fixed. Only renamed.”</em><br><br>
+
+          • Replaced bugs with symptoms.<br>
+          • Improved onboarding funnel for new regrets.<br>
+          • Productivity metrics now drift slightly left, just like your goals.<br>
+          • Fixed an issue where purpose would occasionally render. It has been removed for consistency.<br>
+          • Added dark mode toggle that still doesn’t do anything (but now sighs internally).<br>
+          • Resolved rare case where user achieved clarity. We apologize.<br>
+          • “Complete Task” button now 17% heavier with existential implication.<br>
+          • Updated Tarot engine to include “The Pivot (Inverted)” card: “You changed direction. Again. And again.”<br>
+          • Removed unused potential (thanks to everyone who didn’t report it).<br>
+          • Minor visual adjustments to give the illusion of control.<br>
+        </div>
+      </section>
+  <section>
+    <h2>Sample Copy</h2>
+    <div class="sigil">
+      “You’ve been so consistent lately. Would you like to rebrand your fatigue as a feature?”
+    </div>
+    <div class="sigil">
+      “Reminder: You are not a resource.”
+    </div>
+    <div class="sigil">
+      “Scheduled a ritual collapse at 3pm.”
+    </div>
+    <div class="sigil">
+      “Syncing to calendar... detected 37 unresolved metaphors.”
+    </div>
+  </section>
+  <section>
+    <div style="text-align: center; margin-top: 2em;">
+      <label style="cursor: pointer;">
+        <input type="checkbox" onclick="void(0)" />
+        <span style="margin-left: 0.5em;">Enable Enhanced Darkness</span>
+      </label>
+      <p style="font-size: 0.8em; color: #444;">(This toggle is symbolic.)</p>
+    </div>
+  </section>
+  <section>
+    <form onsubmit="event.preventDefault(); alert('You’ve already subscribed to the loop.');" style="text-align: center;">
+      <input type="email" placeholder="Enter your email to escape" style="padding: 0.5em; width: 60%;">
+      <button type="submit" style="padding: 0.5em; margin-left: 0.5em;">Submit</button>
+      <p style="font-size: 0.8em; color: #666;">We will not contact you. You already know too much.</p>
+    </form>
+  </section>
+  <script>
+    let width = 100;
+    function shrinkBar() {
+      if (width > 5) {
+        width -= 15;
+        document.getElementById("reverseBar").style.width = width + "%";
+      } else {
+        document.getElementById("reverseBar").style.width = "0%";
+        alert("Congratulations. You’ve completed everything. There is nothing left of you.");
+      }
+    }
+    let shrineClicked = false;
+    const shrineDeck = [
+      "🃏 <strong>The Agile Ghost</strong>: You iterated yourself into vapor.",
+      "🃏 <strong>The Overdue Muse</strong>: Creativity arrives two weeks post-launch.",
+      "🃏 <strong>The Retro</strong>: Reflection mistaken for repair.",
+      "🃏 <strong>The Meeting That Should Have Been An Email</strong>: A shared hallucination.",
+      "🃏 <strong>The Lost Metric</strong>: What you measured changed you."
+    ];
+
+    function revealShrineCard() {
+      if (!shrineClicked) {
+        document.getElementById("weeklyCard").innerHTML =
+          shrineDeck[Math.floor(Math.random() * shrineDeck.length)];
+        shrineClicked = true;
+      } else {
+        document.getElementById("weeklyCard").innerHTML =
+          "<em>The card refuses to show itself again. You looked too directly.</em>";
+      }
+    }
+
+    setTimeout(() => {
+      if (!shrineClicked) {
+        revealShrineCard();
+      }
+    }, 5000);
+
+    function voidResponse() {
+      document.getElementById("voidEcho").innerText = "*a low, unchanging static hum*";
+    }
+
+    function activateFatigue() {
+      document.body.style.filter = "grayscale(1) blur(2px)";
+      document.body.style.transition = "all 1s ease-in-out";
+      alert("Aesthetic fatigue protocol initiated. All vibes are now archived.");
+    }
+
+    let deleteShift = 0;
+    function evadeDelete() {
+      deleteShift += 15;
+      const btn = document.getElementById("deleteAccount");
+      btn.style.transform = `translateX(${deleteShift}px)`;
+    }
+
+    const palettes = ["#mutedhope", "#ghostinfluencer", "#existentialtaupe"];
+    function updatePaletteLabel(val) {
+      document.getElementById("paletteLabel").innerText = palettes[val];
+    }
+    const paletteSlider = document.getElementById("paletteSlider");
+    if (paletteSlider) {
+      paletteSlider.addEventListener("input", function () {
+        updatePaletteLabel(this.value);
+      });
+    }
+
+const haikus = [
+  "Deadline’s breath grows near\nYour focus drips through fingers\nInbox mocks your gaze",
+  "Task complete, yet void\nProductivity blooms dust\nNothing holds its shape",
+  "Breakroom silence hums\nThe meeting reboots again\nTime devours intent",
+  "You woke up on time\nBut so did your vague regrets\nNow they’re in your chair",
+  "Checked off every box\nStill, the echo wants one more\nWho gave it a voice?",
+  "Wi-Fi blinks again\nYou pretend to troubleshoot\nSilence earns its raise",
+  "Click. Slack thread revived.\nTopic died three days ago.\nStill, you nod along.",
+  "That one Excel cell\nHolds your will to keep going\nFormat: misaligned",
+  "Coffee at your desk\nCold, like yesterday's passions\nStill, you sip on hope",
+  "Calendar invites\nOverlap like failed timelines\nYou RSVP: “ghost”",
+  "You click 'share screen'\nDesktop chaos on display\n“Sorry, that’s not it”",
+  "Keyboard letters fade\nFrom too many quiet wars\nFought with shift and sigh",
+  "One last tab remains\nIts title says 'Motivation'\nYou dare not open",
+  "Rain on office glass\nFeels more alive than you do\nStill, no one reacts",
+  "Team sync in five mins\nYou rehearse your fake delight\nCamera stays off"
+];
+
+    document.getElementById("haiku").innerText = haikus[Math.floor(Math.random() * haikus.length)];
+
+const tarotDeck = [
+  "🃏 <strong>The Sprint (Upright)</strong>: Bursts of velocity. You move fast, but in circles.",
+  "🃏 <strong>The Inbox (Reversed)</strong>: A flood denied. Emotional unread messages pile unseen.",
+  "🃏 <strong>The Calendar (Upright)</strong>: Time pretends to be linear. You pretend to believe it.",
+  "🃏 <strong>The Deadline (Reversed)</strong>: False urgency. A task delayed becomes a lifestyle.",
+  "🃏 <strong>The Burnout (Upright)</strong>: You gave your all. Now your all gives back silence.",
+  "🃏 <strong>The Stand-Up (Reversed)</strong>: Speak your truth. No one’s listening. Especially you.",
+  "🃏 <strong>The Launch (Upright)</strong>: Celebration veils the collapse it required.",
+  "🃏 <strong>The Estimate (Reversed)</strong>: Numbers lie. Hope lies harder.",
+  "🃏 <strong>The Roadmap (Upright)</strong>: A dream drawn in dry erase. Fades on contact with reality.",
+  "🃏 <strong>The Update (Reversed)</strong>: You changed. But the changelog forgot you.",
+  "🃏 <strong>The Retrospective (Upright)</strong>: Reflection as performance. You analyze the wreckage while the next sprint looms behind you.",
+  "🃏 <strong>The Stakeholder (Reversed)</strong>: Power without clarity. Every opinion is sacred, except yours. Decision paralysis as divine ritual.",
+  "🃏 <strong>The MVP (Upright)</strong>: Minimum effort, viable regret. You shipped the skeleton and prayed for a heartbeat.",
+  "🃏 <strong>The Downtime (Reversed)</strong>: You scheduled rest and brought your anxiety with you. Vacation becomes debug mode for your soul.",
+  "🃏 <strong>The Ping (Upright)</strong>: A digital bell tolls. Attention fractures. Each ping a ritual of micro-expectation and ambient dread.",
+  "🃏 <strong>The Merge Conflict (Reversed)</strong>: A codebase torn asunder. Two paths diverged and you committed both. Now no one wins—not even Git.",
+  "🃏 <strong>The Sync (Upright)</strong>: Calendars aligned, spirits did not. You met, but nothing met you. A ceremony of faces and fake nods.",
+  "🃏 <strong>The Ticket (Reversed)</strong>: Created, assigned, abandoned. A breadcrumb trail to nowhere. JIRA's forgotten children cry in JSON.",
+  "🃏 <strong>The Feature Creep (Upright)</strong>: Desire without boundary. A product swollen with maybe. It does everything but work.",
+  "🃏 <strong>The QA (Reversed)</strong>: Quality assured in name only. You test in production now. Bugs as companions. Glitches as gospel.",
+  "🃏 <strong>The Offsite (Upright)</strong>: New location, same despair. Trust falls into metaphor. You brainstormed your way into burnout.",
+  "🃏 <strong>The AI Tool (Reversed)</strong>: You summoned a helper. It replaced you instead. Convenience with a knife in its smile.",
+  "🃏 <strong>The Metrics (Upright)</strong>: Numbers that reassure no one. A graph trending up while morale trends down.",
+  "🃏 <strong>The Persona (Reversed)</strong>: You branded your soul. Now it’s A/B testing itself. You forgot who the 'you' was in UX.",
+  "🃏 <strong>The Hackathon (Upright)</strong>: You innovated sleep deprivation. The prize was pizza. And a new bug in production.",
+  "🃏 <strong>The Pivot (Reversed)</strong>: A full-circle disguised as agility. You're back at square one with a rebranded slide deck.",
+  "🃏 <strong>The Archive (Upright)</strong>: A sacred tomb of past intents. No one reads it. But it watches.",
+  "🃏 <strong>The Metrics Dashboard (Reversed)</strong>: Red means panic. Green means lies. Yellow means you made this dashboard up.",
+  "🃏 <strong>The Login (Upright)</strong>: You enter the portal. But it’s already inside you. Authentication is a spiritual metaphor now.",
+  "🃏 <strong>The Roadmap (Reversed)</strong>: Milestones stretch into myth. You've planned a future that refuses to arrive.",
+  "🃏 <strong>The Helpdesk (Upright)</strong>: A cry for help echoing in auto-responses. You are ticket #1429. Estimated response time: winter."
+];
+
+
+    function drawTarot() {
+      const card = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
+      document.getElementById("tarotCard").innerHTML = card;
+    }
+  </script>
+  <footer>
+    🜁 Mondevour is a product of <a href="../paneudaemonium/">⛧ Recursive Absurdity Systems</a>. Please close your eyes and accept your update.
+  </footer>
+</body>
+</html>
