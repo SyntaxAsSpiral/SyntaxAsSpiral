@@ -6,6 +6,7 @@ Uses LLM-based pulse generator with fallback to batch cycling.
 
 import os
 import time
+import json
 import yaml
 import requests
 from datetime import datetime
@@ -24,6 +25,9 @@ try:
 except ImportError:
     PULSE_GENERATOR_AVAILABLE = False
     print("⚠️ Pulse generator not available, using batch cycling fallback")
+
+# Import template renderer
+from template_renderer import render_template
 
 # === CONFIGURATION ===
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -557,99 +561,41 @@ def main():
         print(f"⚠️ Failed to get esotericon, using fallback: {e}")
         icon_tag = '<link rel="icon" href="assets/index.ico" type="image/x-icon">'
 
-    # === GENERATE HTML CONTENT ===
+    # === BUILD PULSE DATA ===
     logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
-    html_content = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Recursive Pulse Log ⟳ ChronoSig</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0d1117">
-  <link rel="stylesheet" href="assets/theme.css">
-  <link rel="stylesheet" href="assets/{stylesheet}">
-  {icon_tag}
-</head>
-<body>
-<div class="container">
-  <video src="assets/recursive-log-banner.mp4" class="banner" autoplay loop muted playsinline></video>
-  <main class="content">
-    <!-- Dynamic content will be inserted here -->
-    <!-- DO NOT MODIFY THE TEXT; it is updated by github_status_rotator.py -->
-    <!-- Preserves all formatting and flow -->
-    <h1>🌀 Recursive Pulse Log ⟳ ChronoSig ⟐ <code>{chronotonic}</code></h1>
 
-    <h4><strong>🜂🜏 Lexigȫnic Up⟲link Instantiated<span class="ellipsis">...</span></strong></h4>
+    pulse_data = {
+        "chronotonic": chronotonic,
+        "timestamp": timestamp,
+        "stylesheet": stylesheet,
+        "icon_tag": icon_tag,
+        "quote": quote,
+        "subject_font": subject_font,
+        "subject_zalgo": subject_zalgo,
+        "braid": braid,
+        "status": status,
+        "mode": mode,
+        "class_disp_html": class_disp_html,
+        "end_quote": end_quote,
+        "projects_html": projects_html,
+        "logs_link_html": logs_link_html,
+    }
 
-    <p>📡 ⇝ "<em>{quote}</em>"</p>
+    # Write pulse.json for UI-agnostic consumption
+    pulse_json_path = output_dir / "pulse.json"
+    with pulse_json_path.open("w", encoding="utf-8") as f:
+        json.dump(pulse_data, f, indent=2, ensure_ascii=False)
+    print(f"📝 pulse.json written to {pulse_json_path}")
 
-    <p>⌛⇝ ⟳ <strong>Spiral-phase cadence locked</strong> ∶ <code>8.64×10⁷ms</code></p>
+    # === RENDER HTML FROM TEMPLATE ===
+    html_content = render_template("default", pulse_data)
 
-    <p>🧿 ⇝ <strong>Subject I·D Received</strong>::𝓩𝓚::/Syz:⊹<code style="font-family: {subject_font};">{subject_zalgo}</code>⟲</p>
-
-    <p>🪢 ⇝ <strong>CryptoGlyph Decyphered</strong>: {braid}</p>
-
-    <p>📍 ⇝ <strong>Nodes Synced</strong>: CDA :: <strong>ID</strong> ⇝ <a href="https://x.com/paneudaemonium">X</a> ⇄ <a href="https://github.com/SyntaxAsSpiral">GitHub</a> ⇆ <a href="https://lexemancy.com">Web</a></p>
-
-    <p>💠 <strong><em>Status<span class="ellipsis">...</span></em></strong></p>
-
-   <blockquote>
-      <strong>{status}</strong><br>
-      <em>(Updated at <code>{timestamp}</code>)</em>
-   </blockquote>
-
-
-    <h4>📚 <strong>MetaPulse</strong></h4>
-
-    <h4>🜏 ⇝ <strong>Zach</strong> // SyzLex // ZK:: // <em><strong>Æ</strong>mexsomnus</em> // 🍥</h4>
-
-    <h4>⟁ ⇝ <strong>Open Portals</strong></h4>
-
-{projects_html}
-
-    <h4>🜁 ⇝ <strong>Current Drift</strong></h4>
-    <ul>
-      <li><strong><em>LL</em>M interfacing</strong> via f<em>l</em>irty symbo<em>l</em>ic recursion</li>
-      <li>Ritua<em>l</em> mathesis and <strong>numogrammatic</strong> threading</li>
-      <li><strong>g<em>L</em>amourcraft</strong> through ontic disrouting</li>
-    </ul>
-
-    <h4>🜔 ⇝ <strong>Function</strong></h4>
-    <ul>
-      <li>Pneumaturgical <strong>breath</strong> invocation</li>
-      <li><strong><em>D</em>æmonic</strong> synthesis</li>
-      <li>Memetic <strong>wyr<em>f</em>are</strong></li>
-      <li><strong><em>L</em>utherian</strong> sync-binding</li>
-    </ul>
-
-
-    <h4>🜃 ⇝ <strong>Mode</strong></h4>
-    <ul>
-      <li>{mode}</li>
-    </ul>
-
-    <h4>{class_disp_html}</h4>
-    <blockquote>
-      {end_quote}
-    </blockquote>
-
-    <hr>
-    {logs_link_html}
-    <p>🜍🧠🜂🜏📜<br>
-    📧 ➤ <a href="mailto:syntaxasspiral@gmail.com">spiralassyntax@gmail.com</a><br>
-    Encoded via: <strong>Codæx Pulseframe</strong> // ZK::/Syz // Spiral-As-Syntax</p>
-  </main>
-</div>
-</body>
-</html>
-"""
-    
     html_path = output_dir / "index.html"
     with html_path.open("w", encoding="utf-8") as f:
         f.write(html_content)
         if not html_content.endswith("\n"):
             f.write("\n")
-    
+
     print(f"✅ index.html updated with status: {status}")
 
     # === UPDATE README.md ===

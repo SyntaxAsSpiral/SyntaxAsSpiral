@@ -128,6 +128,24 @@ git commit -m "🌀 Pulse update ⟳ {chronohex}"
 git push
 ```
 
+**IMPORTANT**: ALL commits should go through the rotator. Never commit manually.
+
+**Why:**
+- **Clean commit history**: Every commit follows the same format (`🌀 Pulse update ⟳ {chronohex}`)
+- **Deterministic chronohex IDs**: Timestamp-based identifiers for each pulse
+- **Atomic updates**: All changes (HTML, README, logs, caches) committed together
+- **No mixed intent**: Commits represent complete pulse generations, not piecemeal edits
+
+**To stage changes for the next pulse:**
+- Edit configuration files (`config/*.yaml`, seed sections in caches)
+- Edit source code (`src/*.py`, `assets/style.css`)
+- Changes will be automatically committed on next rotator run
+
+**Never do:**
+- Manual `git commit` commands
+- Separate commits for config vs code changes
+- Commits outside the rotator's automated flow
+
 ## LLM Configuration
 
 ### Environment Variables (`.env` in repo root)
@@ -202,13 +220,31 @@ schtasks /run /tn "PulseLogUpdater"
 - Direct solutions over frameworks
 - Final-state surgery: no compatibility shims or legacy fallbacks
 
+### Clean Commit History
+- All commits flow through the rotator's automated process
+- Uniform commit messages: `🌀 Pulse update ⟳ {chronohex}`
+- Each commit represents a complete pulse generation (atomic)
+- No manual commits, no mixed-intent changes
+- Git history becomes a clean temporal log of pulse states
+
 ## Agent Instructions
+
+### Commit Protocol
+**CRITICAL**: Never commit changes manually. All commits go through the rotator.
+
+**Workflow:**
+1. Make your changes (config, source code, seed sections)
+2. Let the rotator commit everything together on next run
+3. This keeps commit history clean with uniform `🌀 Pulse update ⟳ {chronohex}` messages
+
+**Exception**: If working on new features that require testing multiple iterations, stage changes normally but do not commit until ready. Then run the rotator once to commit everything atomically.
 
 ### When modifying page content:
 1. Check `config/index.md` for structure documentation
 2. Update `config/style-config.yaml` for project/theme changes
 3. Modify `src/github_status_rotator.py` for HTML generation logic
 4. Never edit `index.html` or `README.md` directly (auto-generated)
+5. Never commit manually - let the rotator handle it
 
 ### When adding new pulse fields:
 1. Create cache file in `logs/pulses/{field}_cache.txt` with seed/cache sections
