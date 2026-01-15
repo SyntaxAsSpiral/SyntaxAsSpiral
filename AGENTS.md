@@ -6,23 +6,28 @@ This repository generates a daily-updated personal homepage at `https://lexemanc
 ## Architecture
 
 ### Core Components
-- **`src/github_status_rotator.py`**: Main orchestrator. Generates pulse content, updates HTML/README, archives logs, commits and pushes changes.
+- **`src/github_status_rotator.py`**: Main orchestrator. Generates pulse content, builds data dict, renders HTML via template, archives logs, commits and pushes changes.
 - **`src/pulse_generator.py`**: LLM interface for generating mystical pulse field content. Samples from seed + cache examples for recursive feedback.
+- **`src/template_renderer.py`**: Modular template engine. Loads templates and renders with `{{variable}}` substitution.
 - **`src/esotericons.py`**: Icon library that fetches random esoteric icons from GitHub for daily divination.
 - **`src/test_rotator.py`**: Safe test harness that runs generation in temp directory without git operations.
+- **`templates/default.html`**: Main HTML template with `{{variable}}` placeholders for content injection.
 - **`logs/pulses/*_cache.txt`**: Recursive feedback caches. LLM outputs append here and feed back as examples (grows indefinitely).
-- **`logs/esotericons_cache.json`**: Cached icon list from esotericons repository.
+- **`logs/esotericons_cache.json`**: Cached icon list from esotericons repository (refreshed to exclude blurry multi-resolution variants).
 
 ### Output Structure
 ```
 root/
 ├── index.html                    # Main homepage (GitHub Pages entry point)
+├── pulse.json                    # Structured pulse data (all fields for consumption)
 ├── README.md                     # Profile README with chronohex link
 ├── .env                          # Local LLM config (tracked for documentation)
+├── templates/
+│   └── default.html              # Main template with {{variable}} placeholders
 ├── logs/
 │   ├── index.html                # Archive index with divination icons
 │   ├── YYYY-MM-DD.html           # Daily snapshots (one per day, overwritten)
-│   ├── esotericons_cache.json    # Cached icon list
+│   ├── esotericons_cache.json    # Cached icon list (clean .ico and .svg only)
 │   └── pulses/
 │       ├── status_cache.txt      # Recursive feedback caches
 │       ├── quote_cache.txt       # (seed + cache sections)
@@ -113,15 +118,25 @@ generated output 1
 generated output 2
 ```
 
-### 3. Icon Selection & HTML Generation
+### 3. Icon Selection & Data Structuring
 - Fetches random esotericon from GitHub (true random for divination)
-- Generates `index.html` with fresh pulse content and icon
 - Creates chronohex: last 6 chars of `hex(time.time_ns())`
+- Builds `pulse_data` dict with all pulse fields (status, quote, subject, mode, etc.) + icon URL
+- Writes `pulse.json` for structured data consumption
 - Updates `README.md` with chronohex link to lexemancy.com
-- Archives daily snapshot to `logs/YYYY-MM-DD.html` (preserves icon URL)
+
+### 4. Template Rendering
+- Loads `templates/default.html` (contains `{{variable}}` placeholders)
+- Renders HTML by substituting `{{variable}}` with values from `pulse_data`
+- Writes `index.html` with fresh pulse content and icon
+
+### 5. Log Archiving & Index Rebuild
+- Archives rendered HTML to `logs/YYYY-MM-DD.html` (rewrite paths for ../assets/)
+- Scans `logs/` for all date-formatted HTML files
+- Extracts icon URL from each archived log's `<link rel="icon" href="...">` tag
 - Rebuilds `logs/index.html` with all dates + their divination icons
 
-### 4. Git Autopush
+### 6. Git Autopush
 ```bash
 git add -A
 git commit -m "🌀 Pulse update ⟳ {chronohex}"
@@ -249,8 +264,9 @@ schtasks /run /tn "PulseLogUpdater"
 ### When adding new pulse fields:
 1. Create cache file in `logs/pulses/{field}_cache.txt` with seed/cache sections
 2. Add field to `FIELD_MAPPINGS` in `pulse_generator.py`
-3. Add generation logic to `github_status_rotator.py`
-4. Update HTML template with new field placeholder
+3. Generate field in `github_status_rotator.py` and add to `pulse_data` dict
+4. Add `{{field_name}}` placeholder to `templates/default.html` where desired
+5. Renderer automatically substitutes `{{field_name}}` with the value from `pulse_data`
 
 ### When tuning prompts:
 - Run `python src/pulse_generator.py` to test LLM generation without HTML/git
@@ -262,15 +278,18 @@ schtasks /run /tn "PulseLogUpdater"
 - Check LLM server logs at `http://localhost:1234`
 - Verify `.env` configuration in repo root
 - Test LLM only: `python src/pulse_generator.py`
+- Test template rendering: `python src/template_renderer.py pulse.json [template_name]`
 - Test full generation (no git): `python src/test_rotator.py`
 - Test with git push: `python src/github_status_rotator.py`
 - Check git status for uncommitted changes
-- Verify esotericons cache: `logs/esotericons_cache.json`
+- Verify esotericons cache: `python -c "from esotericons import get_icon_list; get_icon_list(refresh=True)"` to refresh
+- Inspect pulse data: `cat pulse.json` to see all generated fields
 
 ## File Modification Rules
 
 ### Auto-Generated (DO NOT EDIT MANUALLY):
 - `index.html`
+- `pulse.json`
 - `README.md`
 - `logs/*.html`
 - `assets/theme.css`
@@ -284,10 +303,42 @@ schtasks /run /tn "PulseLogUpdater"
 - `assets/style.css`
 - Seed sections in `logs/pulses/*_cache.txt`
 - `src/*.py`
+- `templates/*.html` (create alternates, modify existing)
 - `.env` (local LLM config)
 
 ### Never Track:
 - `secrets.env` (API keys)
+
+## Template System
+
+### Architecture
+The system decouples **content generation** from **presentation**:
+- **Content**: Generated by `pulse_generator.py` + `github_status_rotator.py` → `pulse.json`
+- **Presentation**: Consumed by `template_renderer.py` from `templates/*.html`
+- **Independence**: Change templates without touching generation logic, and vice versa
+
+### Creating Alternate Templates
+You can create multiple templates without modifying the rotator:
+
+1. Create `templates/{name}.html` with `{{variable}}` placeholders
+2. Include variables from `pulse_data` dict (see rotator lines 567-582)
+3. Call `render_template("{name}", pulse_data)` to render
+4. No generation logic changes needed
+
+**Available variables for templates:**
+- `chronotonic`, `timestamp`, `stylesheet`, `icon_tag`
+- `quote`, `subject_font`, `subject_zalgo`, `braid`
+- `status`, `mode`, `class_disp_html`, `end_quote`
+- `projects_html`, `logs_link_html`
+
+### Template Syntax
+Simple regex-based substitution—no Jinja2 or complex logic:
+```html
+<h1>{{chronotonic}}</h1>
+<p>Status: {{status}}</p>
+```
+
+**Complex rendering** (loops, conditionals): Pre-render in rotator and pass as strings (e.g., `projects_html`)
 
 ## Special Features
 
