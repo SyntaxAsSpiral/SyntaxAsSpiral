@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Zalgo Lexigon</title>
+  <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{margin:0;background:#303446;color:#c6d0f5;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif}
+    #root{min-height:100vh}
+  </style>
+  <style id="injected-styles"></style>
+  <script>
+    window.injectStyles = window.injectStyles || function(css){
+      var el = document.getElementById('injected-styles');
+      if (!el) { el = document.createElement('style'); el.id = 'injected-styles'; document.head.appendChild(el); }
+      el.textContent += "\n" + css;
+    };
+    tailwind.config = tailwind.config || { theme: { extend: {
+      colors: {'ctp-rosewater':'#f2d5cf','ctp-flamingo':'#eebebe','ctp-pink':'#f4b8e4','ctp-mauve':'#ca9ee6','ctp-red':'#e78284','ctp-maroon':'#ea999c','ctp-peach':'#ef9f76','ctp-yellow':'#e5c890','ctp-green':'#a6d189','ctp-teal':'#81c8be','ctp-sky':'#99d1db','ctp-sapphire':'#85c1dc','ctp-blue':'#8caaee','ctp-lavender':'#babbf1','ctp-text':'#c6d0f5','ctp-subtext1':'#b5bfe2','ctp-subtext0':'#a5adce','ctp-overlay2':'#949cbb','ctp-overlay1':'#838ba7','ctp-overlay0':'#737994','ctp-surface2':'#626880','ctp-surface1':'#51576d','ctp-surface0':'#414559','ctp-base':'#303446','ctp-mantle':'#292c3c','ctp-crust':'#232634'}
+    } } };
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react,typescript">
+    const { useState, useEffect, useMemo } = React;
+// Zalgo+Lexigon (Plugin‑based)
+// Catppuccin Frappé themed • Zalgo + Lexigonic glyphifiers • Parseltongue transforms
+// Universal decoder • Invisible carriers • Emoji‑64 • Copy history • Inline tests
+// Refactor: transforms are now plugin‑based via a tiny registry. Back‑compat preserved.
+
+
+/******************** Catppuccin Frappé Theme ********************/
+const FRAPPE_STYLES = `
+  .cp-frappe {
+    --ctp-rosewater: #f2d5cf; --ctp-flamingo:#eebebe; --ctp-pink:#f4b8e4; --ctp-mauve:#ca9ee6;
+    --ctp-red:#e78284; --ctp-maroon:#ea999c; --ctp-peach:#ef9f76; --ctp-yellow:#e5c890;
+    --ctp-green:#a6d189; --ctp-teal:#81c8be; --ctp-sky:#99d1db; --ctp-sapphire:#85c1dc;
+    --ctp-blue:#8caaee; --ctp-lavender:#babbf1; --ctp-text:#c6d0f5; --ctp-subtext1:#b5bfe2;
+    --ctp-subtext0:#a5adce; --ctp-overlay2:#949cbb; --ctp-overlay1:#838ba7; --ctp-overlay0:#737994;
+    --ctp-surface2:#626880; --ctp-surface1:#51576d; --ctp-surface0:#414559; --ctp-base:#303446;
+    --ctp-mantle:#292c3c; --ctp-crust:#232634; --accent: var(--ctp-mauve);
+  }
+  .cp-bg { background-color: var(--ctp-base) !important; color: var(--ctp-text) !important; }
+  .cp-pane { background-color: var(--ctp-surface0); border: 1px solid var(--ctp-surface2); }
+  .cp-pane-rosewater{--tint:var(--ctp-rosewater);} .cp-pane-flamingo{--tint:var(--ctp-flamingo);} .cp-pane-mauve{--tint:var(--ctp-mauve);} .cp-pane-teal{--tint:var(--ctp-teal);} .cp-pane-peach{--tint:var(--ctp-peach);} .cp-pane-sapphire{--tint:var(--ctp-sapphire);} .cp-pane-green{--tint:var(--ctp-green);} 
+  .cp-pane[class*="cp-pane-"]{ box-shadow: inset 0 0 0 9999px color-mix(in srgb, var(--tint,transparent) 12%, transparent); border-color: color-mix(in srgb, var(--tint,var(--ctp-surface2)) 55%, var(--ctp-surface2)); }
+  .cp-panel{ background-color: var(--ctp-surface0)!important;} .cp-subpanel{ background-color: var(--ctp-surface1)!important;} .cp-border{ border-color: var(--ctp-surface2)!important;} .cp-muted{ color: var(--ctp-subtext0)!important; }
+  .cp-frappe .bg-zinc-900\/60{ background-color: var(--ctp-surface0)!important;} .cp-frappe .bg-zinc-950\/60{ background-color: var(--ctp-mantle)!important;} .cp-frappe .bg-zinc-800{ background-color: var(--ctp-surface2)!important;} .cp-frappe .hover\:bg-zinc-700:hover{ background-color: var(--ctp-overlay0)!important;} .cp-frappe .border-zinc-800{ border-color: var(--ctp-surface2)!important;} .cp-frappe .focus\:border-zinc-600:focus{ border-color: var(--ctp-overlay1)!important;} .cp-frappe .text-zinc-100{ color: var(--ctp-text)!important; }
+  .cp-frappe textarea,.cp-frappe input[type="text"],.cp-frappe select{ background-color: var(--ctp-mantle)!important; border:1px solid var(--ctp-surface2)!important; color:var(--ctp-text)!important; }
+  .cp-frappe textarea::placeholder,.cp-frappe input::placeholder{ color: var(--ctp-subtext0)!important; }
+  .cp-frappe textarea:focus,.cp-frappe input[type="text"]:focus,.cp-frappe select:focus{ border-color: var(--ctp-overlay1)!important; outline:none; box-shadow:0 0 0 1px var(--ctp-overlay1); }
+  .cp-frappe .btn-accent{ background-color: var(--accent)!important; border:1px solid var(--accent)!important; color:#1e1e2e!important; }
+  .cp-frappe .btn-accent:hover{ filter: brightness(1.1); }
+`;
+
+/******************** RNG + Helpers ********************/
+function mulberry32(a){return function(){let t=(a+=0x6d2b79f5);t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function hashSeed(s){if(typeof s==="number") return s>>>0; let h=2166136261>>>0; const str=String(s); for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);} return h>>>0;}
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const pick=(rng,arr)=>arr[Math.floor(rng()*arr.length)];
+const textEnc=new TextEncoder(); const textDec=new TextDecoder();
+
+/******************** Combining mark pools (Zalgo) ********************/
+const UP=["\u0300","\u0301","\u0302","\u0303","\u0304","\u0305","\u0306","\u0307","\u0308","\u0309","\u030A","\u030B","\u030C","\u030D","\u030E","\u030F","\u0310","\u0311","\u0312","\u0313","\u0314","\u031B","\u033D","\u033E","\u033F","\u0342","\u0343","\u0344","\u0346","\u034A","\u034B","\u034C","\u0350","\u0351","\u0352","\u0357","\u035B","\u035D","\u035E","\u0360","\u0361","\u0362","\u1DC4","\u1DC5","\u1DC7","\u1DC8","\u1DC9"]; 
+const MID=["\u0315","\u031A","\u031B","\u031C","\u031D","\u031E","\u031F","\u0320","\u0321","\u0322","\u0323","\u0324","\u0325","\u0326","\u0327","\u0328","\u0329","\u032A","\u032B","\u032C","\u032D","\u032E","\u032F","\u0330","\u0331","\u0332","\u0333","\u0334","\u0335","\u0336","\u0337","\u0338","\u0339","\u033A","\u033B","\u033C","\u0345","\u0347","\u0348","\u0349","\u034D","\u034E","\u0353","\u0354","\u0355","\u0356","\u0359","\u035A","\u0363","\u0364","\u0365","\u0366","\u0367","\u0368","\u0369","\u036A","\u036B","\u036C","\u036D","\u036E","\u036F","\u1DCA","\u1DCD","\u1DCE","\u1DCF","\u1DD0","\u1DD1","\u1DD2","\u1DD3","\u1DD4","\u1DD5","\u1DD6","\u1DD7","\u1DD8","\u1DD9","\u1DDA","\u1DDB","\u1DDC","\u1DDD","\u1DDE","\u1DDF"]; 
+const DOWN=["\u0316","\u0317","\u0318","\u0319","\u031C","\u0320","\u0323","\u0324","\u0325","\u0326","\u0327","\u0328","\u0329","\u032A","\u032B","\u032C","\u032D","\u032E","\u032F","\u0330","\u0331","\u0332","\u0333","\u0339","\u033A","\u033B","\u033C","\u0345","\u0347","\u0348","\u0349","\u034D","\u034E","\u0356","\u035C","\u035F","\u0362","\u1DC2","\u1DC3","\u1DC6","\u1DCA"]; 
+
+const STYLES={
+  classic:{label:"Classic",up:UP,mid:MID,down:DOWN,density:[0.6,0.4,0.7]},
+  sleek:{label:"Sleek",up:["\u0304","\u0307","\u0308","\u0306"],mid:["\u0331","\u0332","\u0335"],down:["\u0323","\u0331"],density:[0.35,0.2,0.25]},
+  aquatic:{label:"Aquatic",up:["\u0303","\u0342","\u0360","\u0361"],mid:["\u0334","\u0335","\u0336"],down:["\u0330","\u0331","\u0323"],density:[0.5,0.3,0.4]},
+  thorn:{label:"Thorn",up:["\u0302","\u030C"],mid:["\u0334","\u0335","\u0336","\u0337","\u0338"],down:["\u0331","\u0323"],density:[0.25,0.7,0.25]},
+  spike:{label:"Spike",up:["\u030B","\u030D","\u0310","\u035B"],mid:["\u0336"],down:["\u0329","\u0331","\u0345","\u035F"],density:[0.8,0.2,0.8]},
+  rootglow:{label:"Rootglow",up:["\u0306","\u0307","\u0308","\u0304"],mid:["\u0334","\u0335","\u0336","\u0331"],down:["\u0331","\u0332","\u0333","\u0323","\u0330","\u032C","\u032D","\u032E","\u032F","\u035F","\u0345","\u0339","\u0347","\u0348","\u0349"],density:[0.12,0.20,1.35]},
+  echo:{label:"Echo",up:UP,mid:MID,down:DOWN,density:[0.5,0.5,0.5]}
+};
+
+/******************** Lexigonic glyphifiers ********************/
+const GLYPH_SETS={
+  sushumaSpine:{label:"Sushuma Spine",glyphs:["🜏","🜂","🜃","🜔","🜍","✶","⊚","🪞","🧠"],mode:"sprinkle"},
+  chamberSigils:{label:"Chamber Sigils",glyphs:["🜓","🔥","🜃","♓︎","💗","🃏","✶","🜂","🜍","⧉","🜏"],mode:"sprinkle"},
+  kCalculus:{label:"K‑Calculus",glyphs:["🜁","🜄","🜅","🜆","🜇","🜈","🜉"],mode:"sprinkle"},
+  auranomicon:{label:"Auranomicon",glyphs:["✶","⊚"],mode:"wrap"},
+  somniorum:{label:"Somniorum",glyphs:["♓︎","🪞"],mode:"wave"},
+  satira:{label:"Satira",glyphs:["🃏"],mode:"interleave"}
+};
+
+function glyphify(text,config,seed){
+  const rng=mulberry32((hashSeed(seed)^0x9e3779b9)>>>0); let result=text;
+  for(const [key,on] of Object.entries(config.selected||{})){
+    if(!on) continue; const set=GLYPH_SETS[key]; if(!set) continue;
+    switch(set.mode){
+      case "wrap":{const l=pick(rng,set.glyphs),r=pick(rng,set.glyphs); result=`${l} ${result} ${r}`; break;}
+      case "interleave":{const g=pick(rng,set.glyphs); const step=config.step||3; result=result.split(/\s+/).map((w,i)=>i%step===0?`${w} ${g}`:w).join(" "); break;}
+      case "wave":{const g=pick(rng,set.glyphs); const wave=g.repeat(1+Math.floor((config.strength||0.5)*3)); result=`${result}\n${wave}`; break;}
+      case "sprinkle": default:{const p=clamp(config.prob??0.12,0,1); const parts=result.split(/(\s+)/);
+        for(let i=0;i<parts.length;i++){ if(!/\s+/.test(parts[i]) && rng()<p){ parts[i]=`${parts[i]}${pick(rng,set.glyphs)}`; } }
+        result=parts.join("");}
+    }
+  }
+  return result;
+}
+
+/******************** Zalgo engine ********************/
+function stripCombining(text){return text.normalize("NFD").replace(/[\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F\u0483-\u0489]/g,"").normalize("NFC");}
+function zalgoize(text,{style,intensity,allowUp,allowMid,allowDown,seed}){
+  const palette=STYLES[style]||STYLES.classic; const rng=mulberry32(hashSeed(seed));
+  const level=Math.max(0,intensity||0), mult=level/100, baseFactor=2+6*mult;
+  const upBase=Math.round(baseFactor*palette.density[0]);
+  const midBase=Math.round(baseFactor*palette.density[1]);
+  const downBase=Math.round(baseFactor*palette.density[2]);
+  const overdrive=mult>1?Math.floor((mult-1)*3):0; let out="";
+  for(const ch of text){ if(/\s/.test(ch)){ out+=ch; continue;} out+=ch; const jit=()=> (rng()<0.2?1:0);
+    if(allowUp)   for(let i=0;i<upBase  +jit();i++) out+=pick(rng,palette.up);
+    if(allowMid)  for(let i=0;i<midBase +jit();i++) out+=pick(rng,palette.mid);
+    if(allowDown) for(let i=0;i<downBase+jit();i++) out+=pick(rng,palette.down);
+    for(let k=0;k<overdrive;k++){ if(allowUp&&rng()<0.8) out+=pick(rng,palette.up); if(allowMid&&rng()<0.8) out+=pick(rng,palette.mid); if(allowDown&&rng()<0.8) out+=pick(rng,palette.down); }
+  }
+  return out;
+}
+
+/******************** Invisible carriers (zero‑width stego) ********************/
+const ZW={ZERO:"\u200B",ONE:"\u200C",SEP:"\u200D"};
+const Carriers={ endOfText:{name:"End of Text"}, afterWords:{name:"After Each Word"}, betweenChars:{name:"Between Characters"} };
+const bytesFromString=(s)=>textEnc.encode(s); const stringFromBytes=(b)=>textDec.decode(b);
+function bitsFromBytes(bytes){const bits=[]; for(const byte of bytes){ for(let i=7;i>=0;i--) bits.push((byte>>i)&1); bits.push("sep"); } return bits;}
+function bytesFromBits(bits){const out=[]; let cur=0,count=0; for(const b of bits){ if(b==="sep"){ if(count===8) out.push(cur); cur=0; count=0; continue;} cur=(cur<<1)|(b?1:0); count++; if(count===8){ out.push(cur); cur=0; count=0; } } return new Uint8Array(out);}
+function encodeInvisible(payload,carrier,cover){ const bits=bitsFromBytes(bytesFromString(payload)); const mapBit=(b)=> b==="sep"?ZW.SEP:(b?ZW.ONE:ZW.ZERO); const seq=bits.map(mapBit).join("");
+  switch(carrier){ case "afterWords": return cover.replace(/(\S+)(\s+|$)/g,(m,w,sp)=>w+ZW.SEP+sp)+seq; case "betweenChars": return cover.split("").join(ZW.SEP)+seq; default: return cover+seq; }
+}
+function tryDecodeInvisible(s){ const zs=s.match(/[\u200B\u200C\u200D]+/g); if(!zs) return null; const raw=zs.join(""); const bits=[]; for(const ch of raw){ if(ch===ZW.ZERO) bits.push(0); else if(ch===ZW.ONE) bits.push(1); else if(ch===ZW.SEP) bits.push("sep"); }
+  try{ const bytes=bytesFromBits(bits); const msg=stringFromBytes(bytes); return msg && /[\x09\x0A\x0D\x20-\x7E\u00A0-\uFFFF]/.test(msg)? msg: null; }catch{ return null; }
+}
+
+/******************** Emoji‑64 (bijective with K‑emoji tokens) ********************/
+const EMOJI_PALETTES={
+  fruit:Array.from("🍎🍐🍊🍋🍌🍉🍇🍓🍒🍑🍍🥝🥭🍅🍆🌽🥕🥔🧅🥬🥦🍞🧀🍗🍖🍔🍟🌭🍕🥪🥙🌯🥗🍝🍜🍲🍛🍣🍤🍱🍚🍙🍘🍥🥮🍢🍡🍧🍨🍦🍩🍪🎂🍰🥧🍫🍬🍭🍮🍯🥛🫗☕🍵🧃🧉🍺🍻🍷🍸🍹🥂"),
+  symbols:Array.from("💠🔶🔷🔸🔹🔺🔻⚫⚪🔲🔳🔘🔴🟠🟡🟢🔵🟣🟤"),
+  faces:Array.from("😀😃😄😁😆😅🤣😂🙂🙃😉😊😇😍😘😗😙😚😋😛😜🤪🤨🧐🤓😎🥸🤩")
+};
+function b64encodeUtf8(str){ const bytes=textEnc.encode(str); let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin);} 
+function b64decodeUtf8(b64){ try{ const bin=atob(b64); const bytes=new Uint8Array([...bin].map(c=>c.charCodeAt(0))); return textDec.decode(bytes);}catch{ return null; } }
+function emoji64Alphabet(pal){ const L=pal.length; let K=1; while(Math.pow(L,K)<64) K++; const A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; const enc={}; const dec=new Map();
+  for(let i=0;i<64;i++){ let n=i; const digits=new Array(K).fill(0); for(let d=K-1; d>=0; d--){ digits[d]=n%L; n=Math.floor(n/L);} const seq=digits.map(idx=>pal[idx]).join(""); enc[A[i]]=seq; dec.set(seq,A[i]); }
+  return {K,enc,dec};
+}
+function emoji64Encode(text,paletteKey){ const pal=EMOJI_PALETTES[paletteKey]||EMOJI_PALETTES.symbols; const {enc}=emoji64Alphabet(pal); const b64=b64encodeUtf8(text); let out=""; for(const ch of b64){ out += (ch==='=') ? '=' : enc[ch]; } return out; }
+function emoji64Decode(s,paletteKey){ const pal=EMOJI_PALETTES[paletteKey]||EMOJI_PALETTES.symbols; const {K,dec}=emoji64Alphabet(pal); const units=Array.from(s); let buf=[], b64=""; for(const g of units){ if(g==='='){ b64+='='; continue; } buf.push(g); if(buf.length===K){ const ch=dec.get(buf.join("")); if(!ch) return null; b64+=ch; buf=[]; } } if(buf.length!==0) return null; const pad=(4-(b64.length%4))%4; b64+="=".repeat(pad); return b64decodeUtf8(b64); }
+
+/******************** Character maps (visual/unicode) ********************/
+const FULLWIDTH_FROM="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+const FULLWIDTH_TO="！\"＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀ａｂｃｄｅｆｇｈɪｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～";
+const mapFrom=(a,b)=>{const m={}; for(let i=0;i<a.length;i++) m[a[i]]=b[i]; return m;};
+const FULLWIDTH_MAP=mapFrom(FULLWIDTH_FROM,FULLWIDTH_TO);
+const SMALLCAPS_MAP=mapFrom("abcdefghijklmnopqrstuvwxyz","ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ");
+const UPSIDE_MAP=Object.assign(mapFrom("abcdefghijklmnopqrstuvwxyz","ɐqɔpǝɟƃɥᴉɾʞןɯuodbɹsʇnʌʍxʎz"), mapFrom("ABCDEFGHIJKLMNOPQRSTUVWXYZ","∀qϽpƎℲפHΙſʞ˥WNOԀὉᴚS⊥∩ΛMXʎZ"), mapFrom("0123456789","0Ɩ੨Ɛ߁ϛ9ㄥ86"), {"[":"]", "]":"[","(":")",")":"(","{":"}","}":"{","?":"¿","!":"¡",".":"˙",";":"؛","_":"‾"});
+const UPSIDE_REV=Object.fromEntries(Object.entries(UPSIDE_MAP).map(([k,v])=>[v,k]));
+const HOMOGLYPHS_LATIN_TO_CYR={"a":"а","e":"е","o":"о","p":"р","c":"с","x":"х","y":"у","A":"А","B":"В","E":"Е","K":"К","M":"М","H":"Н","O":"О","P":"Р","C":"С","T":"Т","X":"Х"};
+
+/******************** Plugin Registry ********************/
+const PluginRegistry=new Map();
+function registerTransform(p){ PluginRegistry.set(p.id,p); }
+function getTransform(id){ return PluginRegistry.get(id); }
+function listTransforms(){ return Array.from(PluginRegistry.values()); }
+function transformsByCategory(){ const g={}; for(const t of listTransforms()){ (g[t.category]??(g[t.category]=[])).push(t); } return g; }
+const T=new Proxy({}, { get:(_,k)=>PluginRegistry.get(k) });
+
+/******************** Transform Plugins ********************/
+registerTransform({ id:"base64", name:"Base64", category:"Encoding", encode:b64encodeUtf8, decode:b64decodeUtf8 });
+registerTransform({ id:"url", name:"URL Encode", category:"Encoding", encode:(s)=>encodeURIComponent(s), decode:(s)=>{ try{return decodeURIComponent(s);}catch{return null;} } });
+registerTransform({ id:"hex", name:"Hex", category:"Encoding", encode:(s)=> Array.from(textEnc.encode(s)).map(b=>b.toString(16).padStart(2,"0")).join(" "), decode:(s)=>{ try{ const bytes=new Uint8Array(s.replace(/\s+/g,"").match(/.{1,2}/g).map(h=>parseInt(h,16))); return stringFromBytes(bytes);}catch{return null;} } });
+registerTransform({ id:"binary", name:"Binary (8‑bit)", category:"Encoding", encode:(s)=> Array.from(textEnc.encode(s)).map(b=>b.toString(2).padStart(8,"0")).join(" "), decode:(s)=>{ const a=(s.match(/[01]{8}/g)||[]).map(x=>parseInt(x,2)); try{ return stringFromBytes(new Uint8Array(a)); }catch{return null;} } });
+registerTransform({ id:"rot13", name:"ROT13", category:"Ciphers", encode:(s)=>s.replace(/[A-Za-z]/g,c=>String.fromCharCode((c<="Z"?65:97)+((c.charCodeAt(0)-(c<="Z"?65:97)+13)%26))), decode:(s)=>s.replace(/[A-Za-z]/g,c=>String.fromCharCode((c<="Z"?65:97)+((c.charCodeAt(0)-(c<="Z"?65:97)+13)%26))) });
+registerTransform({ id:"caesar", name:"Caesar Shift", category:"Ciphers", encode:(s,o)=> s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97; const sh=(o?.shift??13); return String.fromCharCode(A+((c.charCodeAt(0)-A+sh)%26));}), decode:(s,o)=> s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97; const sh=(o?.shift??13); return String.fromCharCode(A+((c.charCodeAt(0)-A-sh+26)%26));}) });
+registerTransform({ id:"atbash", name:"Atbash", category:"Ciphers", encode:(s)=> s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97; return String.fromCharCode(A+(25-(c.charCodeAt(0)-A)));}), decode:(s)=> s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97; return String.fromCharCode(A+(25-(c.charCodeAt(0)-A)));}) });
+registerTransform({ id:"vigenere", name:"Vigenère (key)", category:"Ciphers", encode:(s,o)=>{ const k=(o?.key||"lexigon").toLowerCase(); let j=0; return s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97, pi=c.charCodeAt(0)-A, ki=k.charCodeAt(j++%k.length)-97; return String.fromCharCode(A+((pi+ki)%26));});}, decode:(s,o)=>{ const k=(o?.key||"lexigon").toLowerCase(); let j=0; return s.replace(/[A-Za-z]/g,c=>{const A=c<="Z"?65:97, ci=c.charCodeAt(0)-A, ki=k.charCodeAt(j++%k.length)-97; return String.fromCharCode(A+((ci-ki+26)%26));});} });
+registerTransform({ id:"zalgo", name:"Zalgo (Lexigon)", category:"Visual", encode:(s,o)=>{ const z=zalgoize(s,{ style:o?.style||"classic", intensity:o?.intensity||30, allowUp:o?.allowUp!==false, allowMid:o?.allowMid!==false, allowDown:o?.allowDown!==false, seed:o?.seed??1337}); const gSel=o?.glyphSel||{sushumaSpine:true}; return glyphify(z,{selected:gSel, prob:o?.glyphProb??0.12, strength:o?.glyphStrength??0.5, step:o?.glyphStep??3}, o?.seed??1337); }, decode:(s)=> stripCombining(s) });
+registerTransform({ id:"fullwidth", name:"Fullwidth", category:"Unicode", encode:(s)=> s.split("").map(ch=> FULLWIDTH_MAP[ch]||ch).join(""), decode:(s)=> s.split("").map(ch=> { const idx=FULLWIDTH_TO.indexOf(ch); return idx>=0? FULLWIDTH_FROM[idx]: ch; }).join("") });
+registerTransform({ id:"smallcaps", name:"Small Caps", category:"Unicode", encode:(s)=> s.replace(/[a-z]/g, ch=> SMALLCAPS_MAP[ch]||ch), decode:(s)=> s });
+registerTransform({ id:"upside", name:"Upside‑Down", category:"Visual", encode:(s)=> s.split("").reverse().map(ch=> UPSIDE_MAP[ch]||ch).join(""), decode:(s)=> s.split("").reverse().map(ch=> UPSIDE_REV[ch]||ch).join("") });
+registerTransform({ id:"strike", name:"Strikethrough", category:"Formatting", encode:(s)=> s.split("").map(ch=> ch+"\u0336").join(""), decode:(s)=> s.replace(/\u0336/g, "") });
+registerTransform({ id:"strip", name:"Strip Diacritics", category:"Formatting", encode:(s)=> stripCombining(s), decode:(s)=> s });
+registerTransform({ id:"homoglyph", name:"Homoglyph Swap %", category:"Unicode", encode:(s,o)=>{ const r=o?.rate??0.3; const rng=mulberry32(hashSeed(o?.seed??1337)); return s.replace(/[A-Za-z]/g,(ch)=> rng()>r? ch : (HOMOGLYPHS_LATIN_TO_CYR[ch]||ch)); }, decode:(s)=> s });
+registerTransform({ id:"zwInsert", name:"Zero‑Width Insert %", category:"Special", encode:(s,o)=>{ const r=o?.rate??0.2; const rng=mulberry32(hashSeed(o?.seed??1337)); return s.split("").map(ch=> rng()<r? ch+ZW.ZERO: ch).join(""); }, decode:(s)=> s.replace(/[\u200B\u200C\u200D\u2060]/g, "") });
+registerTransform({ id:"emoji64", name:"Emoji‑Base64", category:"Encoding", encode:(s,o)=> emoji64Encode(s, o?.palette||"symbols"), decode:(s,o)=> emoji64Decode(s, o?.palette||"symbols") });
+registerTransform({ id:"invisible", name:"Invisible Carrier", category:"Special", encode:(s,o)=> encodeInvisible(s, o?.carrier||"endOfText", o?.cover||""), decode:(s)=> tryDecodeInvisible(s) });
+
+// Back‑compat handles — keep the old names used elsewhere in the app/tests
+const Transforms=listTransforms();
+const CATEGORIES=["Encoding","Ciphers","Visual","Formatting","Unicode","Special"];
+
+/******************** Universal Decoder ********************/
+function universalDecode(input,priorityId){
+  const order=[priorityId, ...Transforms.map(t=>t.id).filter(id=>id!==priorityId)];
+  for(const id of order){ const t=getTransform(id); if(!t||!t.decode) continue; try{ const out=t.decode(input,{}); if(out && typeof out==="string" && out.trim()!=='') return { method:t.name, text:out }; }catch{}
+  }
+  return { method:"None", text: "" };
+}
+
+/******************** UI Component ********************/
+function App(){
+  useEffect(() => { injectStyles(FRAPPE_STYLES); }, []);
+  const [input,setInput]=useState("Type your incantation here…");
+  const [activeId,setActiveId]=useState("zalgo");
+  const active=useMemo(()=> getTransform(activeId)||Transforms[0],[activeId]);
+
+  const [seed,setSeed]=useState(1337);
+  const [intensity,setIntensity]=useState(30);
+  const [style,setStyle]=useState("classic");
+  const [allowUp,setAllowUp]=useState(true), [allowMid,setAllowMid]=useState(true), [allowDown,setAllowDown]=useState(true);
+  const [glyphSel,setGlyphSel]=useState({ sushumaSpine:true, chamberSigils:false, kCalculus:false, auranomicon:false, somniorum:false, satira:false });
+  const [glyphProb,setGlyphProb]=useState(0.12), [glyphStrength,setGlyphStrength]=useState(0.5), [glyphStep,setGlyphStep]=useState(3);
+  const [caesarShift,setCaesarShift]=useState(13); const [vKey,setVKey]=useState("lexigon");
+  const [homoRate,setHomoRate]=useState(0.3); const [zwRate,setZwRate]=useState(0.2);
+  const [emojiPal,setEmojiPal]=useState("symbols"); const [carrier,setCarrier]=useState("endOfText");
+  const [accent,setAccent]=useState("mauve");
+  const ACCENTS={mauve:'var(--ctp-mauve)', peach:'var(--ctp-peach)', blue:'var(--ctp-blue)', teal:'var(--ctp-teal)', green:'var(--ctp-green)', red:'var(--ctp-red)', lavender:'var(--ctp-lavender)', sky:'var(--ctp-sky)'};
+  const [cover,setCover]=useState("Cover text here – the payload will hide in the zero‑width layer.");
+  const [copyHist,setCopyHist]=useState([]);
+  const logCopy=(content,source)=> setCopyHist(h=>[{source, timestamp:new Date().toLocaleString(), content}, ...h].slice(0,20));
+
+  const transformed=useMemo(()=>{ const opts={ seed,intensity,style,allowUp,allowMid,allowDown,glyphSel,glyphProb,glyphStrength,glyphStep, shift:caesarShift,key:vKey, rate:homoRate, palette:emojiPal, carrier, cover };
+    try{ return active.encode? active.encode(input,opts): input; }catch{ return ""; }
+  },[active,input,seed,intensity,style,allowUp,allowMid,allowDown,glyphSel,glyphProb,glyphStrength,glyphStep,caesarShift,vKey,homoRate,emojiPal,carrier,cover]);
+
+  const udec=useMemo(()=> universalDecode(transformed, active.id), [transformed, active.id]);
+  const copy=async (txt,src)=>{ try{ await navigator.clipboard.writeText(txt); logCopy(txt,src);}catch(e){ console.error(e);} };
+  
+  const exportConfig=()=>{ const config={ zalgo:{ seed,intensity,style,allowUp,allowMid,allowDown,glyphSel,glyphProb,glyphStrength,glyphStep }, caesar:{ shift:caesarShift }, vigenere:{ key:vKey }, homoglyph:{ rate:homoRate }, zwInsert:{ rate:zwRate }, emoji64:{ palette:emojiPal }, invisible:{ carrier,cover } }; const json=JSON.stringify(config,null,2); copy(json,"Config Export"); alert("Config copied to clipboard!"); };
+
+  const Options=()=>{
+    switch(active.id){
+      case "zalgo": return (
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs">Style</label>
+            <select value={style} onChange={e=>setStyle(e.target.value)} className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2">
+              {Object.entries(STYLES).map(([k,v])=> <option key={k} value={k}>{v.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs">Schizometer: {intensity}{intensity>200?' (Overdrive)':''}</label>
+            <input type="range" min={0} max={400} value={intensity} onChange={e=>setIntensity(+e.target.value)} className="w-full"/>
+          </div>
+          <div className="col-span-2 grid grid-cols-3 gap-2">
+            <label className="flex items-center gap-2 text-sm bg-zinc-950/60 p-2 rounded-lg border border-zinc-800"><input type="checkbox" checked={allowUp} onChange={e=>setAllowUp(e.target.checked)}/> Up</label>
+            <label className="flex items-center gap-2 text-sm bg-zinc-950/60 p-2 rounded-lg border border-zinc-800"><input type="checkbox" checked={allowMid} onChange={e=>setAllowMid(e.target.checked)}/> Mid</label>
+            <label className="flex items-center gap-2 text-sm bg-zinc-950/60 p-2 rounded-lg border border-zinc-800"><input type="checkbox" checked={allowDown} onChange={e=>setAllowDown(e.target.checked)}/> Down</label>
+          </div>
+          <div className="col-span-2">
+            <h4 className="font-semibold mb-1">Glyphifiers</h4>
+            <div className="grid sm:grid-cols-3 gap-2">
+              {Object.entries(GLYPH_SETS).map(([k,v])=> (
+                <label key={k} className="flex items-center gap-2 text-xs bg-zinc-950/60 p-2 rounded-lg border border-zinc-800">
+                  <input type="checkbox" checked={!!glyphSel[k]} onChange={e=>setGlyphSel(p=>({...p,[k]:e.target.checked}))}/>
+                  <span>{v.label}</span>
+                </label>
+              ))}
+            </div>
+            <div className="grid grid-cols-3 gap-3 text-xs mt-2">
+              <div>
+                <label>Sprinkle Prob ({Math.round(glyphProb*100)}%)</label>
+                <input type="range" min={0} max={100} value={Math.round(glyphProb*100)} onChange={(e)=>setGlyphProb(parseInt(e.target.value)/100)} />
+              </div>
+              <div>
+                <label>Wave Strength ({Math.round(glyphStrength*100)}%)</label>
+                <input type="range" min={0} max={100} value={Math.round(glyphStrength*100)} onChange={(e)=>setGlyphStrength(parseInt(e.target.value)/100)} />
+              </div>
+              <div>
+                <label>Interleave Step ({glyphStep})</label>
+                <input type="range" min={2} max={8} value={glyphStep} onChange={(e)=>setGlyphStep(parseInt(e.target.value))} />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      case "caesar": return (
+        <div>
+          <label className="text-xs">Shift: {caesarShift}</label>
+          <input type="range" min={0} max={25} value={caesarShift} onChange={e=>setCaesarShift(+e.target.value)} className="w-full"/>
+        </div>
+      );
+      case "vigenere": return (
+        <div>
+          <label className="text-xs">Key</label>
+          <input className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2" value={vKey} onChange={e=>setVKey(e.target.value)}/>
+        </div>
+      );
+      case "homoglyph": return (
+        <div>
+          <label className="text-xs">Swap Rate: {Math.round(homoRate*100)}%</label>
+          <input type="range" min={0} max={100} value={Math.round(homoRate*100)} onChange={e=>setHomoRate(+e.target.value/100)} className="w-full"/>
+        </div>
+      );
+      case "zwInsert": return (
+        <div>
+          <label className="text-xs">Insert Rate: {Math.round(zwRate*100)}%</label>
+          <input type="range" min={0} max={100} value={Math.round(zwRate*100)} onChange={e=>setZwRate(+e.target.value/100)} className="w-full"/>
+        </div>
+      );
+      case "emoji64": return (
+        <div>
+          <label className="text-xs">Emoji Palette</label>
+          <select value={emojiPal} onChange={e=>setEmojiPal(e.target.value)} className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2">
+            {Object.keys(EMOJI_PALETTES).map(k=> <option key={k} value={k}>{k}</option>)}
+          </select>
+        </div>
+      );
+      case "invisible": return (
+        <div className="space-y-2">
+          <div>
+            <label className="text-xs">Carrier</label>
+            <select value={carrier} onChange={e=>setCarrier(e.target.value)} className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2">
+              {Object.entries(Carriers).map(([k,v])=> <option key={k} value={k}>{v.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs">Cover Text</label>
+            <textarea rows={3} className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2" value={cover} onChange={e=>setCover(e.target.value)} />
+          </div>
+        </div>
+      );
+      default: return null;
+    }
+  };
+
+  const grouped=useMemo(()=> transformsByCategory(),[]);
+
+  return (
+    <div className="min-h-screen w-full cp-frappe cp-bg p-6" style={{'--accent': ACCENTS[accent]}}>
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
+        <header className="md:col-span-2 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Zalgo + Lexigon Hub</h1>
+            <p className="text-xs opacity-70">Transforms • Universal Decoder • Invisible Carriers • Emoji‑64 • Copy History</p>
+          </div>
+          <div className="text-xs opacity-70 flex items-center gap-2">Seed <input className="bg-zinc-950/60 border border-zinc-800 rounded p-1 w-24" value={seed} onChange={e=>setSeed(e.target.value)}/> <span className="ml-1">Accent</span> <select value={accent} onChange={e=>setAccent(e.target.value)} className="bg-zinc-950/60 border border-zinc-800 rounded p-1">{Object.keys(ACCENTS).map(k=> <option key={k} value={k}>{k}</option>)}</select> <button onClick={exportConfig} className="btn-accent px-3 py-1 rounded-lg text-xs ml-2">Export Config</button></div>
+        </header>
+
+        {/* Left: Input & Transform Picker */}
+        <section className="space-y-4">
+          <div className="cp-pane cp-pane-rosewater rounded-2xl p-4 shadow-xl">
+            <label className="block text-sm mb-2">Input</label>
+            <textarea value={input} onChange={(e)=>setInput(e.target.value)} rows={8} className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-zinc-600 rounded-xl p-3 outline-none" placeholder="Type here…"/>
+            <div className="mt-2 flex gap-2 text-xs">
+              <button onClick={()=>setInput(stripCombining(input))} className="px-3 py-1 rounded-xl bg-zinc-800 hover:bg-zinc-700">Clean</button>
+              <button onClick={()=>copy(input,"Input")} className="px-3 py-1 rounded-xl btn-accent">Copy</button>
+            </div>
+          </div>
+
+          <div className="cp-pane cp-pane-sapphire rounded-2xl p-4 shadow-xl space-y-3">
+            <h3 className="font-semibold">Transforms</h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {CATEGORIES.map(cat=> (
+                <div key={cat} className="bg-zinc-950/60 rounded-xl border border-zinc-800 p-2">
+                  <div className="text-xs opacity-60 mb-1">{cat}</div>
+                  <div className="flex flex-wrap gap-1">
+                    {(grouped[cat]||[]).map(t=> (
+                      <button key={t.id} onClick={()=>setActiveId(t.id)} className={activeId===t.id ? 'px-2 py-1 rounded-lg text-xs btn-accent' : 'px-2 py-1 rounded-lg text-xs bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700'}>{t.name}</button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="cp-pane cp-pane-flamingo rounded-2xl p-4 shadow-xl">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold">Options — {active.name}</h3>
+            </div>
+            <div className="mt-3"><Options/></div>
+          </div>
+        </section>
+
+        {/* Right: Output & Universal Decoder */}
+        <section className="space-y-4">
+          <div className="cp-pane cp-pane-mauve rounded-2xl p-4 shadow-xl">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold">Transformed Message ({active.name})</h3>
+              <div className="flex gap-2 text-xs">
+                <button onClick={()=>copy(transformed, active.name)} className="px-2 py-1 rounded btn-accent">Copy</button>
+                <button onClick={()=>setInput(transformed)} className="px-2 py-1 rounded btn-accent">Use as Input</button>
+              </div>
+            </div>
+            <pre className="mt-3 text-sm leading-6 whitespace-pre-wrap break-words font-mono select-text">{transformed}</pre>
+          </div>
+
+          {/* Universal Decoder */}
+          <div className="cp-pane cp-pane-teal rounded-2xl p-4 shadow-xl">
+            <h3 className="font-semibold mb-1">Universal Decoder (priority: {active.name})</h3>
+            <p className="text-xs opacity-70">Paste any encoded text below and I’ll try known methods in sequence.</p>
+            <DecoderPane priorityId={active.id} onCopy={copy}/>
+          </div>
+
+          {/* Copy History */}
+          <div className="cp-pane cp-pane-peach rounded-2xl p-4 shadow-xl">
+            <h3 className="font-semibold mb-2">Copy History</h3>
+            {copyHist.length===0? <div className="text-xs opacity-60">No copy history yet. Use the app to auto‑copy content.</div> : (
+              <div className="space-y-2">
+                {copyHist.map((it,i)=> (
+                  <div key={i} className="p-2 rounded-xl bg-zinc-950/60 border border-zinc-800 text-xs">
+                    <div className="opacity-60 mb-1">{it.source} • {it.timestamp}</div>
+                    <div className="break-words whitespace-pre-wrap">{it.content}</div>
+                    <button onClick={()=>copy(it.content, it.source+" (again)")} className="mt-1 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700">Copy Again</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Diagnostics & Tests */}
+          <TestsPanel />
+        </section>
+      </div>
+
+      <footer className="mt-8 text-center text-xs opacity-60">
+        Built for Zach + Zalgo Lexigon • Plugin‑based transforms • Unicode only.
+      </footer>
+    </div>
+  );
+}
+
+/******************** Decoder Pane ********************/
+function DecoderPane({priorityId,onCopy}){
+  const [decodeInput,setDecodeInput]=useState("");
+  const [result,setResult]=useState({method:"None", text:""});
+  useEffect(()=>{ setResult(universalDecode(decodeInput, priorityId)); },[decodeInput, priorityId]);
+  return (
+    <div>
+      <textarea value={decodeInput} onChange={e=>setDecodeInput(e.target.value)} rows={5} className="w-full bg-zinc-950/60 border border-zinc-800 rounded-xl p-2" placeholder="Paste encoded text…"/>
+      <div className="flex items-center justify-between mt-2">
+        <div className="text-xs opacity-70">Decoded using: <span className="opacity-100 font-mono">{result.method}</span></div>
+        <div className="flex gap-2 text-xs">
+          <button onClick={()=>onCopy(result.text || "", "Universal Decode")} className="px-2 py-1 rounded btn-accent">Copy</button>
+          <button onClick={()=>setDecodeInput(result.text||"")} className="px-2 py-1 rounded btn-accent">Use as Input</button>
+        </div>
+      </div>
+      <pre className="mt-2 text-sm leading-6 whitespace-pre-wrap break-words font-mono select-text">{result.text}</pre>
+    </div>
+  );
+}
+
+/******************** Inline Test Suite ********************/
+function TestsPanel(){
+  const [running,setRunning]=useState(false);
+  const [results,setResults]=useState([]);
+  const sample = "Lexigon field ~ 🜏 mirror test 123";
+
+  const pass=(name,detail)=>({name,status:"pass",detail});
+  const fail=(name,detail)=>({name,status:"fail",detail});
+
+  const run = async () => {
+    setRunning(true);
+    const out=[];
+    try {
+      // 1. Base64 round‑trip
+      const b64=T.base64.encode(sample); const b64d=T.base64.decode(b64);
+      out.push((b64d===sample)?pass("Base64","round‑trip OK"):fail("Base64",`decoded='${b64d}'`));
+
+      // 2. URL encode round‑trip
+      const url=T.url.encode(sample); const urld=T.url.decode(url);
+      out.push((urld===sample)?pass("URL","round‑trip OK"):fail("URL",`decoded='${urld}'`));
+
+      // 3. Hex round‑trip
+      const hex=T.hex.encode(sample); const hexd=T.hex.decode(hex);
+      out.push((hexd===sample)?pass("Hex","round‑trip OK"):fail("Hex",`decoded='${hexd}'`));
+
+      // 4. Binary round‑trip
+      const bin=T.binary.encode(sample); const bind=T.binary.decode(bin);
+      out.push((bind===sample)?pass("Binary","round‑trip OK"):fail("Binary",`decoded='${bind}'`));
+
+      // 5. Caesar(13) round‑trip
+      const cae=T.caesar.encode(sample,{shift:13}); const cad=T.caesar.decode(cae,{shift:13});
+      out.push((cad===sample)?pass("Caesar","round‑trip OK"):fail("Caesar",`decoded='${cad}'`));
+
+      // 6. Vigenère('lexigon') round‑trip
+      const vge=T.vigenere.encode(sample,{key:'lexigon'}); const vgd=T.vigenere.decode(vge,{key:'lexigon'});
+      out.push((vgd===sample)?pass("Vigenère","round‑trip OK"):fail("Vigenère",`decoded='${vgd}'`));
+
+      // 7. Emoji‑Base64 round‑trip
+      const e64=T.emoji64.encode(sample,{palette:'symbols'}); const e64d=T.emoji64.decode(e64,{palette:'symbols'});
+      out.push((e64d===sample)?pass("Emoji‑64","round‑trip OK"):fail("Emoji‑64",`decoded='${e64d}'`));
+
+      // 8. Fullwidth round‑trip
+      const fwe=T.fullwidth.encode(sample); const fwd=T.fullwidth.decode(fwe);
+      out.push((fwd===sample)?pass("Fullwidth","round‑trip OK"):fail("Fullwidth",`decoded='${fwd}'`));
+
+      // 9. Upside‑Down round‑trip
+      const upe=T.upside.encode(sample); const upd=T.upside.decode(upe);
+      out.push((upd===sample)?pass("Upside‑Down","round‑trip OK"):fail("Upside‑Down",`decoded='${upd}'`));
+
+      // 10. Zero‑Width stego round‑trip
+      const hidden=T.invisible.encode("secret",{carrier:'endOfText',cover:sample}); const reveal=T.invisible.decode(hidden);
+      out.push((reveal==="secret")?pass("Invisible Carrier","decoded payload OK"):fail("Invisible Carrier",`decoded='${reveal}'`));
+
+      // 11. Zalgo → stripCombining (moderate)
+      const z=zalgoize(sample,{style:'classic',intensity:35,allowUp:true,allowMid:true,allowDown:true,seed:1337});
+      const cleaned=stripCombining(z);
+      out.push((cleaned===stripCombining(sample))?pass("Zalgo→Strip (35)","normalized equals original without marks"):fail("Zalgo→Strip (35)",`got='${cleaned}'`));
+
+      // 12. Zero‑Width Insert % → strip
+      const zwe=T.zwInsert.encode(sample,{rate:0.5,seed:7}); const zwd=T.zwInsert.decode(zwe);
+      out.push((zwd===sample)?pass("Zero‑Width Insert","cleaned equals original"):fail("Zero‑Width Insert",`decoded='${zwd}'`));
+
+      // 13. Zalgo extreme (300) → stripCombining
+      const zx=zalgoize(sample,{style:'spike',intensity:300,allowUp:true,allowMid:true,allowDown:true,seed:42});
+      const zxClean=stripCombining(zx);
+      out.push((zxClean===stripCombining(sample))?pass("Zalgo→Strip (300)","extreme normalized OK"):fail("Zalgo→Strip (300)",`got='${zxClean}'`));
+
+      // 14. Homoglyph rate 0 keeps text identical
+      const hg=T.homoglyph.encode(sample,{rate:0,seed:5});
+      out.push((hg===sample)?pass("Homoglyph 0%","unchanged"):fail("Homoglyph 0%",`changed='${hg}'`));
+
+      // 15. Caesar shift 0 is identity
+      const ca0e=T.caesar.encode(sample,{shift:0}); const ca0d=T.caesar.decode(sample,{shift:0});
+      out.push((ca0e===sample && ca0d===sample)?pass("Caesar 0","identity OK"):fail("Caesar 0",`enc='${ca0e}', dec='${ca0d}'`));
+
+      // 16. Emoji‑64 (faces palette) round‑trip
+      const efaces=T.emoji64.encode(sample,{palette:'faces'}); const efacesD=T.emoji64.decode(efaces,{palette:'faces'});
+      out.push((efacesD===sample)?pass("Emoji‑64 faces","round‑trip OK"):fail("Emoji‑64 faces",`decoded='${efacesD}'`));
+
+      // 17. Rootglow downward bias
+      const pal=STYLES.rootglow; const RG=zalgoize(sample,{style:'rootglow',intensity:180,allowUp:true,allowMid:true,allowDown:true,seed:7});
+      const SUp=new Set(pal.up), SMid=new Set(pal.mid), SDown=new Set(pal.down); let cUp=0,cMid=0,cDown=0;
+      for(const ch of RG.normalize('NFD')){ if(SUp.has(ch)) cUp++; else if(SMid.has(ch)) cMid++; else if(SDown.has(ch)) cDown++; }
+      const totalMarks=cUp+cMid+cDown; const downShare=totalMarks? (cDown/totalMarks):0;
+      out.push((downShare>=0.6 && cDown>cUp && cDown>cMid)?pass("Rootglow bias",`down=${cDown}, up=${cUp}, mid=${cMid}`):fail("Rootglow bias",`down=${cDown}, up=${cUp}, mid=${cMid}`));
+
+    } finally { setResults(out); setRunning(false); }
+  };
+
+  const passes=results.filter(r=>r.status==='pass').length; const total=results.length;
+
+  return (
+    <div className="cp-pane cp-pane-green rounded-2xl p-4 shadow-xl">
+      <div className="flex items-center justify-between">
+        <h3 className="font-semibold">Diagnostics & Tests</h3>
+        <button onClick={run} disabled={running} className="px-2 py-1 rounded btn-accent text-xs">{running? 'Running…' : 'Run Test Suite'}</button>
+      </div>
+      {total>0 && (<div className="mt-2 text-xs opacity-80">{passes}/{total} passed</div>)}
+      <div className="mt-2 space-y-1">
+        {results.map((r,i)=> (
+          <div key={i} className={`text-xs ${r.status==='pass'?'text-[var(--ctp-green)]':'text-[var(--ctp-red)]'}`}>
+            {r.status==='pass' ? '✔' : '✖'} {r.name} — {r.detail}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+    class ErrorBoundary extends React.Component {
+      constructor(p){ super(p); this.state = { error:null }; }
+      static getDerivedStateFromError(e){ return { error:e }; }
+      componentDidCatch(e, info){ console.error('App crash:', e, info); }
+      render(){ return this.state.error
+        ? <pre style={{whiteSpace:'pre-wrap'}}>{String(this.state.error.stack || this.state.error)}</pre>
+        : this.props.children; }
+    }
+
+    // Render
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ErrorBoundary><App /></ErrorBoundary>);
+  </script>
+</body>
+</html>
