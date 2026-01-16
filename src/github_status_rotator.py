@@ -608,8 +608,8 @@ def main():
         # Update chronohex in README (handles both plain backticks and markdown links)
         import re
         updated_readme = re.sub(
-            r'### 🌀 Current (?:Recursive )?Pulse Log ⟳ ChronoSig ⟐ (?:`[^`]+`|\[`[^`]+`\]\([^)]+\)|<a href="[^"]*" target="_blank">`[^`]+`</a>)',
-            f'### 🌀 Current Pulse Log ⟳ ChronoSig ⟐ <a href="https://lexemancy.com/" target="_blank">`{chronotonic}`</a>',
+            r'### 🌀 Current (?:Recursive )?Pulse Log ⟳ ChronoHex ⟐ (?:`[^`]+`|\[`[^`]+`\]\([^)]+\)|<a href="[^"]*" target="_blank">`[^`]+`</a>)',
+            f'### 🌀 Current Pulse Log ⟳ ChronoHex ⟐ <a href="https://lexemancy.com/" target="_blank">`{chronotonic}`</a>',
             readme_content
         )
         
