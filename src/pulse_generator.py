@@ -618,6 +618,38 @@ FIELD_MAPPINGS = {
 }
 
 
+def append_to_cache(field_name: str, value: str) -> None:
+    """Append generated value to cache file for recursive feedback loop."""
+    cache_file_map = {
+        "status": "status_cache.txt",
+        "quote": "quote_cache.txt",
+        "glyph": "glyph_cache.txt",
+        "subject": "subject_cache.txt",
+        "echo": "echo_cache.txt",
+        "mode": "mode_cache.txt",
+        "end_quote": "end_quote_cache.txt",
+    }
+    
+    cache_file = CACHE_DIR / cache_file_map.get(field_name, f"{field_name}_cache.txt")
+    
+    try:
+        with cache_file.open("r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Append to cache section (after <-- slice: cache-->)
+        if "<-- slice: cache-->" in content:
+            # Append new value after cache marker
+            with cache_file.open("a", encoding="utf-8") as f:
+                f.write(f"\n{value}")
+            print(f"  📝 Cached {field_name}")
+        else:
+            print(f"  ⚠️ No cache section in {cache_file.name}")
+    except FileNotFoundError:
+        print(f"  ⚠️ Cache file not found: {cache_file}")
+    except Exception as e:
+        print(f"  ⚠️ Failed to cache {field_name}: {e}")
+
+
 def generate_all_pulse_fields() -> dict[str, Optional[str]]:
     """Generate all pulse fields using 3-phase hybrid architecture."""
     # Load config and select active backend once
@@ -651,6 +683,10 @@ def generate_all_pulse_fields() -> dict[str, Optional[str]]:
             if not results.get(field):
                 print(f"  ✗ Missing field: {field}")
                 return None
+        
+        # Cache structural batch results for recursive feedback
+        for field in ["status", "subject", "mode", "glyph", "echo"]:
+            append_to_cache(field, results[field])
     else:
         print("  ✗ Structural batch failed")
         return None
@@ -663,6 +699,7 @@ def generate_all_pulse_fields() -> dict[str, Optional[str]]:
     antenna_quote = generate_quote_with_template(active_backend, "antenna")
     if antenna_quote:
         results["quote"] = antenna_quote
+        append_to_cache("quote", antenna_quote)
     else:
         print("  ✗ Antenna quote failed")
         return None
@@ -675,6 +712,7 @@ def generate_all_pulse_fields() -> dict[str, Optional[str]]:
     end_quote = generate_quote_with_template(active_backend, "end")
     if end_quote:
         results["end_quote"] = end_quote
+        append_to_cache("end_quote", end_quote)
     else:
         print("  ✗ End quote failed")
         return None

@@ -164,11 +164,11 @@ def render_logs_index_html(log_dates: list[str], logs_dir: Path, icon_tag: str =
             except Exception:
                 pass
         
-        # Build list item with icon
+        # Build list item with icon - logs-index.html lives at root, so links need logs/ prefix
         if icon_url:
-            items.append(f'      <li><img src="{icon_url}" class="log-icon" alt=""> <a href="{d}.html">{d}</a></li>')
+            items.append(f'      <li><img src="{icon_url}" class="log-icon" alt=""> <a href="logs/{d}.html">{d}</a></li>')
         else:
-            items.append(f'      <li><a href="{d}.html">{d}</a></li>')
+            items.append(f'      <li><a href="logs/{d}.html">{d}</a></li>')
     
     log_items = "\n".join(items) if items else "      <li><em>No logs yet.</em></li>"
     
