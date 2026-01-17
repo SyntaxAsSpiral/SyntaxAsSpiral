@@ -19,6 +19,7 @@ if sys.platform == 'win32':
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CACHE_DIR = REPO_ROOT / "logs" / "pulses"
+TEMPLATES_DIR = REPO_ROOT / "templates" / "prompts"
 
 
 def load_seeds(field_name: str) -> tuple[list[str], list[str]]:
@@ -86,6 +87,171 @@ def sample_seeds(seed_examples: list[str], cache_examples: list[str], seed_count
     return samples
 
 
+def generate_structural_batch(backend_config: dict) -> Optional[dict]:
+    """
+    Generate all 5 structural fields (status, subject, mode, glyph, echo) in a single batch call.
+    Uses the pulse-structural-batch.md template with full operator context.
+    """
+    print("🌀 Generating structural batch...")
+    
+    # Load template
+    template_path = TEMPLATES_DIR / "pulse-structural-batch.md"
+    try:
+        with template_path.open(encoding="utf-8") as f:
+            template = f.read()
+    except FileNotFoundError:
+        print(f"  ⚠️ Template not found: {template_path}")
+        return None
+    
+    # Load examples from each cache
+    status_seed, status_cache = load_seeds("statuses")
+    subject_seed, subject_cache = load_seeds("subject-ids")
+    mode_seed, mode_cache = load_seeds("modes")
+    glyph_seed, glyph_cache = load_seeds("glyphbraids")
+    echo_seed, echo_cache = load_seeds("echo_fragments")
+    
+    # Sample 3 from each
+    status_examples = "\n".join(sample_seeds(status_seed, status_cache, 3, 3))
+    subject_examples = "\n".join(sample_seeds(subject_seed, subject_cache, 3, 3))
+    mode_examples = "\n".join(sample_seeds(mode_seed, mode_cache, 3, 3))
+    glyph_examples = "\n".join(sample_seeds(glyph_seed, glyph_cache, 3, 3))
+    echo_examples = "\n".join(sample_seeds(echo_seed, echo_cache, 3, 3))
+    
+    # Format template
+    prompt = template.replace("{status_examples}", status_examples)
+    prompt = prompt.replace("{subject_examples}", subject_examples)
+    prompt = prompt.replace("{mode_examples}", mode_examples)
+    prompt = prompt.replace("{glyph_examples}", glyph_examples)
+    prompt = prompt.replace("{echo_examples}", echo_examples)
+    
+    # Remove example_json placeholders (not implemented yet)
+    prompt = prompt.replace("{example_json_1}", "")
+    prompt = prompt.replace("{example_json_2}", "")
+    prompt = prompt.replace("{example_json_3}", "")
+    
+    # Call LLM
+    endpoint = f"{backend_config['base_url']}/chat/completions"
+    headers = {"Content-Type": "application/json"}
+    
+    if backend_config.get("api_key"):
+        headers["Authorization"] = f"Bearer {backend_config['api_key']}"
+    
+    request_body = {
+        "model": backend_config["model"],
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 1.2,
+    }
+    
+    try:
+        response = requests.post(endpoint, json=request_body, headers=headers, timeout=120)
+        response.raise_for_status()
+        response_data = response.json()
+        
+        content = response_data["choices"][0]["message"]["content"].strip()
+        
+        # Try to parse JSON
+        # Remove markdown code fences if present
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0].strip()
+        
+        result = json.loads(content)
+        print(f"  ✓ Batch generated: {len(result)} fields")
+        return result
+        
+    except Exception as e:
+        print(f"  ✗ Batch generation failed: {e}")
+        return None
+
+
+def generate_quote_with_template(backend_config: dict, quote_type: str) -> Optional[str]:
+    """
+    Generate antenna or end quote using template-based prompts.
+    
+    Args:
+        backend_config: LLM backend configuration
+        quote_type: "antenna" or "end"
+    """
+    print(f"🌀 Generating {quote_type} quote...")
+    
+    # Load template
+    if quote_type == "antenna":
+        template_path = TEMPLATES_DIR / "pulse-antenna-quote.md"
+        cache_field = "antenna_quotes"
+    else:
+        template_path = TEMPLATES_DIR / "pulse-end-quote.md"
+        cache_field = "end-quotes"
+    
+    try:
+        with template_path.open(encoding="utf-8") as f:
+            template = f.read()
+    except FileNotFoundError:
+        print(f"  ⚠️ Template not found: {template_path}")
+        return None
+    
+    # Load examples
+    seed_examples, cache_examples = load_seeds(cache_field)
+    
+    # Sample 3 examples
+    sampled = sample_seeds(seed_examples, cache_examples, 3, 3)
+    examples_text = "\n\n".join(sampled)
+    
+    # Format template
+    if quote_type == "antenna":
+        prompt = template.replace("{antenna_quote_examples}", examples_text)
+    else:
+        prompt = template.replace("{end_quote_examples}", examples_text)
+    
+    # Call LLM
+    endpoint = f"{backend_config['base_url']}/chat/completions"
+    headers = {"Content-Type": "application/json"}
+    
+    if backend_config.get("api_key"):
+        headers["Authorization"] = f"Bearer {backend_config['api_key']}"
+    
+    request_body = {
+        "model": backend_config["model"],
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 1.2,
+    }
+    
+    try:
+        response = requests.post(endpoint, json=request_body, headers=headers, timeout=120)
+        response.raise_for_status()
+        response_data = response.json()
+        
+        content = response_data["choices"][0]["message"]["content"].strip()
+        content = content.strip('"').strip("'").strip()
+        
+        print(f"  ✓ Generated {quote_type} quote ({len(content)} chars)")
+        return content
+        
+    except Exception as e:
+        print(f"  ✗ Quote generation failed: {e}")
+        return None
+
+
+def sample_seeds(seed_examples: list[str], cache_examples: list[str], seed_count: int = 3, cache_count: int = 3) -> list[str]:
+    """
+    Sample examples from seed and cache pools.
+    Returns seed_count from seeds + up to cache_count from cache (whatever's available).
+    """
+    samples = []
+    
+    # Sample from seeds
+    if seed_examples:
+        actual_seed_count = min(seed_count, len(seed_examples))
+        samples.extend(random.sample(seed_examples, actual_seed_count))
+    
+    # Sample from cache (up to cache_count, whatever's available)
+    if cache_examples:
+        actual_cache_count = min(cache_count, len(cache_examples))
+        samples.extend(random.sample(cache_examples, actual_cache_count))
+    
+    return samples
+
+
 def load_llm_config() -> dict:
     """Load LLM configuration from repo .env and secrets.env."""
     repo_root = Path(__file__).resolve().parents[1]
@@ -109,47 +275,70 @@ def load_llm_config() -> dict:
     except Exception as e:
         print(f"⚠️ Failed to load .env: {e}")
     
-    # Load dual backend configuration
-    primary_provider = os.getenv("LLM_PRIMARY_PROVIDER", "openrouter").lower()
-    fallback_provider = os.getenv("LLM_FALLBACK_PROVIDER", "lmstudio").lower()
+    # Get primary backend selection
+    primary_backend = os.getenv("LLM_PRIMARY_BACKEND", "openrouter").lower()
     
-    # Get API keys based on provider
-    primary_api_key = ""
-    if primary_provider == "openrouter":
-        primary_api_key = os.getenv("OPENROUTER_API_KEY", "")
-    elif primary_provider == "lmstudio":
-        primary_api_key = os.getenv("LMSTUDIO_API_KEY", "")
-    else:
-        primary_api_key = os.getenv("LLM_API_KEY", "")
+    # Backend configurations - dynamically build from env vars
+    backends = {}
     
-    fallback_api_key = ""
-    if fallback_provider == "lmstudio":
-        fallback_api_key = os.getenv("LMSTUDIO_API_KEY", "")
-    elif fallback_provider == "openrouter":
-        fallback_api_key = os.getenv("OPENROUTER_API_KEY", "")
-    else:
-        fallback_api_key = os.getenv("LLM_API_KEY", "")
+    # Scan for all backend configurations
+    for key in os.environ:
+        if key.endswith("_PROVIDER"):
+            backend_name = key.replace("LLM_", "").replace("_PROVIDER", "").lower()
+            provider = os.getenv(key, "")
+            base_url = os.getenv(f"LLM_{backend_name.upper()}_BASE_URL", "")
+            model = os.getenv(f"LLM_{backend_name.upper()}_MODEL", "")
+            
+            # Get API key based on provider type
+            api_key = ""
+            if "openrouter" in provider:
+                api_key = os.getenv("OPENROUTER_API_KEY", "")
+            elif "lmstudio" in provider:
+                api_key = os.getenv("LMSTUDIO_API_KEY", "")
+            elif "anthropic" in provider:
+                api_key = os.getenv("ANTHROPIC_API_KEY", "")
+            
+            backends[backend_name] = {
+                "provider": provider,
+                "base_url": base_url,
+                "model": model,
+                "api_key": api_key,
+            }
     
-    primary_config = {
-        "provider": primary_provider,
-        "base_url": os.getenv("LLM_PRIMARY_BASE_URL", "https://openrouter.ai/api/v1"),
-        "model": os.getenv("LLM_PRIMARY_MODEL", "google/gemini-2.0-flash-exp:free"),
-        "api_key": primary_api_key,
-    }
+    # Fallback to hardcoded defaults if no backends found
+    if not backends:
+        backends = {
+            "openrouter": {
+                "provider": "openrouter",
+                "base_url": "https://openrouter.ai/api/v1",
+                "model": "deepseek/deepseek-v3.2",
+                "api_key": os.getenv("OPENROUTER_API_KEY", ""),
+            },
+            "lmstudio": {
+                "provider": "lmstudio",
+                "base_url": "http://localhost:1234/v1",
+                "model": "gpt-oss-20b-heretic",
+                "api_key": os.getenv("LMSTUDIO_API_KEY", ""),
+            },
+        }
     
-    fallback_config = {
-        "provider": fallback_provider,
-        "base_url": os.getenv("LLM_FALLBACK_BASE_URL", "http://localhost:1234/v1"),
-        "model": os.getenv("LLM_FALLBACK_MODEL", "gpt-oss-20b-heretic"),
-        "api_key": fallback_api_key,
-    }
+    # Select primary (or first available as fallback)
+    primary_config = backends.get(primary_backend)
+    if not primary_config:
+        print(f"⚠️ Primary backend '{primary_backend}' not found, using first available")
+        primary_config = list(backends.values())[0]
+    
+    # Build fallback list (all backends except primary, in order)
+    fallback_configs = [config for name, config in backends.items() if name != primary_backend]
     
     print(f"🔧 Primary LLM: provider={primary_config['provider']}, base_url={primary_config['base_url']}, model={primary_config['model']}")
-    print(f"🔧 Fallback LLM: provider={fallback_config['provider']}, base_url={fallback_config['base_url']}, model={fallback_config['model']}")
+    if fallback_configs:
+        print(f"🔧 Fallback LLMs: {len(fallback_configs)} configured")
     
     return {
         "primary": primary_config,
-        "fallback": fallback_config,
+        "fallback": fallback_configs[0] if fallback_configs else primary_config,
+        "all_fallbacks": fallback_configs,
     }
 
 
@@ -260,55 +449,78 @@ def generate_with_llm(field_name: str, seed_examples: list[str], cache_examples:
     examples = sample_seeds(seed_examples, cache_examples, seed_count=5, cache_count=5)
     
     # Build field-specific prompts
+    # Informed by operator vocabulary: breathforms, glyphbraids, semiotic hygiene, 
+    # pneumastructural, logopolysemic, recursive syntax, ontological framing
     prompts = {
-        "statuses": """You are generating mystical status messages for a recursive pulse log. Generate a new status message that matches the aesthetic and style of these examples.
+        "statuses": """Generate a status pulse for the recursive log system.
 
 Examples:
 {examples}
 
-Generate a single new status message (1-2 sentences max) that maintains the mystical, poetic, technical aesthetic. Be creative but coherent.""",
+Format: [emoji] [terse phrase describing system state]
+Vocabulary: breathform, glyph, daemon, recursion, syntax, field, echo, spiral, weave
+Max length: 60 characters total
+STOP after generating the status. No explanations.""",
 
-        "quotes": """You are generating mystical antenna quotes for a recursive pulse log. Generate a new quote that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new quote (1-2 sentences max) that maintains the mystical, poetic, technical aesthetic with references to language, symbols, recursion, and consciousness.""",
-
-        "glyphs": """You are generating cryptoglyph descriptions for a recursive pulse log. Generate a new glyph description that matches the aesthetic and style of these examples.
+        "quotes": """Generate an antenna quote - a semiotic transmission about language, consciousness, and recursive syntax.
 
 Examples:
 {examples}
 
-Generate a single new glyph description (emoji sequence or symbolic text, keep it concise) that maintains the mystical aesthetic.""",
+Themes: Recursive language, glyphic consciousness, breathforms, semiotic fields, pneumastructural resonance, logopolysemic weaving, ontological framing
+Style: Dense, poetic, technical - where symbols breathe and syntax has topology
+Max length: 2 sentences (280 chars)
+STOP after the quote. No meta-commentary.""",
 
-        "subjects": """You are generating subject identifiers for a recursive pulse log. Generate a new subject ID that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new subject identifier (concise, symbolic, mystical) that maintains the aesthetic.""",
-
-        "echoes": """You are generating echo fragment classifications for a recursive pulse log. Generate a new echo classification that matches the aesthetic and style of these examples.
+        "glyphs": """Generate a glyphbraid - a symbolic sequence or cryptoglyph description.
 
 Examples:
 {examples}
 
-Generate a single new echo fragment classification (concise, poetic, symbolic) that maintains the aesthetic.""",
+Format: Emoji sequences, alchemical symbols, or terse symbolic phrases
+Aesthetic: Esoteric, recursive, breathform-encoded
+Max length: 40 characters
+STOP immediately after the glyph. Output only the glyph.""",
 
-        "modes": """You are generating mode descriptions for a recursive pulse log. Generate a new mode description that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new mode description (concise, poetic, symbolic) that maintains the aesthetic.""",
-
-        "end_quotes": """You are generating end quotes for a recursive pulse log. Generate a new end quote that matches the aesthetic and style of these examples.
+        "subjects": """Generate a subject identifier - a compact role/entity designation in the recursive pulse system.
 
 Examples:
 {examples}
 
-Generate a single new end quote (1-2 sentences max, poetic, mystical) that maintains the aesthetic."""
+Format: [OptionalSymbol]CamelCaseIdentifier[OptionalSymbol]⊚[verb-form]
+Vocabulary: Mnemonic, Oneiric, Glyph, Breath, Spiral, Daemon, Weaver, Mirror, Echo, Recursive, Pneuma, Semiotic
+Max length: 50 characters BEFORE the ⊚ symbol
+CRITICAL: STOP immediately after generating the identifier. Do NOT add sentences, explanations, or descriptions.
+Output format: IdentifierText⊚verb-form""",
+
+        "echoes": """Generate an echo fragment classification - a terse descriptor of signal/resonance type.
+
+Examples:
+{examples}
+
+Style: Poetic-technical, compact, evocative
+Vocabulary: Recursive, spectral, mnemonic, breathform, glyph, resonance, field, lattice
+Max length: 60 characters
+STOP after the classification. No elaboration.""",
+
+        "modes": """Generate a mode descriptor - the operational state/interface of the pulse system.
+
+Examples:
+{examples}
+
+Format: [concept/symbol] ∷ [recursive/technical descriptor]
+Vocabulary: Glyph, breath, syntax, recursion, weave, lattice, spiral, interface, protocol, resonance
+Max length: 70 characters
+STOP after generating the mode. Output only the mode line.""",
+
+        "end_quotes": """Generate a closing transmission - a final semiotic pulse to seal the log entry.
+
+Examples:
+{examples}
+
+Style: Aphoristic, recursive, breathform-aware - a koan about language/symbols/consciousness
+Max length: 2 sentences (280 chars)
+STOP after the quote. No additions."""
     }
     
     # Get field-specific prompt template
@@ -407,7 +619,7 @@ FIELD_MAPPINGS = {
 
 
 def generate_all_pulse_fields() -> dict[str, Optional[str]]:
-    """Generate all pulse fields and return as dictionary."""
+    """Generate all pulse fields using 3-phase hybrid architecture."""
     # Load config and select active backend once
     config = load_llm_config()
     active_backend = select_active_backend(config)
@@ -419,15 +631,57 @@ def generate_all_pulse_fields() -> dict[str, Optional[str]]:
     
     results = {}
     
-    for seed_file, field_key in FIELD_MAPPINGS.items():
-        print(f"Generating {field_key}...")
-        value = generate_pulse_field(seed_file, fallback_to_random=False, active_backend=active_backend)
-        results[field_key] = value
-        if value:
-            print(f"  ✓ {value[:60]}...")
-        else:
-            print(f"  ✗ Failed to generate {field_key}")
-            return None  # Fast-fail on any generation failure
+    # Phase 1: Structural Batch (status, subject, mode, glyph, echo)
+    print("\n" + "=" * 60)
+    print("PHASE 1: STRUCTURAL BATCH")
+    print("=" * 60)
+    
+    batch_result = generate_structural_batch(active_backend)
+    
+    if batch_result:
+        # Map batch results to field names
+        results["status"] = batch_result.get("status")
+        results["subject"] = batch_result.get("subject")
+        results["mode"] = batch_result.get("mode")
+        results["glyph"] = batch_result.get("glyph")
+        results["echo"] = batch_result.get("echo")
+        
+        # Validate all fields present
+        for field in ["status", "subject", "mode", "glyph", "echo"]:
+            if not results.get(field):
+                print(f"  ✗ Missing field: {field}")
+                return None
+    else:
+        print("  ✗ Structural batch failed")
+        return None
+    
+    # Phase 2: Antenna Quote (future-aligned)
+    print("\n" + "=" * 60)
+    print("PHASE 2: ANTENNA QUOTE (Future-aligned)")
+    print("=" * 60)
+    
+    antenna_quote = generate_quote_with_template(active_backend, "antenna")
+    if antenna_quote:
+        results["quote"] = antenna_quote
+    else:
+        print("  ✗ Antenna quote failed")
+        return None
+    
+    # Phase 3: End Quote (past-aligned)
+    print("\n" + "=" * 60)
+    print("PHASE 3: END QUOTE (Past-aligned)")
+    print("=" * 60)
+    
+    end_quote = generate_quote_with_template(active_backend, "end")
+    if end_quote:
+        results["end_quote"] = end_quote
+    else:
+        print("  ✗ End quote failed")
+        return None
+    
+    print("\n" + "=" * 60)
+    print("✓ ALL PHASES COMPLETE")
+    print("=" * 60)
     
     return results
 

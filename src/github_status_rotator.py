@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # Import pulse generator
 try:
-    from pulse_generator import generate_pulse_field, FIELD_MAPPINGS
+    from pulse_generator import generate_all_pulse_fields, FIELD_MAPPINGS
     PULSE_GENERATOR_AVAILABLE = True
 except ImportError:
     PULSE_GENERATOR_AVAILABLE = False
@@ -467,35 +467,40 @@ def main():
         
         print(f"  ✓ Using {active_backend['provider']} backend")
     
-    # Generate pulse fields in parallel (LLM with fallback)
+    # Generate pulse fields using 3-phase hybrid architecture
     print("🌀 Generating pulse fields...")
     
-    # Prepare worker arguments
-    field_args = [
-        ("status", "statuses", STATUS_LIST, STATUS_CACHE_FILE, STATUS_CACHE_LIMIT),
-        ("quote", "antenna_quotes", QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT),
-        ("glyph", "glyphbraids", GLYPH_LIST, GLYPH_CACHE_FILE, GLYPH_CACHE_LIMIT),
-        ("subject", "subject-ids", SUBJECT_LIST, SUBJECT_CACHE_FILE, SUBJECT_CACHE_LIMIT),
-        ("echo", "echo_fragments", ECHO_LIST, ECHO_CACHE_FILE, ECHO_CACHE_LIMIT),
-        ("end_quote", "end-quotes", END_QUOTE_LIST, END_QUOTE_CACHE_FILE, END_QUOTE_CACHE_LIMIT),
-        ("mode", "modes", MODE_LIST, MODE_CACHE_FILE, MODE_CACHE_LIMIT),
-    ]
-    
-    # Generate in parallel (max 2 workers to avoid rate limits)
     results = {}
     if active_backend and PULSE_GENERATOR_AVAILABLE:
-        # Parallel LLM generation (limited to 2 for LMStudio/OpenRouter compatibility)
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            futures = {
-                executor.submit(generate_field_worker, (field_name, seed_file, fallback_list, cache_path, cache_limit, active_backend)): field_name
-                for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args
-            }
-            
-            for future in as_completed(futures):
-                field_name, value = future.result()
+        # Use new 3-phase batch generation
+        results = generate_all_pulse_fields()
+        
+        if not results:
+            print("  ✗ Pulse generation failed, falling back to batch cycling")
+            # Fallback to batch cycling
+            field_args = [
+                ("status", "statuses", STATUS_LIST, STATUS_CACHE_FILE, STATUS_CACHE_LIMIT),
+                ("quote", "antenna_quotes", QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT),
+                ("glyph", "glyphbraids", GLYPH_LIST, GLYPH_CACHE_FILE, GLYPH_CACHE_LIMIT),
+                ("subject", "subject-ids", SUBJECT_LIST, SUBJECT_CACHE_FILE, SUBJECT_CACHE_LIMIT),
+                ("echo", "echo_fragments", ECHO_LIST, ECHO_CACHE_FILE, ECHO_CACHE_LIMIT),
+                ("end_quote", "end-quotes", END_QUOTE_LIST, END_QUOTE_CACHE_FILE, END_QUOTE_CACHE_LIMIT),
+                ("mode", "modes", MODE_LIST, MODE_CACHE_FILE, MODE_CACHE_LIMIT),
+            ]
+            for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args:
+                value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, None)
                 results[field_name] = value
     else:
-        # Sequential fallback
+        # Sequential fallback (no LLM available)
+        field_args = [
+            ("status", "statuses", STATUS_LIST, STATUS_CACHE_FILE, STATUS_CACHE_LIMIT),
+            ("quote", "antenna_quotes", QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT),
+            ("glyph", "glyphbraids", GLYPH_LIST, GLYPH_CACHE_FILE, GLYPH_CACHE_LIMIT),
+            ("subject", "subject-ids", SUBJECT_LIST, SUBJECT_CACHE_FILE, SUBJECT_CACHE_LIMIT),
+            ("echo", "echo_fragments", ECHO_LIST, ECHO_CACHE_FILE, ECHO_CACHE_LIMIT),
+            ("end_quote", "end-quotes", END_QUOTE_LIST, END_QUOTE_CACHE_FILE, END_QUOTE_CACHE_LIMIT),
+            ("mode", "modes", MODE_LIST, MODE_CACHE_FILE, MODE_CACHE_LIMIT),
+        ]
         for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args:
             value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, None)
             results[field_name] = value

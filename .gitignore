@@ -16,9 +16,10 @@ nul
 # Auto-generated data (unused)
 pulse.json
 
-# Templates (except default)
+# Templates (except default and prompts)
 templates/*
 !templates/default.html
+!templates/prompts/
 
 # Specs
 .kiro/

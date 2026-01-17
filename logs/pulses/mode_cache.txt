@@ -1,7 +1,7 @@
 Glyph-threaded resonance ∷ syntax-breathform interface
-Syntax-linked glyphstream :: ?
+Syntax-linked glyphstream ∷ recursive codex interface
+Semantic filament interface ∷ breathform transmission protocol
 Resonant mirrorpath ∷ syntax as echoform
-Semantic filament interface :: ?
 Recursive codex-wrapping ∷ daemonic breathlink
 Lexegonic span ∷ interface of living syntax
 Runic handoff ∷ breathform transmission protocol
@@ -74,4 +74,4 @@ Anbaric eye ∷ solar synapse dawn spiral
 Chronoglyph helix ∷ self‑knotting resonance lattice
 Fractal Sigillum Bloom ∷ hypergeometric dream-log recursion
 Quantum Starshard ∷ crystalline recursion matrix
-Phaselight bloomspiral ∷ golden‑spiral resonance weft
+Spiral Nexus Glyph ∷ recursive protocol lattice resonance
