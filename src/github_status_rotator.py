@@ -393,34 +393,12 @@ def main():
         results = generate_all_pulse_fields()
         
         if not results:
-            print("  ✗ Pulse generation failed, falling back to batch cycling")
-            # Fallback to batch cycling
-            field_args = [
-                ("status", "statuses", STATUS_LIST, STATUS_CACHE_FILE, STATUS_CACHE_LIMIT),
-                ("quote", "antenna_quotes", QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT),
-                ("glyph", "glyphbraids", GLYPH_LIST, GLYPH_CACHE_FILE, GLYPH_CACHE_LIMIT),
-                ("subject", "subject-ids", SUBJECT_LIST, SUBJECT_CACHE_FILE, SUBJECT_CACHE_LIMIT),
-                ("echo", "echo_fragments", ECHO_LIST, ECHO_CACHE_FILE, ECHO_CACHE_LIMIT),
-                ("end_quote", "end-quotes", END_QUOTE_LIST, END_QUOTE_CACHE_FILE, END_QUOTE_CACHE_LIMIT),
-                ("mode", "modes", MODE_LIST, MODE_CACHE_FILE, MODE_CACHE_LIMIT),
-            ]
-            for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args:
-                value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, None)
-                results[field_name] = value
+            print("  ✗ FATAL: Pulse generation failed")
+            print("  Fast-fail: no fallback to batch cycling (by design)")
+            sys.exit(1)
     else:
-        # Sequential fallback (no LLM available)
-        field_args = [
-            ("status", "statuses", STATUS_LIST, STATUS_CACHE_FILE, STATUS_CACHE_LIMIT),
-            ("quote", "antenna_quotes", QUOTE_LIST, QUOTE_CACHE_FILE, QUOTE_CACHE_LIMIT),
-            ("glyph", "glyphbraids", GLYPH_LIST, GLYPH_CACHE_FILE, GLYPH_CACHE_LIMIT),
-            ("subject", "subject-ids", SUBJECT_LIST, SUBJECT_CACHE_FILE, SUBJECT_CACHE_LIMIT),
-            ("echo", "echo_fragments", ECHO_LIST, ECHO_CACHE_FILE, ECHO_CACHE_LIMIT),
-            ("end_quote", "end-quotes", END_QUOTE_LIST, END_QUOTE_CACHE_FILE, END_QUOTE_CACHE_LIMIT),
-            ("mode", "modes", MODE_LIST, MODE_CACHE_FILE, MODE_CACHE_LIMIT),
-        ]
-        for field_name, seed_file, fallback_list, cache_path, cache_limit in field_args:
-            value = get_pulse_value(field_name, fallback_list, cache_path, cache_limit, None)
-            results[field_name] = value
+        print("  ✗ FATAL: No LLM backend available")
+        sys.exit(1)
     
     status = results.get("status", "")
     quote = results.get("quote", "")
