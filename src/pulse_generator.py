@@ -275,47 +275,70 @@ def load_llm_config() -> dict:
     except Exception as e:
         print(f"⚠️ Failed to load .env: {e}")
     
-    # Load dual backend configuration
-    primary_provider = os.getenv("LLM_PRIMARY_PROVIDER", "openrouter").lower()
-    fallback_provider = os.getenv("LLM_FALLBACK_PROVIDER", "lmstudio").lower()
+    # Get primary backend selection
+    primary_backend = os.getenv("LLM_PRIMARY_BACKEND", "openrouter").lower()
     
-    # Get API keys based on provider
-    primary_api_key = ""
-    if primary_provider == "openrouter":
-        primary_api_key = os.getenv("OPENROUTER_API_KEY", "")
-    elif primary_provider == "lmstudio":
-        primary_api_key = os.getenv("LMSTUDIO_API_KEY", "")
-    else:
-        primary_api_key = os.getenv("LLM_API_KEY", "")
+    # Backend configurations - dynamically build from env vars
+    backends = {}
     
-    fallback_api_key = ""
-    if fallback_provider == "lmstudio":
-        fallback_api_key = os.getenv("LMSTUDIO_API_KEY", "")
-    elif fallback_provider == "openrouter":
-        fallback_api_key = os.getenv("OPENROUTER_API_KEY", "")
-    else:
-        fallback_api_key = os.getenv("LLM_API_KEY", "")
+    # Scan for all backend configurations
+    for key in os.environ:
+        if key.endswith("_PROVIDER"):
+            backend_name = key.replace("LLM_", "").replace("_PROVIDER", "").lower()
+            provider = os.getenv(key, "")
+            base_url = os.getenv(f"LLM_{backend_name.upper()}_BASE_URL", "")
+            model = os.getenv(f"LLM_{backend_name.upper()}_MODEL", "")
+            
+            # Get API key based on provider type
+            api_key = ""
+            if "openrouter" in provider:
+                api_key = os.getenv("OPENROUTER_API_KEY", "")
+            elif "lmstudio" in provider:
+                api_key = os.getenv("LMSTUDIO_API_KEY", "")
+            elif "anthropic" in provider:
+                api_key = os.getenv("ANTHROPIC_API_KEY", "")
+            
+            backends[backend_name] = {
+                "provider": provider,
+                "base_url": base_url,
+                "model": model,
+                "api_key": api_key,
+            }
     
-    primary_config = {
-        "provider": primary_provider,
-        "base_url": os.getenv("LLM_PRIMARY_BASE_URL", "https://openrouter.ai/api/v1"),
-        "model": os.getenv("LLM_PRIMARY_MODEL", "google/gemini-2.0-flash-exp:free"),
-        "api_key": primary_api_key,
-    }
+    # Fallback to hardcoded defaults if no backends found
+    if not backends:
+        backends = {
+            "openrouter": {
+                "provider": "openrouter",
+                "base_url": "https://openrouter.ai/api/v1",
+                "model": "deepseek/deepseek-v3.2",
+                "api_key": os.getenv("OPENROUTER_API_KEY", ""),
+            },
+            "lmstudio": {
+                "provider": "lmstudio",
+                "base_url": "http://localhost:1234/v1",
+                "model": "gpt-oss-20b-heretic",
+                "api_key": os.getenv("LMSTUDIO_API_KEY", ""),
+            },
+        }
     
-    fallback_config = {
-        "provider": fallback_provider,
-        "base_url": os.getenv("LLM_FALLBACK_BASE_URL", "http://localhost:1234/v1"),
-        "model": os.getenv("LLM_FALLBACK_MODEL", "gpt-oss-20b-heretic"),
-        "api_key": fallback_api_key,
-    }
+    # Select primary (or first available as fallback)
+    primary_config = backends.get(primary_backend)
+    if not primary_config:
+        print(f"⚠️ Primary backend '{primary_backend}' not found, using first available")
+        primary_config = list(backends.values())[0]
+    
+    # Build fallback list (all backends except primary, in order)
+    fallback_configs = [config for name, config in backends.items() if name != primary_backend]
     
     print(f"🔧 Primary LLM: provider={primary_config['provider']}, base_url={primary_config['base_url']}, model={primary_config['model']}")
-    print(f"🔧 Fallback LLM: provider={fallback_config['provider']}, base_url={fallback_config['base_url']}, model={fallback_config['model']}")
+    if fallback_configs:
+        print(f"🔧 Fallback LLMs: {len(fallback_configs)} configured")
     
     return {
         "primary": primary_config,
-        "fallback": fallback_config,
+        "fallback": fallback_configs[0] if fallback_configs else primary_config,
+        "all_fallbacks": fallback_configs,
     }
 
 
