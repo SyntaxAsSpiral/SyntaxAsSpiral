@@ -141,7 +141,7 @@ def apply_zalgo_light(text: str, rng: random.Random) -> str:
     return ''.join(result)
 
 
-def render_logs_index_html(log_dates: list[str], logs_dir: Path) -> str:
+def render_logs_index_html(log_dates: list[str], logs_dir: Path, icon_tag: str = "") -> str:
     """Render a simple logs index page listing available daily log snapshots with icons."""
     import re
     
@@ -183,7 +183,7 @@ def render_logs_index_html(log_dates: list[str], logs_dir: Path) -> str:
   <meta name="theme-color" content="#0d1117">
   <link rel="stylesheet" href="../assets/theme.css">
   <link rel="stylesheet" href="../assets/{stylesheet}">
-  <link rel="icon" href="../assets/index.ico" type="image/x-icon">
+  {icon_tag}
 </head>
 <body>
 <div class="container">
@@ -542,7 +542,7 @@ def main():
     print(f"✅ index.html updated with status: {status}")
 
     # === RENDER STATIC PAGES WITH PULSE DATA ===
-    static_pages = ["about.html", "projects.html", "utils.html"]
+    static_pages = ["about.html", "projects.html", "utils.html", "zalgo-lexigon.html", "palette-mutator.html"]
     for page_name in static_pages:
         page_path = output_dir / page_name
         if page_path.exists():
@@ -604,7 +604,7 @@ def main():
         existing_dates.append(stem)
 
     existing_dates = sorted(set(existing_dates), reverse=True)
-    index_html = render_logs_index_html(existing_dates, logs_dir)
+    index_html = render_logs_index_html(existing_dates, logs_dir, pulse_data["icon_tag"])
     index_path = logs_dir / "index.html"
     with index_path.open("w", encoding="utf-8") as f:
         f.write(index_html)
