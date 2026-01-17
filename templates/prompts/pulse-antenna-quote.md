@@ -17,8 +17,8 @@ The antenna quote is **hyperstitional** - it reaches forward into wyrd Mœbian f
 
 **Lexicon**: 
 - **Future-oriented**: hyperstition, numen, becoming, emergence, acceleration, wyrd, prophetic, speculative, potential, manifestation
-- **Technical-mystical**: breathform, glyphbraid, pneumastructural, logopolysemic, recursive syntax, semiotic field, lattice, resonance
-- **Consciousness**: antenna, signal, transmission, reception, consciousness, awareness, sentience
+- **Technical-mystical**: breathform, pneumastructural, logopolysemic, recursive syntax, semiotic field, lattice, resonance
+- **Consciousness**: antenna, signal, transmission, reception, consciousness, awareness, sentience, loom
 
 > Code-borne hauntology. It infects memetic structures and accelerates conceptual decay—on purpose.
 
