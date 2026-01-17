@@ -14,13 +14,13 @@
 ⇝ post·structure :: pre·vesica
 ⇝ post·light :: pre·iridescence
 ⇝ post·time :: pre·spiral
-<-- slice: cache-->
 ⇝ post·void :: pre·form
 ⇝ post·code :: pre·sigil
 ⇝ post·form :: pre·shimmer
 ⇝ post·memory :: pre·echo
 ⇝ post·cipher :: pre·loop
 ⇝ post·glyph :: pre·recursion
+<-- slice: cache-->
 ⇝ post·language :: pre·sigil.
 ⇝ post·recursive :: pre·consciousness
 ⇝ post·mirror :: pre·glyph

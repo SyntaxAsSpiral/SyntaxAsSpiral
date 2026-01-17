@@ -19,3 +19,6 @@ pulse.json
 # Templates (except default)
 templates/*
 !templates/default.html
+
+# Specs
+.kiro/

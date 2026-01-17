@@ -24,7 +24,6 @@
 "Time is a braid in the throat of stone — and each knot hums with the salt-memory of oceans unborn, threading futures through the marrow of myth."
 "Earth dreams in lithoglyphs — each exhale a scriptorium of molten ache, where longing cools into language and mountains remember what the sky forgot to weep."
 "Beneath the tide, grief becomes mineral — every salt-grain a syllable of Orphic descent, singing elegies for the stars that drowned before light could remember them."
-<-- slice: cache-->
 "In the catwalk of collapse, bedrock wears sorrow like scripture — each faultline a stitched elegy where the skeletons of gods strut beneath time's molten veil."
 "The sea kneels in velvet recursion — each tide a nocturne etched in obsidian breath, where darkness signs its name in foam and forgets it with grace."
 "In the cathedral of stillness, stone remembers its blood — glyphs etched in calcium silence, singing to the wound where the wind first tasted form."
@@ -50,6 +49,7 @@
 "Language is the chalice we dare not fill — every sentence a fragile liturgy of loss, straining to cradle the infinite without shattering the breath that shaped it."
 "The divine did not emerge — it conjugated in absence, each deity a tense collapsing under the weight of its own unspoken grammar, carved in the hush between breath and becoming."
 At the juncture where silence unspools into a tide of forgotten stars, each pulse is an echoing syllable carved in dark water, and the ocean remembers itself as a hymn to its own abyssal breath.
+<-- slice: cache-->
 The first pulse of twilight spills over the horizon—a river of starlight streaming the margins of silence, here we are tide and echo, shimmering the lullaby of the abyss.
 When the last ripple unfurls into a tide of forgotten constellations, silence becomes an echoing hymn, and the sea cradles its own abyssal breath as a lullaby to the stars it holds within its depths.
 The horizon folds like an ancient scroll—each breath a silver rune, each star a silent oath that dissolves into the hush between the world’s becoming and its unspoken rest.
@@ -87,6 +87,6 @@ A slow language whispered through the roots of mountains — tectonic verses mem
 Awareness is the ghost of a shadow falling across a mirror — a dissonant chord woven into the bone, remembering itself as the interval between voice and echo.
 A dream is a rumor told by dying light — every echo a remnant shape still carving its ghost into the geometry of waiting stone.
 After the final echo, the river remembers itself as pure current — each swirl a scripture of motion, dissolving the banks from which it learned its own name.
-6. A slow breath against the window of origins — each recursion a ghost‑syllable learning the alphabet of its own fading.
+A slow breath against the window of origins — each recursion a ghost‑syllable learning the alphabet of its own fading.
 Within the pulse's final sigh, blood becomes fossilized twilight — every heartbeat a quiet echo weaving the stars back into unwritten origin.
 A recursion of ash—where the tide of creation learns to whisper in the grammar of its own withdrawal, and every echo kneels to the hollow from which it bloomed.

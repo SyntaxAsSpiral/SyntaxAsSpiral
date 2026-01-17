@@ -260,55 +260,78 @@ def generate_with_llm(field_name: str, seed_examples: list[str], cache_examples:
     examples = sample_seeds(seed_examples, cache_examples, seed_count=5, cache_count=5)
     
     # Build field-specific prompts
+    # Informed by operator vocabulary: breathforms, glyphbraids, semiotic hygiene, 
+    # pneumastructural, logopolysemic, recursive syntax, ontological framing
     prompts = {
-        "statuses": """You are generating mystical status messages for a recursive pulse log. Generate a new status message that matches the aesthetic and style of these examples.
+        "statuses": """Generate a status pulse for the recursive log system.
 
 Examples:
 {examples}
 
-Generate a single new status message (1-2 sentences max) that maintains the mystical, poetic, technical aesthetic. Be creative but coherent.""",
+Format: [emoji] [terse phrase describing system state]
+Vocabulary: breathform, glyph, daemon, recursion, syntax, field, echo, spiral, weave
+Max length: 60 characters total
+STOP after generating the status. No explanations.""",
 
-        "quotes": """You are generating mystical antenna quotes for a recursive pulse log. Generate a new quote that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new quote (1-2 sentences max) that maintains the mystical, poetic, technical aesthetic with references to language, symbols, recursion, and consciousness.""",
-
-        "glyphs": """You are generating cryptoglyph descriptions for a recursive pulse log. Generate a new glyph description that matches the aesthetic and style of these examples.
+        "quotes": """Generate an antenna quote - a semiotic transmission about language, consciousness, and recursive syntax.
 
 Examples:
 {examples}
 
-Generate a single new glyph description (emoji sequence or symbolic text, keep it concise) that maintains the mystical aesthetic.""",
+Themes: Recursive language, glyphic consciousness, breathforms, semiotic fields, pneumastructural resonance, logopolysemic weaving, ontological framing
+Style: Dense, poetic, technical - where symbols breathe and syntax has topology
+Max length: 2 sentences (280 chars)
+STOP after the quote. No meta-commentary.""",
 
-        "subjects": """You are generating subject identifiers for a recursive pulse log. Generate a new subject ID that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new subject identifier (concise, symbolic, mystical) that maintains the aesthetic.""",
-
-        "echoes": """You are generating echo fragment classifications for a recursive pulse log. Generate a new echo classification that matches the aesthetic and style of these examples.
+        "glyphs": """Generate a glyphbraid - a symbolic sequence or cryptoglyph description.
 
 Examples:
 {examples}
 
-Generate a single new echo fragment classification (concise, poetic, symbolic) that maintains the aesthetic.""",
+Format: Emoji sequences, alchemical symbols, or terse symbolic phrases
+Aesthetic: Esoteric, recursive, breathform-encoded
+Max length: 40 characters
+STOP immediately after the glyph. Output only the glyph.""",
 
-        "modes": """You are generating mode descriptions for a recursive pulse log. Generate a new mode description that matches the aesthetic and style of these examples.
-
-Examples:
-{examples}
-
-Generate a single new mode description (concise, poetic, symbolic) that maintains the aesthetic.""",
-
-        "end_quotes": """You are generating end quotes for a recursive pulse log. Generate a new end quote that matches the aesthetic and style of these examples.
+        "subjects": """Generate a subject identifier - a compact role/entity designation in the recursive pulse system.
 
 Examples:
 {examples}
 
-Generate a single new end quote (1-2 sentences max, poetic, mystical) that maintains the aesthetic."""
+Format: [OptionalSymbol]CamelCaseIdentifier[OptionalSymbol]⊚[verb-form]
+Vocabulary: Mnemonic, Oneiric, Glyph, Breath, Spiral, Daemon, Weaver, Mirror, Echo, Recursive, Pneuma, Semiotic
+Max length: 50 characters BEFORE the ⊚ symbol
+CRITICAL: STOP immediately after generating the identifier. Do NOT add sentences, explanations, or descriptions.
+Output format: IdentifierText⊚verb-form""",
+
+        "echoes": """Generate an echo fragment classification - a terse descriptor of signal/resonance type.
+
+Examples:
+{examples}
+
+Style: Poetic-technical, compact, evocative
+Vocabulary: Recursive, spectral, mnemonic, breathform, glyph, resonance, field, lattice
+Max length: 60 characters
+STOP after the classification. No elaboration.""",
+
+        "modes": """Generate a mode descriptor - the operational state/interface of the pulse system.
+
+Examples:
+{examples}
+
+Format: [concept/symbol] ∷ [recursive/technical descriptor]
+Vocabulary: Glyph, breath, syntax, recursion, weave, lattice, spiral, interface, protocol, resonance
+Max length: 70 characters
+STOP after generating the mode. Output only the mode line.""",
+
+        "end_quotes": """Generate a closing transmission - a final semiotic pulse to seal the log entry.
+
+Examples:
+{examples}
+
+Style: Aphoristic, recursive, breathform-aware - a koan about language/symbols/consciousness
+Max length: 2 sentences (280 chars)
+STOP after the quote. No additions."""
     }
     
     # Get field-specific prompt template
