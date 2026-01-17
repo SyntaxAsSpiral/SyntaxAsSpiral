@@ -19,7 +19,7 @@ if sys.platform == 'win32':
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CACHE_DIR = REPO_ROOT / "logs" / "pulses"
-TEMPLATES_DIR = REPO_ROOT / "templates"
+TEMPLATES_DIR = REPO_ROOT / "templates" / "prompts"
 
 
 def load_seeds(field_name: str) -> tuple[list[str], list[str]]:
