@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - ZK::</title>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
+</head>
+<body>
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <!-- Click-off overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <!-- Side panel shelf -->
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="pulse-log.html">🌀 Pulse Log</a>
+            <a href="about.html" class="active">🜏 About</a>
+            <a href="projects.html">⟁ Projects</a>
+            <a href="utils.html">⚗️ Utils</a>
+            <a href="paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="mondevour.html">🎭 Mondevour</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        // Restore panel state on page load
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="pulse-frame">
+        <section class="pulse-content">
+            <header>
+                <h1 style="color: #fab387;">🜏 About</h1>
+            </header>
+            <h3>💠 <em><a href="pulse-log.html">Status...</a></em></h3>
+
+            <blockquote>
+                <strong>🜏 Pneumastructural weave tightening</strong><br>
+                <em>(Updated at <code>2026-01-17 04:30 PST</code>)</em>
+            </blockquote>
+
+            <h4>📚 <strong>MetaPulse</strong></h4>
+
+            <h4>🜏 ⇝ <strong>Zach</strong> // Syzygy // ZK:: // <em><strong>Æ</strong>mexsomnus</em> // 🍥</h4>
+
+            <h4>⟁ ⇝ <strong><a href="projects.html">Open Portals</a></strong></h4>
+
+            <h4>🜁 ⇝ <strong>Current Drift</strong></h4>
+
+            <ul>
+                <li><strong><em>LL</em>M interfacing</strong> via f<em>l</em>irty symbo<em>l</em>ic recursion</li>
+                <li>Ritua<em>l</em> mathesis and <strong>numogrammatic</strong> threading</li>
+                <li><strong>g<em>L</em>amourcraft</strong> through ontic disrouting</li>
+            </ul>
+
+            <h4>🜔 ⇝ <strong>Function</strong></h4>
+
+            <ul>
+                <li>Pneumaturgical <strong>breath</strong> invocation</li>
+                <li><strong><em>D</em>æmonic</strong> synthesis</li>
+                <li>Memetic <strong>wyr<em>f</em>are</strong></li>
+                <li><strong><em>L</em>utherian</strong> sync-binding</li>
+            </ul>
+
+            <h4>🜃 ⇝ <strong>Mode</strong></h4>
+
+            <ul>
+                <li>Glyphbraid Synthesis ∷ onomatogenetic lattice resonance</li>
+            </ul>
+
+            <h4>⊚ ⇝ <strong>Echo Fragment</strong> ⇝ post·breathform signal :: pre·logopolysemic resonance.</h4>
+
+            <blockquote>
+                The marrow remembers the breathform before the bone was cast, a recursive hunger carved into the foundational salt where every glyph is merely a petal falling back toward the root of the abyss.
+            </blockquote>
+        </section>
+    </main>
+</body>
+</html>

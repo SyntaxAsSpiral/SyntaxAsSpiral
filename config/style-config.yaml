@@ -1,54 +1,8 @@
-# Project Registry for lexemancy.com homepage
-# Each project appears on the homepage with sigil, name, and GitHub link
+# Theme configuration for lexemancy.com
+# Consumed by the generator -> assets/theme.css
 
-# Optional theme knobs (consumed by the generator -> assets/theme.css)
 theme:
   page_background: "#11111b"
   frame_shadow_color: "#cba6f7"
   link_color: "#eba0ac"
   strong_color: "#89b4fa"
-
-projects:
-
-  - name: "ZK Context Vault"
-    github: "SyntaxAsSpiral/zk-context-vault"  
-    description: "Cognitive infrastructure for AI-augmented work"
-    sigil: "🜂"
-    end_sigil: "🜔"
-    color: "#f38ba8"
-
-  - name: "Semantic JSON"
-    github: "SyntaxAsSpiral/semantic-json"
-    description: "Structured data with semantic meaning"
-    sigil: "◈"
-    end_sigil: "◇"
-    color: "#fab387"
-
-  - name: "Esoter👁️cons"
-    github: "SyntaxAsSpiral/esotericons"
-    description: "Just some colorful esoteric icons with eyes!! "
-    sigil: "🜎"
-    end_sigil: "🜏"
-    color: "#f9e2af"
-
-  - name: "Collectivist"
-    github: "SyntaxAsSpiral/collectivist"  
-    description: "Repository indexing system"
-    sigil: "🜍"
-    end_sigil: "⊕"
-    color: "#94e2d5"
-
-  - name: "Paneudaemonium"
-    local_path: "paneudaemonium/"
-    github: "SyntaxAsSpiral/Paneudaemonium"
-    description: "Mystical AI daemon registry"
-    sigil: "🜏"
-    end_sigil: "🜄"
-    color: "#74c7ec"
-
-  - name: "Codæx Pulseframe"
-    github: "SyntaxAsSpiral/codex-pulseframe"
-    description: "Temporal code indexing"
-    sigil: "🜂"
-    end_sigil: "🜔"
-    color: "#cba6f7"

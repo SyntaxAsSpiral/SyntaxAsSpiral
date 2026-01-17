@@ -27,42 +27,18 @@ except ImportError:
     print("⚠️ Pulse generator not available, using batch cycling fallback")
 
 # Import template renderer
-from template_renderer import render_template
+from template_renderer import render_template, render
 
 # === CONFIGURATION ===
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
-PROJECTS_YAML = CONFIG_DIR / "style-config.yaml"
-
-
-def load_projects() -> list[dict]:
-    """Load project registry from YAML."""
-    try:
-        with PROJECTS_YAML.open(encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-            return data.get("projects", [])
-    except FileNotFoundError:
-        print(f"⚠️ Projects config not found: {PROJECTS_YAML}")
-        # Fallback to hardcoded projects
-        return [
-            {
-                "name": "Semantic JSON",
-                "github": "SyntaxAsSpiral/semantic-json",
-                "sigil": "◈"
-            },
-            {
-                "name": "Paneudaemonium",
-                "github": "SyntaxAsSpiral/Paneudaemonium",
-                "sigil": "🜏",
-                "local_path": "paneudaemonium"
-            }
-        ]
+STYLE_CONFIG_YAML = CONFIG_DIR / "style-config.yaml"
 
 
 def load_theme() -> dict:
     """Load optional theme settings from YAML."""
     try:
-        with PROJECTS_YAML.open(encoding="utf-8") as f:
+        with STYLE_CONFIG_YAML.open(encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
             theme = data.get("theme") or {}
             return theme if isinstance(theme, dict) else {}
@@ -163,44 +139,6 @@ def apply_zalgo_light(text: str, rng: random.Random) -> str:
             result.append(rng.choice(palette["down"]))
     
     return ''.join(result)
-
-
-def render_projects_html(
-    projects: list[dict],
-    local_link_prefix: str = "",
-) -> str:
-    """Render project links section HTML."""
-    html_parts = []
-
-    for idx, project in enumerate(projects):
-        name = project["name"]
-        sigil = project.get("sigil", "◈")
-        end_sigil = project.get("end_sigil", "◈")
-        color = project.get("color")
-
-        # Determine link (color applied only to link)
-        if project.get("local_path"):
-            # Local relative link
-            href = f'{local_link_prefix}{project["local_path"]}'
-            link_style = f' style="color: {color} !important;"' if color else ""
-            link = f'<a href="{href}" class="codex-link"{link_style}>{name}</a>'
-        else:
-            # GitHub link
-            github_repo = project["github"]
-            link_style = f' style="color: {color} !important;"' if color else ""
-            link = f'<a href="https://github.com/{github_repo}"{link_style}>{name}</a>'
-
-        # Render with color only on link, not full line
-        if name == "Paneudaemonium":
-            html_parts.append(
-                f'<h2 style="padding-left: 1.5rem;"><em><strong>{sigil} ⇌ {link} <strong>online</strong> ⇌ <span class="ellipsis"> {end_sigil}</span></strong></em></h2>'
-            )
-        else:
-            html_parts.append(
-                f'<h2 class="project-sigil" style="padding-left: 1.5rem;"><em><strong>{sigil} ⇌ {link} <strong>online</strong> ⇌ <span class="ellipsis">{end_sigil}</span></strong></em></h2>'
-            )
-
-    return "\n".join(html_parts)
 
 
 def render_logs_index_html(log_dates: list[str], logs_dir: Path) -> str:
@@ -443,11 +381,6 @@ def generate_field_worker(args: tuple) -> tuple[str, str]:
 
 def main():
     """Generate pulse log homepage."""
-    # Load projects
-    projects = load_projects()
-    projects_html = render_projects_html(projects, local_link_prefix="")
-    projects_html_archive = render_projects_html(projects, local_link_prefix="../")
-    
     # Load LLM config once (not 7 times!)
     active_backend = None
     if PULSE_GENERATOR_AVAILABLE:
@@ -569,8 +502,13 @@ def main():
     # === BUILD PULSE DATA ===
     logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
 
+    # Split chronohex into individual characters for rainbow coloring
+    chronohex_chars = {f"chronohex_{i}": c for i, c in enumerate(chronotonic[:6])}
+
     pulse_data = {
         "chronotonic": chronotonic,
+        "chronohex": chronotonic,  # alias for templates
+        **chronohex_chars,  # chronohex_0 through chronohex_5
         "timestamp": timestamp,
         "stylesheet": stylesheet,
         "icon_tag": icon_tag,
@@ -582,7 +520,6 @@ def main():
         "mode": mode,
         "class_disp_html": class_disp_html,
         "end_quote": end_quote,
-        "projects_html": projects_html,
         "logs_link_html": logs_link_html,
     }
 
@@ -603,6 +540,16 @@ def main():
             f.write("\n")
 
     print(f"✅ index.html updated with status: {status}")
+
+    # === RENDER STATIC PAGES WITH PULSE DATA ===
+    static_pages = ["about.html", "projects.html", "utils.html"]
+    for page_name in static_pages:
+        page_path = output_dir / page_name
+        if page_path.exists():
+            page_content = page_path.read_text(encoding="utf-8")
+            rendered = render(page_content, pulse_data)
+            page_path.write_text(rendered, encoding="utf-8")
+            print(f"✅ {page_name} rendered with pulse data")
 
     # === UPDATE README.md ===
     readme_path = REPO_ROOT / "README.md"
@@ -636,7 +583,6 @@ def main():
         .replace(f'href="assets/{stylesheet}"', f'href="../assets/{stylesheet}"')
         .replace('href="assets/index.ico"', 'href="../assets/index.ico"')
         .replace('src="assets/recursive-log-banner.mp4"', 'src="../assets/recursive-log-banner.mp4"')
-        .replace(projects_html, projects_html_archive, 1)
         .replace(logs_link_html, logs_link_html_archive, 1)
     )
 

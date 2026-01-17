@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Projects - ZK::</title>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
+</head>
+<body>
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="pulse-log.html">🌀 Pulse Log</a>
+            <a href="about.html">🜏 About</a>
+            <a href="projects.html" class="active">⟁ Projects</a>
+            <a href="utils.html">⚗️ Utils</a>
+            <a href="paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="mondevour.html">🎭 Mondevour</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        // Restore panel state on page load
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="pulse-frame">
+        <section class="pulse-content">
+            <header>
+                <h1 style="color: #f9e2af;">⟁ Projects</h1>
+            </header>
+            <div class="project project-red">
+                <h2><em><strong>🜁 <a href="https://github.com/SyntaxAsSpiral/ConSensus">ConSensus</a></strong></em></h2>
+                <p>Recipe based assembly and deployment for all your Agents. Skills, steering, command, and configuration documents in one place.</p>
+            </div>
+
+            <div class="project project-peach">
+                <h2><em><strong>◈ <a href="https://github.com/SyntaxAsSpiral/Semantic-JSON">Semantic JSON</a></strong></em></h2>
+                <p>Turn your canvases into easy no-code JSON data structures. Share with LLMs.</p>
+            </div>
+
+            <div class="project project-yellow">
+                <h2><em><strong>🜂 <a href="https://github.com/SyntaxAsSpiral/zk-context-vault">ZK Context Vault</a></strong></em></h2>
+                <p>Comprehensive cognitive infrastructure for AI-augmented development and knowledge work.</p>
+            </div>
+
+            <div class="project project-green">
+                <h2><em><strong>⊚ <a href="https://github.com/SyntaxAsSpiral/Autopoesis">Autopoesis</a></strong></em></h2>
+                <p>Recursive autojournaling: self-creation through activity tracking and LLM generation.</p>
+            </div>
+
+            <div class="project project-sapphire">
+                <h2><em><strong>🜍 <a href="https://github.com/SyntaxAsSpiral/Collectivist">Collectivist</a></strong></em></h2>
+                <p>AI-powered curator for intentional collections. Repos, vaults, media, code, documents, anything!</p>
+            </div>
+
+            <div class="project project-lavender">
+                <h2><em><strong>🜎 <a href="https://github.com/SyntaxAsSpiral/esotericons">Esoter👁️cons</a></strong></em></h2>
+                <p>Just some colorful esoteric icons with eyes!!</p>
+            </div>
+
+            <div class="project project-mauve">
+                <h2><em><strong>🜏 <a href="https://github.com/SyntaxAsSpiral/SyntaxAsSpiral">SyntaxAsSpiral</a></strong></em></h2>
+                <p>Personal website and Autopoesis Reference Implementation.</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
