@@ -34,6 +34,39 @@ def render(template: str, data: dict) -> str:
     return re.sub(r"\{\{(\w+)\}\}", replace_var, template)
 
 
+def inject(content: str, data: dict) -> str:
+    """
+    Inject values into marker regions while preserving markers.
+    
+    Pattern: <!--{{var}}-->...<!--/{{var}}-->
+    Replaces content between markers with value from data dict.
+    Markers are preserved so subsequent runs can re-inject fresh values.
+    
+    Also handles simple {{var}} placeholders (replaced, not preserved).
+    """
+    def replace_injection(match):
+        key = match.group(1)
+        value = str(data.get(key, ""))
+        return f"<!--{{{{{key}}}}}-->{value}<!--/{{{{{key}}}}}-->"
+    
+    # First: injection markers (preserved)
+    result = re.sub(
+        r"<!--\{\{(\w+)\}\}-->.*?<!--/\{\{\1\}\}-->",
+        replace_injection,
+        content,
+        flags=re.DOTALL
+    )
+    
+    # Second: simple placeholders (replaced, not preserved)
+    def replace_var(match):
+        key = match.group(1)
+        return str(data.get(key, ""))
+    
+    result = re.sub(r"\{\{(\w+)\}\}", replace_var, result)
+    
+    return result
+
+
 def render_template(template_name: str, data: dict) -> str:
     """Load and render a template by name."""
     template = load_template(template_name)

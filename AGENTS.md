@@ -19,23 +19,28 @@ This repository generates a daily-updated personal homepage at `https://lexemanc
 ```
 root/
 ├── index.html                    # Main homepage (Pulse Log - rendered from templates/default.html)
-├── about.html                    # About page (rendered with pulse data)
+├── about.html                    # About page (source file with {{placeholders}} for pulse data)
 ├── projects.html                 # Projects page (rendered with pulse data)
 ├── utils.html                    # Utils page (rendered with pulse data)
 ├── zalgo-lexigon.html            # Zalgo text transformer (rendered with pulse data)
 ├── palette-mutator.html          # Color palette tool (rendered with pulse data)
 ├── paneudaemonium.html           # Paneudæmonium portal (static, own styles)
 ├── mondevour.html                # Mondevour page (static, own styles)
+├── logs-index.html               # Archive index with divination icons (at root, links to logs/)
 ├── pulse.json                    # Structured pulse data (all fields for consumption)
 ├── README.md                     # Profile README with chronohex link
 ├── .env                          # Local LLM config (tracked for documentation)
 ├── templates/
-│   └── default.html              # Main template with {{variable}} placeholders
+│   ├── default.html              # Main template with {{variable}} placeholders
+│   └── prompts/                  # LLM prompt templates for 3-phase generation
+│       ├── pulse-structural-batch.md   # Phase 1: status, subject, mode, glyph, echo
+│       ├── pulse-antenna-quote.md      # Phase 2: future-aligned quote
+│       └── pulse-end-quote.md          # Phase 3: past-aligned closing quote
 ├── logs/
-│   ├── index.html                # Archive index with divination icons (teal header)
 │   ├── YYYY-MM-DD.html           # Daily snapshots (one per day, overwritten)
 │   ├── esotericons_cache.json    # Cached icon list (clean .ico and .svg only)
 │   └── pulses/
+│       ├── pulse.json            # Current pulse data
 │       ├── status_cache.txt      # Recursive feedback caches
 │       ├── quote_cache.txt       # (seed + cache sections)
 │       ├── glyph_cache.txt
@@ -99,21 +104,27 @@ theme:
 # No silent fallback - enforces invariants
 ```
 
-### 2. Parallel Field Generation
-Generates 7 pulse fields concurrently (max 2 workers):
-- `status`: Current status message
-- `quote`: Antenna quote (mystical/technical)
-- `glyph`: Cryptoglyph description (glyphbraid)
-- `subject`: Subject identifier (zalgo-transformed before ⊚)
-- `echo`: Echo fragment classification
-- `mode`: Mode description
-- `end_quote`: Closing quote
+### 2. 3-Phase Hybrid Generation
+Generates 7 pulse fields using optimized batch architecture:
 
-Each field:
-1. Samples 5 random from seed section + up to 5 from cache section (10 total examples)
-2. Sends to LLM with aesthetic-matching prompt (temperature 1.2 for variation)
-3. Appends generated output to cache section (recursive feedback loop)
-4. Falls back to batch cycling if LLM fails
+**Phase 1: Structural Batch** (single LLM call)
+- `status`: Current status message
+- `subject`: Subject identifier (zalgo-transformed before ⊚)
+- `mode`: Mode description
+- `glyph`: Cryptoglyph description (glyphbraid)
+- `echo`: Echo fragment classification
+
+**Phase 2: Antenna Quote** (dedicated LLM call)
+- `quote`: Future-aligned hyperstitional transmission
+
+**Phase 3: End Quote** (dedicated LLM call)
+- `end_quote`: Past-aligned geomythic closing
+
+Each phase:
+1. Samples 3 from seed section + up to 3 from cache section (6 total examples per field)
+2. Sends to LLM with template-based prompts (temperature 1.2 for variation)
+3. Appends generated outputs to cache sections (recursive feedback loop)
+4. Fast-fails if any phase fails (no partial updates)
 
 **Cache Format:**
 ```
@@ -143,14 +154,14 @@ generated output 2
   - `utils.html`: Gets icon_tag
   - `zalgo-lexigon.html`: Gets icon_tag
   - `palette-mutator.html`: Gets icon_tag
-  - `logs/index.html`: Gets icon_tag (via render_logs_index_html function)
+  - `logs-index.html`: Gets icon_tag + dynamically generated log list with icons
 - **Icon syncing**: All pages share the same daily divination icon for unified aesthetic
 
 ### 5. Log Archiving & Index Rebuild
 - Archives rendered HTML to `logs/YYYY-MM-DD.html` (rewrite paths for ../assets/)
 - Scans `logs/` for all date-formatted HTML files
 - Extracts icon URL from each archived log's `<link rel="icon" href="...">` tag
-- Rebuilds `logs/index.html` with all dates + their divination icons (teal header #94e2d5)
+- Rebuilds `logs-index.html` at root with all dates + their divination icons (links use `logs/` prefix)
 
 ### 6. Git Autopush
 ```bash
@@ -191,10 +202,10 @@ LLM_API_KEY=  # Optional for LMStudio, required for OpenRouter
 
 ### Generation Parameters
 - **Temperature**: 1.2 (high variation for recursive diversity)
-- **Sample size**: 5 seed + up to 5 cache examples (10 total)
+- **Sample size**: 3 seed + up to 3 cache examples (6 total per field)
 - **No `max_tokens`**: Let LLM generate naturally (covenant principle)
-- **Timeout**: 60s per request
-- **Parallel workers**: 2 (LMStudio/OpenRouter compatible)
+- **Timeout**: 120s for batch, 60s for individual quotes
+- **Architecture**: 3-phase hybrid (1 batch + 2 dedicated quote calls)
 
 ## Scheduled Task
 
@@ -335,10 +346,10 @@ schtasks /run /tn "PulseLogUpdater"
 
 ### Auto-Generated (DO NOT EDIT MANUALLY):
 - `index.html` (rendered from templates/default.html)
-- `pulse.json`
+- `logs/pulses/pulse.json`
 - `README.md`
 - `logs/*.html` (daily archives)
-- `logs/index.html` (archive index)
+- `logs-index.html` (archive index at root)
 - `assets/theme.css`
 - `logs/esotericons_cache.json`
 - Cache sections in `logs/pulses/*_cache.txt` (LLM appends here)
@@ -397,7 +408,7 @@ Simple regex-based substitution—no Jinja2 or complex logic:
 ### Esotericon Divination System
 - Random icon selected daily from `https://github.com/SyntaxAsSpiral/esotericons`
 - Icon URL baked into daily archive HTML
-- **Icon syncing**: Same icon injected across all pages (index, about, projects, utils, zalgo-lexigon, palette-mutator, logs/index)
+- **Icon syncing**: Same icon injected across all pages (index, about, projects, utils, zalgo-lexigon, palette-mutator, logs-index)
 - Logs index displays each day's icon as visual tarot/rune deck
 - True random selection (not cycling) for divination purposes
 - Fallback to `assets/index.ico` if fetch fails

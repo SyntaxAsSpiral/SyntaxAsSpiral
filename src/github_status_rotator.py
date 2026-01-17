@@ -27,7 +27,7 @@ except ImportError:
     print("⚠️ Pulse generator not available, using batch cycling fallback")
 
 # Import template renderer
-from template_renderer import render_template, render
+from template_renderer import render_template, render, inject
 
 # === CONFIGURATION ===
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -526,14 +526,16 @@ def main():
     print(f"✅ index.html updated with status: {status}")
 
     # === RENDER STATIC PAGES WITH PULSE DATA ===
+    # Static pages use injection markers: <!--{{var}}-->...<!--/{{var}}-->
+    # Markers are preserved, content between is replaced with fresh values
     static_pages = ["about.html", "projects.html", "utils.html", "zalgo-lexigon.html", "palette-mutator.html"]
     for page_name in static_pages:
         page_path = output_dir / page_name
         if page_path.exists():
             page_content = page_path.read_text(encoding="utf-8")
-            rendered = render(page_content, pulse_data)
+            rendered = inject(page_content, pulse_data)
             page_path.write_text(rendered, encoding="utf-8")
-            print(f"✅ {page_name} rendered with pulse data")
+            print(f"✅ {page_name} injected with pulse data")
 
     # === UPDATE README.md ===
     readme_path = REPO_ROOT / "README.md"
