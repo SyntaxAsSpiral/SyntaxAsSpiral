@@ -2,3 +2,6 @@ pytest>=8.3.5
 requests>=2.31.0
 python-dotenv>=1.0.0
 pyyaml>=6.0.1
+pynput>=1.7.6
+pywin32>=306
+psutil>=5.9.0
