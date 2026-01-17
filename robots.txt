@@ -1,0 +1,9 @@
+# Lexemancy - robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://lexemancy.com/sitemap.xml
+
+# Crawl-delay (optional, be nice to small servers)
+Crawl-delay: 1
