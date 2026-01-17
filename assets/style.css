@@ -236,11 +236,16 @@ body.theme-mauve { --link-color: #cba6f7; }
 }
 
 .side-tabs a:nth-child(6) { 
+  background: #89dceb;
+  color: #1e5263 !important;
+}
+
+.side-tabs a:nth-child(7) { 
   background: #b4befe;
   color: #3a3d6b !important;
 }
 
-.side-tabs a:nth-child(7) { 
+.side-tabs a:nth-child(8) { 
   background: #cba6f7;
   color: #4a2e63 !important;
 }

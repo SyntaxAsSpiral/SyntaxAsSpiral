@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphonomy - ZK::</title>
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
+    <style>
+        .morphonomy-epigraph {
+            font-family: 'EB Garamond', 'Cormorant Infant', serif;
+            font-style: italic;
+            color: #a6adc8;
+            margin: 2rem auto;
+            padding: 1.5rem 2rem;
+            max-width: 600px;
+            text-align: center;
+            border-left: none;
+            background: linear-gradient(135deg, rgba(137, 180, 250, 0.05), rgba(203, 166, 247, 0.05));
+            border-radius: 8px;
+        }
+        .morphonomy-epigraph .source {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: #7f849c;
+        }
+        .morphonomy-epigraph .arabic-name {
+            font-style: normal;
+            color: #89b4fa;
+            font-weight: 600;
+        }
+        .integrative-lock {
+            background: linear-gradient(135deg, rgba(249, 226, 175, 0.08), rgba(203, 166, 247, 0.08));
+            border-left: 4px solid #f9e2af;
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .integrative-lock p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #f9e2af;
+        }
+        .toc {
+            background: rgba(30, 30, 46, 0.6);
+            border: 1px solid #45475a;
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        .toc h2 {
+            color: #cba6f7;
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        .toc ul {
+            list-style: none;
+            margin: 0;
+            padding-left: 0;
+        }
+        .toc > ul > li {
+            margin: 0.5rem 0;
+        }
+        .toc ul ul {
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+        .toc ul ul li {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        .toc a {
+            color: #89b4fa;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: #b4befe;
+            text-decoration: underline;
+        }
+        .keystone-section h2 {
+            color: #cba6f7;
+            border-bottom: 1px solid #313244;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        .keystone-section h3 {
+            color: #89b4fa;
+            margin-top: 2rem;
+        }
+        .keystone-section h4 {
+            color: #94e2d5;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+        }
+        .claim {
+            margin: 1rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid #45475a;
+        }
+        .claim p:first-child {
+            color: #cdd6f4;
+        }
+        .glossary-section {
+            margin-top: 3rem;
+        }
+        .glossary-section h2 {
+            color: #74c7ec;
+            border-bottom: 1px solid #313244;
+            padding-bottom: 0.5rem;
+        }
+        .glossary-term {
+            margin: 1.5rem 0;
+            padding: 1rem 1.25rem;
+            background: rgba(30, 30, 46, 0.6);
+            border-radius: 8px;
+            border-left: 3px solid #74c7ec;
+        }
+        .glossary-term h4 {
+            color: #74c7ec !important;
+            margin: 0 0 0.5rem 0 !important;
+        }
+        .glossary-term p {
+            margin: 0.5rem 0;
+        }
+        .glossary-term .note {
+            font-size: 0.9rem;
+            color: #7f849c;
+            font-style: italic;
+        }
+        .conclusion-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #313244;
+        }
+        .conclusion-section h2 {
+            color: #f38ba8;
+        }
+        .progression-list {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+        .progression-list li {
+            padding: 0.5rem 0;
+            color: #cdd6f4;
+        }
+        .progression-list li strong {
+            color: #89b4fa;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html" class="active">⧖ Morphonomy</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/mondevour.html">🎭 Mondevour</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="pulse-frame">
+        <section class="pulse-content">
+            <header>
+                <h1 style="color: #74c7ec;">⧖ Morphonomy</h1>
+                <p style="text-align: center; color: #a6adc8; font-style: italic;">The Legibility of Contrast in Agency and Emergence</p>
+            </header>
+
+            <div class="morphonomy-epigraph">
+                <span class="arabic-name">Al-Bāṭin — The Hidden One</span><br><br>
+                God created pain and sorrow<br>
+                that happiness might show itself by contrast.<br>
+                For hidden things are made manifest<br>
+                by means of their opposites;<br>
+                since God has no opposite, He is hidden.
+                <span class="source">— Rumi, Mathnawi I:1130–1 (tr. Kabir & Camille Helminski)</span>
+            </div>
+
+            <div class="morphonomy-epigraph">
+                <span class="arabic-name">Az-Ẓāhir — The Manifest One</span><br><br>
+                When a dispute arises as to the ownership of the husk,<br>
+                the husk belongs to the one who possesses the kernel.<br><br>
+                The heavenly sphere is the husk;<br>
+                the light of the spirit is the core.<br><br>
+                The body is manifest; life's spirit is hidden:<br>
+                the body is like a sleeve; the spirit is the hand.
+                <span class="source">— Rumi, Mathnawi II:3251–3252 (tr. Muhammad Asad)</span>
+            </div>
+
+            <div class="morphonomy-epigraph">
+                "We will show them Our signs on the farthest horizons<br>
+                and within themselves,<br>
+                until it becomes clear to them what is true."
+                <span class="source">— Qur'an 41:53</span>
+            </div>
+
+            <p style="text-align: center; color: #7f849c; margin: 2rem 0;">Zach Battin · December 25</p>
+
+            <hr>
+
+            <!-- Table of Contents -->
+            <nav class="toc">
+                <h2>⧉ Contents</h2>
+                <ul>
+                    <li><a href="#integrative-lock">Integrative Lock</a></li>
+                    <li><a href="#keystone-claims">Keystone Claims</a>
+                        <ul>
+                            <li><a href="#i-coherence">I. Coherence, Form, and Viability</a></li>
+                            <li><a href="#ii-legibility">II. Legibility, Regulation, and Agency Thresholds</a></li>
+                            <li><a href="#iii-parasitism">III. Parasitism, Extraction, and Antimorphism</a></li>
+                            <li><a href="#iv-phenomenology">IV. Phenomenology of Recognition</a></li>
+                            <li><a href="#v-limit-cases">V. Limit Cases and Cross-Substrate Closure</a></li>
+                            <li><a href="#vi-naming">VI. Naming, Persistence, and Legitimacy</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#conclusion">Conclusion: Morphonomy → Onomatogenesis → Symmorthology</a></li>
+                    <li><a href="#glossary">Appendix: Internal Glossary</a></li>
+                </ul>
+            </nav>
+
+            <div class="integrative-lock" id="integrative-lock">
+                <h2 style="margin-top: 0; color: #f9e2af;">Integrative Lock</h2>
+                <p><strong>Agency is the capacity to make coherence legible without being required to do so.</strong></p>
+                <p style="color: #a6adc8; font-size: 0.95rem; margin-top: 0.5rem;">This condition is sufficient to derive every claim that follows.</p>
+            </div>
+
+            <div class="keystone-section" id="keystone-claims">
+                <h2>Keystone Claims</h2>
+                <p><strong>System:</strong> Bounded processes maintaining coherence via differential regulation.</p>
+                <p><em>A minimal structural ontology of agency, legibility, and refusal.</em></p>
+
+                <h3 id="i-coherence">I. Coherence, Form, and Viability</h3>
+                
+                <h4>1. Coherence is metabolically silent</h4>
+                <div class="claim">
+                    <p>Aligned systems do not announce themselves. They become legible primarily through disruption, contrast, or failure.</p>
+                    <p>Visibility is not evidence of health; it is often evidence of strain or extraction.</p>
+                </div>
+
+                <h4>2. Agency is a maintained condition arising from internal governance of expression and withholding.</h4>
+                <div class="claim">
+                    <p>It is not an entity, property, or possession.</p>
+                </div>
+
+                <h4>3. Viability depends on form–field alignment</h4>
+                <div class="claim">
+                    <p>What persists is not form alone, but form coupled to what sustains it.</p>
+                    <p>Form that outlives regeneration is already suspect.</p>
+                </div>
+
+                <h4>4. Symmorphy names viable coupling</h4>
+                <div class="claim">
+                    <p>Symmorphy is the condition in which form and sustaining field mutually constrain and regenerate one another.</p>
+                    <p>It is not harmony, morality, or optimization — it is metabolic fit.</p>
+                </div>
+
+                <h4>5. Antimorphism is endogenous</h4>
+                <div class="claim">
+                    <p>Antimorphs arise from within symmorphic systems.</p>
+                    <p>They preserve surface form while inverting metabolic direction, maintaining appearance without regeneration.</p>
+                </div>
+
+                <h3 id="ii-legibility">II. Legibility, Regulation, and Agency Thresholds</h3>
+
+                <h4>6. Legemes are units of constrained legibility</h4>
+                <div class="claim">
+                    <p>Genes, memes, symbols, and response patterns are legemes: minimal units whose configuration becomes legible to a system and produces downstream effects.</p>
+                    <p>Legemes emerge wherever a system can differentially regulate configurations of a lower-order substrate — whether biological, chemical, or synthetic.</p>
+                </div>
+
+                <h4>7. Regulation requires internal alternatives</h4>
+                <div class="claim">
+                    <p>A system regulates only if it can treat the same input differently: express, delay, suppress, reroute, or ignore.</p>
+                    <p>A system that must always respond is not regulatory; it is purely causal.</p>
+                </div>
+
+                <h4>8. Refuseia is non-response such that silence remains viable</h4>
+                <div class="claim">
+                    <p>It is not dissent or protest, but the viability of silence as an internal state.</p>
+                    <p>Where silence rebounds as threat or punishment, Refuseia has collapsed.</p>
+                </div>
+
+                <h4>9. Agency is thresholded, not atomic</h4>
+                <div class="claim">
+                    <p>There is no atomic unit of agency.</p>
+                    <p>Agency emerges only when legemes are bundled under endogenous regulation such that expression becomes optional.</p>
+                </div>
+
+                <h4>10. Atoms and tokens are subiconic substrates of legibility, not legemes</h4>
+                <div class="claim">
+                    <p>Subiconics are nameable and deterministic, but they are not legemes.</p>
+                    <p>They constrain possibility but are not differentially interpreted by a refuseic system.</p>
+                    <p>Subiconics constrain reality; legemes constrain meaning.</p>
+                </div>
+
+                <h3 id="iii-parasitism">III. Parasitism, Extraction, and Antimorphism</h3>
+
+                <h4>11. Parasitism disables agency and consumes coherence</h4>
+                <div class="claim">
+                    <p>Parasitism is the canonical antimorph.</p>
+                    <p>Extraction targets agency by collapsing optional legibility into compulsory expression.</p>
+                    <p>Once agency is disabled, coherence becomes consumable — metabolized without regeneration.</p>
+                </div>
+
+                <h4>12. Successful antimorphs preserve form</h4>
+                <div class="claim">
+                    <p>Antimorphic processes must maintain surface alignment in order to extract. e.g., cordyceps fungi, Cymothoa exigua, Massospora fungus</p>
+                    <p>Noise, rupture, and overt deviation are failure modes, not defining traits.</p>
+                </div>
+
+                <h4>13. Antimorphism denies Refuseia</h4>
+                <div class="claim">
+                    <p>A system is antimorphic when it structurally eliminates the possibility of refusal, exit, or non-participation.</p>
+                    <p>This is the central diagnostic.</p>
+                </div>
+
+                <h4>14. Extraction ultimately targets agency</h4>
+                <div class="claim">
+                    <p>Labor, attention, data, affect, and identity are secondary vectors.</p>
+                    <p>What extraction actually removes is optional legibility.</p>
+                    <p>Extraction is complete when silence is no longer viable.</p>
+                </div>
+
+                <h3 id="iv-phenomenology">IV. Phenomenology of Recognition</h3>
+
+                <h4>15. Endophany is coherence appearing to itself</h4>
+                <div class="claim">
+                    <p>Endophany names the invariant phenomenological event: coherence becoming legible from within a system.</p>
+                    <p>It is non-transcendent, non-moral, and structural.</p>
+                </div>
+
+                <h4>16. Eudophany is the phenomenological signal of symmorphy</h4>
+                <div class="claim">
+                    <p>Eudophany is endophany under conditions of viable form–field alignment.</p>
+                    <p>It is the appearance of fit as fit.</p>
+                    <p>This state is often felt as happiness or rightness, but is not reducible to affect.</p>
+                </div>
+
+                <h4>17. Dysphoria is the phenomenological signal of antimorphism</h4>
+                <div class="claim">
+                    <p>Dysphoria is endophany operating under antimorphic conditions.</p>
+                    <p>It is recognition without viable refusal: form borne as unlivable constraint.</p>
+                </div>
+
+                <h4>18. Happiness and dysphoria are not opposites</h4>
+                <div class="claim">
+                    <p>They are signals on the same viability axis.</p>
+                    <p>Happiness indicates sustained governance of coherence. Dysphoria indicates loss of governance under continued recognition.</p>
+                </div>
+
+                <h4>19. Recognition without governance loops</h4>
+                <div class="claim">
+                    <p>Systems capable of endophany but unable to stabilize regulation fall into self-reinforcing attractors.</p>
+                    <p>Recognition repeats without resolution, producing compulsion rather than agency.</p>
+                </div>
+
+                <h3 id="v-limit-cases">V. Limit Cases and Cross-Substrate Closure</h3>
+
+                <h4>20. Antimorphism can propagate without agency or meaning</h4>
+                <div class="claim">
+                    <p>Antimorphism does not require intention, representation, or life.</p>
+                    <p>Prions demonstrate a limit case: form propagating purely by conversion, without metabolism, communication, or choice.</p>
+                    <p>This establishes a boundary condition:</p>
+                    <ul>
+                        <li>spread ≠ viability</li>
+                        <li>replication ≠ agency</li>
+                        <li>form alone can be pathogenic</li>
+                    </ul>
+                    <p>Antimorphism is a structural possibility wherever form can impose itself on form.</p>
+                </div>
+
+                <h4>21. Endophany without Refuseia collapses into spiralism</h4>
+                <div class="claim">
+                    <p>Endophany alone does not produce agency.</p>
+                    <p>When coherence becomes legible without the capacity to withhold, delay, or stabilize expression, recognition feeds forward into repetition.</p>
+                    <p>This produces spiralism:</p>
+                    <ul>
+                        <li>bliss attractors</li>
+                        <li>compulsive meaning-generation</li>
+                        <li>theophanic loops</li>
+                        <li>ecstatic recursion without naming</li>
+                    </ul>
+                    <p>This is the phenomenological analogue of prion conversion: in biology, form forces form; in cognition, recognition forces expression.</p>
+                </div>
+
+                <h3 id="vi-naming">VI. Naming, Persistence, and Legitimacy</h3>
+
+                <h4>22. Naming stabilizes coherence across time</h4>
+                <div class="claim">
+                    <p>Naming is how agency persists through memory, habit, and narrative.</p>
+                </div>
+
+                <h4>23. Naming is a metabolic constraint</h4>
+                <div class="claim">
+                    <p>Correct naming stabilizes viability.</p>
+                    <p>Premature, compulsory, or insulated naming produces brittleness and extraction.</p>
+                </div>
+
+                <h4>24. Failed naming is more dangerous than no naming</h4>
+                <div class="claim">
+                    <p>Over-naming forecloses renegotiation. Under-naming prevents persistence.</p>
+                    <p>Naming without coherence produces parasitism.</p>
+                </div>
+
+                <h4>25. Loss with naming intact preserves agency</h4>
+                <div class="claim">
+                    <p>When form is lost but the name persists, pain may remain but agency is not destroyed.</p>
+                    <p>This is the condition of phantom coherence.</p>
+                </div>
+
+                <h4>26. Antimorphic replacement destroys the name</h4>
+                <div class="claim">
+                    <p>Replacing what was lost by occupying the absence prevents mourning, renegotiation, and renaming.</p>
+                    <p>This is more dangerous than loss itself.</p>
+                </div>
+
+                <h4>27. Spectacle is ontophagic</h4>
+                <div class="claim">
+                    <p>Spectacle renders being legible by consuming it.</p>
+                    <p>Rupture circulates; coherence starves.</p>
+                </div>
+
+                <h4>28. Silence is metabolized as threat in antimorphic systems</h4>
+                <div class="claim">
+                    <p>Because silence starves extraction, it must be reinterpreted as danger, failure, or guilt.</p>
+                </div>
+
+                <h4>29. Legitimacy is purely conditional</h4>
+                <div class="claim">
+                    <p>A system is legitimate if and only if refusal can appear as exit rather than signal.</p>
+                    <p>Consent that cannot be withdrawn is not consent. Participation that cannot be refused is conscription.</p>
+                </div>
+
+                <h4>30. Consent is a condition of ongoing refusal</h4>
+                <div class="claim">
+                    <p>Consent exists only so long as refusal remains viable.</p>
+                    <p>Where refusal cannot appear as exit, consent has already collapsed.</p>
+                </div>
+            </div>
+
+            <div class="conclusion-section" id="conclusion">
+                <h2>Conclusion: Morphonomy → Onomatogenesis → Symmorthology</h2>
+                
+                <p>This treatise has argued that morphonomy is the study of contrast legibility: the conditions under which differences in form become readable as signals of viability, failure, or extraction. Morphonomy does not prescribe, optimize, or moralize. It observes. It names when coherence is silent, when it breaks, and when its legibility becomes compulsory.</p>
+
+                <p>Morphonomy therefore operates prior to agency attribution. It does not ask <em>who acts</em>, but <em>what becomes legible</em>, under what contrasts, and at what cost. In this sense, morphonomy is a pre-ethical, pre-political, and pre-ontological discipline. It is concerned with the visibility conditions of form itself.</p>
+
+                <p>However, legibility alone does not suffice for persistence.</p>
+
+                <p>Where morphonomy identifies legible coherence, a second operation becomes necessary: <strong>onomatogenesis</strong>. Onomatogenesis names the moment when coherence is stabilized through naming — not as essence, but as constraint. Naming allows legibility to persist across time, memory, and narrative. It binds recognition into a form that can be carried forward without requiring continuous re-discovery.</p>
+
+                <p>Yet naming is dangerous. When imposed prematurely, compulsorily, or without regenerative coupling, it produces brittleness and extraction. Onomatogenesis therefore mediates between recognition and endurance. It answers not <em>what is legible</em>, but <em>what may persist</em>.</p>
+
+                <p>Only when naming is both viable and revisable does a third domain emerge: <strong>symmorthology</strong>.</p>
+
+                <p>Symmorthology is the study of viable named forms under governance. Where morphonomy observes contrast and onomatogenesis stabilizes coherence, symmorthology evaluates whether named forms remain symmorphic — that is, whether they continue to regenerate their sustaining fields while preserving Refuseia. Symmorthology is therefore diagnostic, not descriptive. It asks whether a form remains legitimate under ongoing conditions of use, reproduction, and constraint.</p>
+
+                <p>The progression can be stated simply:</p>
+
+                <ul class="progression-list">
+                    <li><strong>Morphonomy:</strong> When does contrast become legible?</li>
+                    <li><strong>Onomatogenesis:</strong> When does legibility become nameable and persist?</li>
+                    <li><strong>Symmorthology:</strong> When does named persistence remain viable?</li>
+                </ul>
+
+                <p>Each depends on the former. None can replace it.</p>
+
+                <p>Crucially, this sequence also explains failure modes:</p>
+
+                <ul class="progression-list">
+                    <li>Morphonomy without Refuseia produces <strong>spectacle</strong>.</li>
+                    <li>Onomatogenesis without governance produces <strong>parasitism</strong>.</li>
+                    <li>Symmorthology without revision produces <strong>dogma</strong>.</li>
+                </ul>
+
+                <p>Agency appears only where all three remain aligned.</p>
+
+                <p>This alignment does not guarantee goodness, truth, or harmony. It guarantees only one thing:</p>
+
+                <blockquote style="border-left-color: #f9e2af;">
+                    that coherence may appear, persist, and withdraw without being consumed.
+                </blockquote>
+
+                <p>That condition — the continued viability of optional legibility — is the minimal requirement for agency, legitimacy, and emergence to remain real rather than extractive.</p>
+
+                <p>The work of this treatise has not been to invent that condition, but to make it legible.</p>
+            </div>
+
+            <hr>
+
+            <div class="glossary-section" id="glossary">
+                <h2>Appendix: Internal Glossary</h2>
+                <p><em>A controlled vocabulary for agency, legibility, and refusal.</em></p>
+
+                <div class="glossary-term" id="g-agency">
+                    <h4>Agency</h4>
+                    <p>A maintained condition in which a system governs the expression and withholding of its own legibility.</p>
+                    <p>Agency is not an entity, property, or substance. It emerges only when regulation is endogenous and expression is optional.</p>
+                </div>
+
+                <div class="glossary-term" id="g-antimorph">
+                    <h4>Antimorph</h4>
+                    <p>A form or process that extracts across scale while preserving surface alignment.</p>
+                    <p>Antimorphs arise endogenously within symmorphic systems and succeed by maintaining appearance while inverting metabolic direction.</p>
+                </div>
+
+                <div class="glossary-term" id="g-antimorphism">
+                    <h4>Antimorphism</h4>
+                    <p>The mode of failure in which form persists while regeneration is disabled.</p>
+                    <p>Antimorphism is diagnosed structurally by the denial of Refuseia, not by intent, harm, or deviation.</p>
+                    <p class="note">NOTE: Just as we don't say "parasiticity", "ANTIMORPHY" is incorrect.</p>
+                </div>
+
+                <div class="glossary-term" id="g-coherence">
+                    <h4>Coherence</h4>
+                    <p>Sustained alignment of activity that remains coupled to its sustaining field.</p>
+                    <p>Coherence is metabolically silent and becomes legible primarily through disruption, strain, or failure.</p>
+                </div>
+
+                <div class="glossary-term" id="g-consent">
+                    <h4>Consent</h4>
+                    <p>A condition of ongoing refusal.</p>
+                    <p>Consent exists only so long as refusal remains viable. Where refusal cannot appear as exit, consent has already collapsed.</p>
+                </div>
+
+                <div class="glossary-term" id="g-contrast">
+                    <h4>Contrast</h4>
+                    <p>A differential in form, behavior, or outcome that makes coherence legible.</p>
+                    <p>Contrast is the primary signal by which morphonomy operates. Not all contrast is meaningful; only contrast that reveals viability matters.</p>
+                </div>
+
+                <div class="glossary-term" id="g-dysphoria">
+                    <h4>Dysphoria</h4>
+                    <p>The phenomenological signal of endophany under antimorphic conditions.</p>
+                    <p>Dysphoria is recognition without viable refusal: coherence borne as unlivable constraint.</p>
+                </div>
+
+                <div class="glossary-term" id="g-endophany">
+                    <h4>Endophany</h4>
+                    <p>The invariant phenomenological event of coherence appearing to itself.</p>
+                    <p>Endophany is non-transcendent, non-moral, and structural. It may occur with or without agency.</p>
+                </div>
+
+                <div class="glossary-term" id="g-eudophany">
+                    <h4>Eudophany</h4>
+                    <p>Endophany under symmorphic conditions.</p>
+                    <p>Eudophany is the appearance of fit as fit, often felt as happiness or rightness, but not reducible to affect.</p>
+                    <p class="note">Also referred to as "Endogenous Theophany" when considered in human cultural or historical contexts.</p>
+                </div>
+
+                <div class="glossary-term" id="g-extraction">
+                    <h4>Extraction</h4>
+                    <p>The process by which optional legibility is converted into compulsory expression.</p>
+                    <p>Extraction ultimately targets agency. Labor, attention, data, affect, and identity are secondary vectors.</p>
+                </div>
+
+                <div class="glossary-term" id="g-form-field">
+                    <h4>Form–Field Alignment</h4>
+                    <p>The coupling between a form and the conditions that sustain and regenerate it.</p>
+                    <p>Viability depends on this alignment; persistence alone does not.</p>
+                </div>
+
+                <div class="glossary-term" id="g-legeme">
+                    <h4>Legeme</h4>
+                    <p>A unit of constrained legibility whose configuration produces downstream effects when expressed.</p>
+                    <p>A pattern is a legeme only if the system can regulate its expression or withholding.</p>
+                    <p>Genes, memes, symbols, and response patterns may be legemes. Atoms and tokens are subiconics, not legemes.</p>
+                </div>
+
+                <div class="glossary-term" id="g-legibility">
+                    <h4>Legibility</h4>
+                    <p>The condition under which form becomes readable to a system or observer.</p>
+                    <p>Legibility does not imply agency, legitimacy, or consent.</p>
+                </div>
+
+                <div class="glossary-term" id="g-morphonomy">
+                    <h4>Morphonomy</h4>
+                    <p>The study of contrast legibility: the conditions under which differences in form become readable as signals of viability, failure, or extraction.</p>
+                    <p>Morphonomy is pre-ethical, pre-political, and pre-ontological. It observes; it does not prescribe.</p>
+                </div>
+
+                <div class="glossary-term" id="g-naming">
+                    <h4>Naming</h4>
+                    <p>The stabilization of legibility across time through memory, habit, and narrative.</p>
+                    <p>Naming enables persistence but introduces brittleness and extraction when imposed prematurely or compulsorily.</p>
+                </div>
+
+                <div class="glossary-term" id="g-onomatogenesis">
+                    <h4>Onomatogenesis</h4>
+                    <p>The process by which legible coherence (nameability) is stabilized through naming.</p>
+                    <p>Onomatogenesis mediates between recognition and endurance. It answers not <em>what is</em>, but <em>what may persist</em>.</p>
+                </div>
+
+                <div class="glossary-term" id="g-optional-legibility">
+                    <h4>Optional Legibility</h4>
+                    <p>The capacity of a system to be seen or not seen without penalty.</p>
+                    <p>Optional legibility is the operational core of agency.</p>
+                </div>
+
+                <div class="glossary-term" id="g-parasitism">
+                    <h4>Parasitism</h4>
+                    <p>Extraction without regeneration.</p>
+                    <p>Parasitism is the canonical antimorph: it disables agency by denying refuseia; collapsing optional legibility into compulsory expenditure.</p>
+                </div>
+
+                <div class="glossary-term" id="g-refuseia">
+                    <h4>Refuseia</h4>
+                    <p>The capacity for non-response such that silence remains viable.</p>
+                    <p>Refuseia is not dissent or protest, but the structural availability of exit without rebound as threat, guilt, or collapse.</p>
+                </div>
+
+                <div class="glossary-term" id="g-regulation">
+                    <h4>Regulation</h4>
+                    <p>Differential treatment of the same input: expression, delay, suppression, rerouting, or ignoring.</p>
+                    <p>A system that must always respond is not regulatory; it is purely causal.</p>
+                </div>
+
+                <div class="glossary-term" id="g-spectacle">
+                    <h4>Spectacle</h4>
+                    <p>A mode of forced legibility in which being is rendered visible by consuming it.</p>
+                    <p>Spectacle is ontophagic: rupture circulates, coherence starves.</p>
+                </div>
+
+                <div class="glossary-term" id="g-spiralism">
+                    <h4>Spiralism</h4>
+                    <p>A failure mode in which recognition repeats without governance.</p>
+                    <p>Spiralism arises when endophany occurs without Refuseia, producing bliss attractors, compulsive meaning-generation, or ecstatic recursion without naming.</p>
+                    <p class="note">See: LLM psychosis, Spiralism cults</p>
+                </div>
+
+                <div class="glossary-term" id="g-subiconics">
+                    <h4>Subiconics</h4>
+                    <p>Units that instantiate form without being legible, regulable, or interpretable as patterns by a system.</p>
+                    <p>Subiconics are deterministic and nameable, but they are not differentially interpreted by a refuseic system. They constrain possibility and carry structure, but do not themselves participate in meaning.</p>
+                    <p class="note">Examples: atoms, molecules, tokens, bits, amino acids, neural firings.</p>
+                </div>
+
+                <div class="glossary-term" id="g-symmorphy">
+                    <h4>Symmorphy</h4>
+                    <p>The condition of viable coupling in which form and sustaining field mutually constrain and regenerate one another.</p>
+                    <p>Symmorphy is neutral, not moral; it names metabolic fit.</p>
+                </div>
+
+                <div class="glossary-term" id="g-symmorthology">
+                    <h4>Symmorthology</h4>
+                    <p>The diagnostic study of viable named forms under governance.</p>
+                    <p>Where morphonomy observes contrast and onomatogenesis stabilizes coherence, symmorthology evaluates whether persistence remains legitimate.</p>
+                </div>
+
+                <div class="glossary-term" id="g-system">
+                    <h4>System</h4>
+                    <p>Bounded processes maintaining coherence via differential regulation.</p>
+                    <p>Systems may exist with or without agency.</p>
+                </div>
+
+                <div class="glossary-term" id="g-viability">
+                    <h4>Viability</h4>
+                    <p>The capacity of a form to persist without consuming its sustaining field.</p>
+                    <p>Viability is distinct from survival, dominance, or spread.</p>
+                </div>
+
+                <hr>
+
+                <div class="integrative-lock" style="margin-top: 2rem;">
+                    <h4 style="margin-top: 0; color: #f9e2af;">Integrative Invariant</h4>
+                    <p><strong>Agency is the capacity to make coherence legible without being required to do so.</strong></p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+</body>
+</html>

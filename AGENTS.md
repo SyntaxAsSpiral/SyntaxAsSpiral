@@ -18,14 +18,21 @@ This repository generates a daily-updated personal homepage at `https://lexemanc
 ### Output Structure
 ```
 root/
-├── index.html                    # Main homepage (GitHub Pages entry point)
+├── index.html                    # Main homepage (Pulse Log - rendered from templates/default.html)
+├── about.html                    # About page (rendered with pulse data)
+├── projects.html                 # Projects page (rendered with pulse data)
+├── utils.html                    # Utils page (rendered with pulse data)
+├── zalgo-lexigon.html            # Zalgo text transformer (rendered with pulse data)
+├── palette-mutator.html          # Color palette tool (rendered with pulse data)
+├── paneudaemonium.html           # Paneudæmonium portal (static, own styles)
+├── mondevour.html                # Mondevour page (static, own styles)
 ├── pulse.json                    # Structured pulse data (all fields for consumption)
 ├── README.md                     # Profile README with chronohex link
 ├── .env                          # Local LLM config (tracked for documentation)
 ├── templates/
 │   └── default.html              # Main template with {{variable}} placeholders
 ├── logs/
-│   ├── index.html                # Archive index with divination icons
+│   ├── index.html                # Archive index with divination icons (teal header)
 │   ├── YYYY-MM-DD.html           # Daily snapshots (one per day, overwritten)
 │   ├── esotericons_cache.json    # Cached icon list (clean .ico and .svg only)
 │   └── pulses/
@@ -38,7 +45,7 @@ root/
 │       └── end_quote_cache.txt
 └── assets/
     ├── theme.css                 # Generated theme variables
-    ├── style.css                 # Main stylesheet
+    ├── style.css                 # Main stylesheet with navigation panel
     └── *.ico, *.mp4, *.svg       # Static assets
 ```
 
@@ -121,20 +128,29 @@ generated output 2
 ### 3. Icon Selection & Data Structuring
 - Fetches random esotericon from GitHub (true random for divination)
 - Creates chronohex: last 6 chars of `hex(time.time_ns())`
+- Splits chronohex into individual characters for rainbow coloring (chronohex_0 through chronohex_5)
 - Builds `pulse_data` dict with all pulse fields (status, quote, subject, mode, etc.) + icon URL
 - Writes `pulse.json` for structured data consumption
 - Updates `README.md` with chronohex link to lexemancy.com
 
-### 4. Template Rendering
+### 4. Template Rendering & Static Page Updates
 - Loads `templates/default.html` (contains `{{variable}}` placeholders)
 - Renders HTML by substituting `{{variable}}` with values from `pulse_data`
 - Writes `index.html` with fresh pulse content and icon
+- **Renders static pages with pulse data**:
+  - `about.html`: Gets icon_tag, status, timestamp, mode, class_disp_html, end_quote
+  - `projects.html`: Gets icon_tag
+  - `utils.html`: Gets icon_tag
+  - `zalgo-lexigon.html`: Gets icon_tag
+  - `palette-mutator.html`: Gets icon_tag
+  - `logs/index.html`: Gets icon_tag (via render_logs_index_html function)
+- **Icon syncing**: All pages share the same daily divination icon for unified aesthetic
 
 ### 5. Log Archiving & Index Rebuild
 - Archives rendered HTML to `logs/YYYY-MM-DD.html` (rewrite paths for ../assets/)
 - Scans `logs/` for all date-formatted HTML files
 - Extracts icon URL from each archived log's `<link rel="icon" href="...">` tag
-- Rebuilds `logs/index.html` with all dates + their divination icons
+- Rebuilds `logs/index.html` with all dates + their divination icons (teal header #94e2d5)
 
 ### 6. Git Autopush
 ```bash
@@ -201,10 +217,31 @@ schtasks /run /tn "PulseLogUpdater"
 - **Root `index.html`**: `assets/*`
 - **Logs `logs/*.html`**: `../assets/*`
 - **All paths relative**: No absolute URLs for assets
+- **Navigation links**: Root-relative paths (`/`) for proper subdirectory navigation
 
 ### Project Links
 - **GitHub projects**: `https://github.com/{github}`
 - **Local projects**: `{local_path}` (relative to root)
+
+## Navigation System
+
+### Rainbow Catppuccin Side Panel
+- **Hamburger menu** (top-right): Opens slide-in navigation panel from right
+- **Click-off-to-close**: Overlay dismisses panel when clicking outside
+- **localStorage persistence**: Panel state persists across page navigation
+- **Rainbow tabs** with Catppuccin Mocha colors:
+  - 🌀 Pulse Log (Red #f38ba8) → `index.html`
+  - 🜏 About (Peach #fab387) → `about.html`
+  - ⟁ Projects (Yellow #f9e2af) → `projects.html`
+  - ⚗️ Utils (Green #a6e3a1) → `utils.html`
+  - 🜃 Paneudæmonium (Sapphire #74c7ec) → `paneudaemonium.html`
+  - 🎭 Mondevour (Lavender #b4befe) → `mondevour.html`
+- **Active tab styling**: Gradient mutation effect (brightness 1.2, saturate 1.3)
+- **Page headers**: Match their tab colors for visual consistency
+
+### Special Pages
+- **Paneudæmonium**: Keeps own stylesheet (`assets/paneudaemonium/style.css`), not inheriting main styles
+- **Mondevour**: Keeps own inline styles and character, footer links back to Paneudæmonium
 
 ## Design Principles
 
@@ -258,8 +295,17 @@ schtasks /run /tn "PulseLogUpdater"
 1. Check `config/index.md` for structure documentation
 2. Update `config/style-config.yaml` for project/theme changes
 3. Modify `src/github_status_rotator.py` for HTML generation logic
-4. Never edit `index.html` or `README.md` directly (auto-generated)
-5. Never commit manually - let the rotator handle it
+4. Never edit `index.html`, `README.md`, or rendered static pages directly (auto-generated)
+5. Edit source HTML files (about.html, projects.html, etc.) to add `{{variable}}` placeholders
+6. Add files to `static_pages` list in rotator if they need pulse data injection
+7. Never commit manually - let the rotator handle it
+
+### When modifying navigation:
+1. Edit `assets/style.css` for panel styling and tab colors
+2. Update navigation HTML in each page's source file
+3. Use root-relative paths (`/`) for all navigation links
+4. Match page header colors to their tab colors for consistency
+5. Paneudæmonium and Mondevour keep their own styles (don't inherit main navigation)
 
 ### When adding new pulse fields:
 1. Create cache file in `logs/pulses/{field}_cache.txt` with seed/cache sections
@@ -288,22 +334,27 @@ schtasks /run /tn "PulseLogUpdater"
 ## File Modification Rules
 
 ### Auto-Generated (DO NOT EDIT MANUALLY):
-- `index.html`
+- `index.html` (rendered from templates/default.html)
 - `pulse.json`
 - `README.md`
-- `logs/*.html`
+- `logs/*.html` (daily archives)
+- `logs/index.html` (archive index)
 - `assets/theme.css`
 - `logs/esotericons_cache.json`
 - Cache sections in `logs/pulses/*_cache.txt` (LLM appends here)
 
-### Safe to Edit:
+### Safe to Edit (Source Files):
 - `config/index.md`
 - `config/style-config.yaml`
 - `config/zalgo-config.json`
-- `assets/style.css`
+- `assets/style.css` (navigation and main styles)
+- `assets/paneudaemonium/style.css` (Paneudæmonium-specific styles)
 - Seed sections in `logs/pulses/*_cache.txt`
 - `src/*.py`
 - `templates/*.html` (create alternates, modify existing)
+- `about.html`, `projects.html`, `utils.html` (source files with {{placeholders}})
+- `zalgo-lexigon.html`, `palette-mutator.html` (utility pages)
+- `paneudaemonium.html`, `mondevour.html` (special pages with own styles)
 - `.env` (local LLM config)
 
 ### Never Track:
@@ -326,7 +377,8 @@ You can create multiple templates without modifying the rotator:
 4. No generation logic changes needed
 
 **Available variables for templates:**
-- `chronotonic`, `timestamp`, `stylesheet`, `icon_tag`
+- `chronotonic`, `chronohex`, `timestamp`, `stylesheet`, `icon_tag`
+- `chronohex_0` through `chronohex_5` (individual rainbow-colored characters)
 - `quote`, `subject_font`, `subject_zalgo`, `braid`
 - `status`, `mode`, `class_disp_html`, `end_quote`
 - `projects_html`, `logs_link_html`
@@ -345,9 +397,22 @@ Simple regex-based substitution—no Jinja2 or complex logic:
 ### Esotericon Divination System
 - Random icon selected daily from `https://github.com/SyntaxAsSpiral/esotericons`
 - Icon URL baked into daily archive HTML
+- **Icon syncing**: Same icon injected across all pages (index, about, projects, utils, zalgo-lexigon, palette-mutator, logs/index)
 - Logs index displays each day's icon as visual tarot/rune deck
 - True random selection (not cycling) for divination purposes
 - Fallback to `assets/index.ico` if fetch fails
+
+### Rainbow Chronohex Display
+- 6-character chronohex split into individual spans
+- Each character colored with Catppuccin rainbow:
+  - Character 0: Red (#f38ba8)
+  - Character 1: Peach (#fab387)
+  - Character 2: Yellow (#f9e2af)
+  - Character 3: Green (#a6e3a1)
+  - Character 4: Sapphire (#74c7ec)
+  - Character 5: Lavender (#b4befe)
+- Naturally includes letters (a-f) from hex encoding
+- All-digit codes are valid but rare
 
 ### Zalgo Text Transformation
 - Applied to subject IDs (only text before ⊚ symbol)

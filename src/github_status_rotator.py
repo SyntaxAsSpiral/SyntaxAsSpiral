@@ -142,7 +142,7 @@ def apply_zalgo_light(text: str, rng: random.Random) -> str:
 
 
 def render_logs_index_html(log_dates: list[str], logs_dir: Path, icon_tag: str = "") -> str:
-    """Render a simple logs index page listing available daily log snapshots with icons."""
+    """Render logs index page from template with dynamic log items."""
     import re
     
     items = []
@@ -170,34 +170,18 @@ def render_logs_index_html(log_dates: list[str], logs_dir: Path, icon_tag: str =
         else:
             items.append(f'      <li><a href="{d}.html">{d}</a></li>')
     
-    items_html = "\n".join(items) if items else "      <li><em>No logs yet.</em></li>"
-
-    stylesheet = os.environ.get("STYLESHEET", "style.css")
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pulse Log Archive</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0d1117">
-  <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="../assets/{stylesheet}">
-  {icon_tag}
-</head>
-<body>
-<div class="container">
-  <main class="content">
-    <h1>Pulse Log Archive</h1>
-    <p><a href="../index.html">Back to latest</a></p>
-    <ul>
-{items_html}
-    </ul>
-  </main>
-</div>
-</body>
-</html>
-"""
+    log_items = "\n".join(items) if items else "      <li><em>No logs yet.</em></li>"
+    
+    # Load template from root
+    template_path = Path(__file__).parent.parent / "logs-index.html"
+    try:
+        with template_path.open("r", encoding="utf-8") as f:
+            template = f.read()
+    except FileNotFoundError:
+        raise RuntimeError(f"logs-index.html template not found at {template_path}")
+    
+    # Render template
+    return template.replace("{{icon_tag}}", icon_tag).replace("{{log_items}}", log_items)
 
 
 # === FALLBACK: Batch Cycling (if LLM unavailable) ===
@@ -500,7 +484,7 @@ def main():
         icon_tag = '<link rel="icon" href="assets/index.ico" type="image/x-icon">'
 
     # === BUILD PULSE DATA ===
-    logs_link_html = '<p><a href="logs/index.html">See past logs :: ></a></p>'
+    logs_link_html = '<p><a href="logs-index.html">See past logs :: ></a></p>'
 
     # Split chronohex into individual characters for rainbow coloring
     chronohex_chars = {f"chronohex_{i}": c for i, c in enumerate(chronotonic[:6])}
@@ -605,7 +589,7 @@ def main():
 
     existing_dates = sorted(set(existing_dates), reverse=True)
     index_html = render_logs_index_html(existing_dates, logs_dir, pulse_data["icon_tag"])
-    index_path = logs_dir / "index.html"
+    index_path = REPO_ROOT / "logs-index.html"
     with index_path.open("w", encoding="utf-8") as f:
         f.write(index_html)
         if not index_html.endswith("\n"):
