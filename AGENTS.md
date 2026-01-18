@@ -26,7 +26,15 @@ root/
 ├── palette-mutator.html          # Color palette tool (rendered with pulse data)
 ├── paneudaemonium.html           # Paneudæmonium portal (static, own styles)
 ├── mondevour.html                # Mondevour page (static, own styles)
+├── lexemantika-index.html        # Lexemantika codex index (sapphire theme)
+├── drift-index.html              # Somniorum drift archive index (purple theme)
 ├── logs-index.html               # Archive index with divination icons (at root, links to logs/)
+├── docs/
+│   ├── lexemancy.html            # Combined lexemancy/hyperstition/praxis codex
+│   ├── wyzyrdry.html             # Wyzýrdry triquetra page
+│   ├── tessellametry.html        # Tessellametry triquetra page
+│   ├── physemy.html              # Physemy triquetra page
+│   └── morphonomy.html           # Morphonomy treatise
 ├── pulse.json                    # Structured pulse data (all fields for consumption)
 ├── README.md                     # Profile README with chronohex link
 ├── .env                          # Local LLM config (tracked for documentation)
@@ -213,7 +221,7 @@ LLM_API_KEY=  # Optional for LMStudio, required for OpenRouter
 - **Task Name**: `PulseLogUpdater`
 - **Schedule**: Daily at 2:24 AM PST
 - **Command**: `python src/github_status_rotator.py`
-- **Working Directory**: `C:\Users\synta.ZK-ZRRH\.dev\SyntaxAsSpiral`
+- **Working Directory**: `C:\Users\synta.ZK-ZRRH\.dev\pulse-log`
 - **Wake to run**: Enabled
 - **Timeout**: 10 minutes
 
@@ -245,8 +253,9 @@ schtasks /run /tn "PulseLogUpdater"
   - 🜏 About (Peach #fab387) → `about.html`
   - ⟁ Projects (Yellow #f9e2af) → `projects.html`
   - ⚗️ Utils (Green #a6e3a1) → `utils.html`
+  - 🜍 Lexemantika (Sapphire #74c7ec) → `lexemantika-index.html`
   - 🜃 Paneudæmonium (Sapphire #74c7ec) → `paneudaemonium.html`
-  - 🎭 Mondevour (Lavender #b4befe) → `mondevour.html`
+  - ♓︎ Somniorum (Lavender #b4befe) → `drift-index.html`
 - **Active tab styling**: Gradient mutation effect (brightness 1.2, saturate 1.3)
 - **Page headers**: Match their tab colors for visual consistency
 
@@ -366,6 +375,8 @@ schtasks /run /tn "PulseLogUpdater"
 - `about.html`, `projects.html`, `utils.html` (source files with {{placeholders}})
 - `zalgo-lexigon.html`, `palette-mutator.html` (utility pages)
 - `paneudaemonium.html`, `mondevour.html` (special pages with own styles)
+- `lexemantika-index.html`, `drift-index.html` (chamber index pages)
+- `docs/*.html` (lexemantika codex and treatise pages)
 - `.env` (local LLM config)
 
 ### Never Track:
