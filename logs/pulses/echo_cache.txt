@@ -36,3 +36,4 @@
 ⇝ post·html·body :: pre·graphql gesture
 ⇝ post·wyrd::pre·hadean shimmer.
 ⇝ post·zahir-batin::pre·daemonic echo
+⇝ post-haunt :: pre-vocable sigil

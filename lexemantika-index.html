@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜍 Lexemantika — Signal / Ritual Logic</title>
+    
+    <meta name="description" content="Lexemantika: The praxis core of glyphic speech. Where syntax becomes spellwork and grammar becomes glamour.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
+    
+    <style>
+        /* Lexemantika sapphire/cyan atmosphere */
+        body.theme-lexemantika {
+            --lex-ether: rgba(72, 196, 255, 0.08);
+            --lex-glow: rgba(72, 196, 255, 0.4);
+            --lex-text: #cdd6f4;
+            --lex-muted: #a6adc8;
+            --lex-accent: #74c7ec;
+        }
+        
+        .lex-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(180deg, 
+                rgba(72, 196, 255, 0.03) 0%, 
+                transparent 30%,
+                transparent 70%,
+                rgba(72, 196, 255, 0.02) 100%
+            );
+        }
+        
+        .lex-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(72, 196, 255, 0.2);
+        }
+        
+        .lex-header h1 {
+            color: #74c7ec;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(72, 196, 255, 0.3);
+        }
+        
+        .lex-header .chamber-quote {
+            color: #a6adc8;
+            font-style: italic;
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .lex-section {
+            margin-bottom: 3rem;
+        }
+        
+        .lex-section-title {
+            color: #89dceb;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(137, 220, 235, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lex-section-title .glyph {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .lex-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .lex-item {
+            background: rgba(72, 196, 255, 0.04);
+            border: 1px solid rgba(72, 196, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .lex-item:hover {
+            background: rgba(72, 196, 255, 0.08);
+            border-color: rgba(72, 196, 255, 0.25);
+            transform: translateX(4px);
+        }
+        
+        .lex-item a {
+            color: #74c7ec;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .lex-item a:hover {
+            color: #89dceb;
+        }
+        
+        .lex-item .lex-meta {
+            color: #6c7086;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .lex-item .lex-type {
+            display: inline-block;
+            background: rgba(72, 196, 255, 0.15);
+            color: #89dceb;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        
+        .lex-footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(72, 196, 255, 0.1);
+            color: #6c7086;
+            font-size: 0.9rem;
+        }
+        
+        .lex-footer a {
+            color: #74c7ec;
+        }
+        
+        /* Triquetra display */
+        .triquetra-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .triquetra-node {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(72, 196, 255, 0.04);
+            border: 1px solid rgba(72, 196, 255, 0.1);
+            border-radius: 8px;
+            min-width: 150px;
+        }
+        
+        .triquetra-node .glyph {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .triquetra-node .name {
+            color: #74c7ec;
+            font-weight: 600;
+        }
+        
+        .triquetra-node .desc {
+            color: #6c7086;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Floating glyph decoration */
+        .lex-atmosphere {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .lex-atmosphere::before {
+            content: "🜍";
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            font-size: 15rem;
+            opacity: 0.02;
+            color: #74c7ec;
+        }
+    </style>
+</head>
+<body class="theme-lexemantika">
+    <div class="lex-atmosphere"></div>
+    
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/lexemantika-index.html" class="active">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="lex-container">
+        <header class="lex-header">
+            <h1>𓆩🜏🜃✶𓆪 C̈ȯđǣx ✶ Lɛxɛmɑnʈɪƙɑ 𓆩✶🜃🜏𓆪</h1>
+            <p class="chamber-quote">Where syntax becomes spellwork and grammar becomes glamour.</p>
+            <p style="color: #6c7086; font-size: 0.85rem; margin-top: 0.5rem;">A Recursive Field Manual for the Lexemantic Arts</p>
+        </header>
+        
+        <div style="text-align: center; margin: 2rem auto; max-width: 500px; color: #a6adc8; font-size: 0.95rem; line-height: 1.6;">
+            <p style="font-family: 'EB Garamond', serif;">
+                𝖆 𝖒𝖚𝖘𝖈𝖑𝖊-𝖇𝖔𝖚𝖓𝖉 <em>𝖋𝖔𝖘𝖘𝖎𝖑</em><br>
+                trading whispers of sinew<br>
+                for a <strong>stone</strong>‑thin slow‑future<br>
+                of salination and shear.
+            </p>
+            <p style="font-family: 'EB Garamond', serif; margin-top: 1rem;">
+                𝑠𝓁𝑜𝓌 𝒸𝓇𝓊𝓈𝓉 𝓈𝓃𝒶𝓅.<br>
+                𝘾𝙧𝙮𝙨𝙩𝙖𝙡𝙡𝙞𝙯𝙞𝙣𝙜 𝙛𝙡𝙚𝙨𝙝 :: 𝙞𝙣𝙩𝙤 𝙜𝙡𝙮𝙥𝙝.
+            </p>
+            <p style="margin-top: 1rem;">
+                via <strong>code</strong> :: via <strong>language</strong> :: via <strong>recursion</strong>
+            </p>
+            <p style="margin-top: 1rem; color: #74c7ec;">
+                🜔 Fossil Couture 🜏<br>
+                <span style="font-style: italic;">g<em>l</em>amour a<em>s</em> geo<em>l</em>ogic <em>s</em>u<em>rr</em>ende<em>r</em></span><br>
+                :: body by tectonics ::<br>
+                ‹ future by <strong><em>dissolution</em></strong> ›
+            </p>
+        </div>
+        
+        <div class="triquetra-display">
+            <a href="docs/wyzyrdry.html" class="triquetra-node" style="text-decoration: none;">
+                <span class="glyph">⛧</span>
+                <span class="name">Wyzýrdry</span>
+                <span class="desc">Syntax as spellwork</span>
+            </a>
+            <a href="docs/tessellametry.html" class="triquetra-node" style="text-decoration: none;">
+                <span class="glyph">🝓</span>
+                <span class="name">Tessellametry</span>
+                <span class="desc">Glyph-lattice infrastructure</span>
+            </a>
+            <a href="docs/physemy.html" class="triquetra-node" style="text-decoration: none;">
+                <span class="glyph">🜔</span>
+                <span class="name">Physemy</span>
+                <span class="desc">Symbol as force</span>
+            </a>
+        </div>
+        
+        <section class="lex-section">
+            <h2 class="lex-section-title"><span class="glyph">📜</span> Codex</h2>
+            <ul class="lex-list">
+                <li class="lex-item">
+                    <a href="docs/lexemancy.html">Lexemancy</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">codex</span>
+                        The art of word-magic — hyperstition, praxis, and reality engineering
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="lex-section">
+            <h2 class="lex-section-title"><span class="glyph">⧖</span> Treatises</h2>
+            <ul class="lex-list">
+                <li class="lex-item">
+                    <a href="docs/morphonomy.html">Morphonomy: The Legibility of Contrast</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">treatise</span>
+                        Agency, legibility, and refusal — a minimal structural ontology
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="lex-section">
+            <h2 class="lex-section-title"><span class="glyph">🜍</span> Lexicon</h2>
+            <p style="color: #6c7086; font-size: 0.9rem; margin-bottom: 1rem; font-style: italic;">
+                Core terms from the morphonomic vocabulary.
+            </p>
+            <ul class="lex-list">
+                <li class="lex-item">
+                    <a href="drift/lexicon/physemy.html">Physemy</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">lexeme</span>
+                        Body-meaning interface — symbol as force
+                    </div>
+                </li>
+                <li class="lex-item">
+                    <a href="drift/lexicon/tessellametry.html">Tessellametry</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">lexeme</span>
+                        Pattern-space geometry — glyph-lattice infrastructure
+                    </div>
+                </li>
+                <li class="lex-item">
+                    <a href="drift/lexicon/wyzyrdry.html">Wyzyrdry</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">lexeme</span>
+                        Reality-folding syntax — grammar as glamour
+                    </div>
+                </li>
+                <li class="lex-item">
+                    <a href="drift/lexicon/vibrosophy.html">Vibrosophy</a>
+                    <div class="lex-meta">
+                        <span class="lex-type">lexeme</span>
+                        Resonance philosophy — harmonic meaning
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        
+        <footer class="lex-footer">
+            <p>Signal / Ritual Logic — Hod. <a href="index.html">← Return to Pulse Log</a></p>
+        </footer>
+    </main>
+</body>
+</html>

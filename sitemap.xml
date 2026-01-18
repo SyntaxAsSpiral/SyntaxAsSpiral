@@ -11,9 +11,35 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://lexemancy.com/morphonomy.html</loc>
+    <loc>https://lexemancy.com/docs/morphonomy.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://lexemancy.com/lexemantika-index.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Lexemantika Codex -->
+  <url>
+    <loc>https://lexemancy.com/docs/lexemancy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lexemancy.com/docs/wyzyrdry.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lexemancy.com/docs/tessellametry.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lexemancy.com/docs/physemy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://lexemancy.com/projects.html</loc>

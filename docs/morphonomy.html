@@ -29,10 +29,55 @@
     <!-- Canonical -->
     <link rel="canonical" href="https://lexemancy.com/morphonomy.html">
     
-    <link rel="stylesheet" href="assets/theme.css">
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="../assets/theme.css">
+    <link rel="stylesheet" href="../assets/style.css">
     <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
     <style>
+        body.theme-lexemantika {
+            --lex-ether: rgba(72, 196, 255, 0.08);
+            --lex-glow: rgba(72, 196, 255, 0.4);
+            --lex-accent: #74c7ec;
+        }
+
+        .lex-content h1 { color: #74c7ec; border-bottom: 1px solid rgba(72, 196, 255, 0.2); padding-bottom: 0.5rem; }
+        .lex-content h2 { color: #89dceb; margin-top: 2rem; }
+        .lex-content h3 { color: #94e2d5; margin-top: 1.5rem; }
+        .lex-content h4 { color: #a6e3a1; margin-top: 1rem; }
+
+        .lex-content blockquote {
+            border-left: 3px solid #74c7ec;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #a6adc8;
+            font-style: italic;
+        }
+
+        .lex-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .lex-content th, .lex-content td {
+            border: 1px solid rgba(72, 196, 255, 0.2);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .lex-content th {
+            background: rgba(72, 196, 255, 0.1);
+            color: #74c7ec;
+        }
+
+        .lex-content strong { color: #74c7ec; }
+        .lex-content em { color: #89dceb; }
+
+        .lex-content hr {
+            border: none;
+            border-top: 1px solid rgba(72, 196, 255, 0.15);
+            margin: 2.5rem 0;
+        }
+
         .morphonomy-epigraph {
             font-family: 'EB Garamond', 'Cormorant Infant', serif;
             font-style: italic;
@@ -42,7 +87,7 @@
             max-width: 600px;
             text-align: center;
             border-left: none;
-            background: linear-gradient(135deg, rgba(137, 180, 250, 0.05), rgba(203, 166, 247, 0.05));
+            background: linear-gradient(135deg, rgba(116, 199, 236, 0.05), rgba(148, 226, 213, 0.05));
             border-radius: 8px;
         }
         .morphonomy-epigraph .source {
@@ -53,12 +98,12 @@
         }
         .morphonomy-epigraph .arabic-name {
             font-style: normal;
-            color: #89b4fa;
+            color: #74c7ec;
             font-weight: 600;
         }
         .integrative-lock {
-            background: linear-gradient(135deg, rgba(249, 226, 175, 0.08), rgba(203, 166, 247, 0.08));
-            border-left: 4px solid #f9e2af;
+            background: linear-gradient(135deg, rgba(116, 199, 236, 0.08), rgba(148, 226, 213, 0.08));
+            border-left: 4px solid #74c7ec;
             padding: 1.25rem 1.5rem;
             margin: 2rem 0;
             border-radius: 0 8px 8px 0;
@@ -66,17 +111,17 @@
         .integrative-lock p {
             margin: 0;
             font-size: 1.1rem;
-            color: #f9e2af;
+            color: #74c7ec;
         }
         .toc {
             background: rgba(30, 30, 46, 0.6);
-            border: 1px solid #45475a;
+            border: 1px solid rgba(72, 196, 255, 0.2);
             border-radius: 8px;
             padding: 1.5rem 2rem;
             margin: 2rem 0;
         }
         .toc h2 {
-            color: #cba6f7;
+            color: #74c7ec;
             margin-top: 0;
             font-size: 1.2rem;
         }
@@ -97,25 +142,25 @@
             font-size: 0.9rem;
         }
         .toc a {
-            color: #89b4fa;
+            color: #89dceb;
             text-decoration: none;
         }
         .toc a:hover {
-            color: #b4befe;
+            color: #94e2d5;
             text-decoration: underline;
         }
         .keystone-section h2 {
-            color: #cba6f7;
-            border-bottom: 1px solid #313244;
+            color: #89dceb;
+            border-bottom: 1px solid rgba(72, 196, 255, 0.2);
             padding-bottom: 0.5rem;
             margin-top: 2.5rem;
         }
         .keystone-section h3 {
-            color: #89b4fa;
+            color: #94e2d5;
             margin-top: 2rem;
         }
         .keystone-section h4 {
-            color: #94e2d5;
+            color: #a6e3a1;
             font-size: 1rem;
             margin-top: 1.5rem;
         }
@@ -132,7 +177,7 @@
         }
         .glossary-section h2 {
             color: #74c7ec;
-            border-bottom: 1px solid #313244;
+            border-bottom: 1px solid rgba(72, 196, 255, 0.2);
             padding-bottom: 0.5rem;
         }
         .glossary-term {
@@ -157,10 +202,10 @@
         .conclusion-section {
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid #313244;
+            border-top: 1px solid rgba(72, 196, 255, 0.2);
         }
         .conclusion-section h2 {
-            color: #f38ba8;
+            color: #89dceb;
         }
         .progression-list {
             list-style: none;
@@ -172,11 +217,11 @@
             color: #cdd6f4;
         }
         .progression-list li strong {
-            color: #89b4fa;
+            color: #74c7ec;
         }
     </style>
 </head>
-<body>
+<body class="theme-lexemantika">
     <nav class="nav-bar">
         <button class="menu-toggle" id="menuToggle">
             <span></span>
@@ -194,7 +239,7 @@
             <a href="/about.html">🜏 About</a>
             <a href="/projects.html">⟁ Projects</a>
             <a href="/utils.html">⚗️ Utils</a>
-            <a href="/morphonomy.html" class="active">🜍 Lexemantika</a>
+            <a href="/lexemantika-index.html">🜍 Lexemantika</a>
             <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
             <a href="/drift-index.html">♓︎ Somniorum</a>
         </nav>
@@ -225,9 +270,9 @@
         
         if (localStorage.getItem('navOpen') === '1') openNav();
     </script>
-    
-    <main class="pulse-frame">
-        <section class="pulse-content">
+
+    <main class="lex-container">
+        <article class="lex-content">
             <header>
                 <h1 style="color: #74c7ec;">⧖ Morphonomy</h1>
                 <p style="text-align: center; color: #a6adc8; font-style: italic;">The Legibility of Contrast in Agency and Emergence</p>
@@ -286,7 +331,7 @@
             </nav>
 
             <div class="integrative-lock" id="integrative-lock">
-                <h2 style="margin-top: 0; color: #f9e2af;">Integrative Lock</h2>
+                <h2 style="margin-top: 0; color: #74c7ec;">Integrative Lock</h2>
                 <p><strong>Agency is the capacity to make coherence legible without being required to do so.</strong></p>
                 <p style="color: #a6adc8; font-size: 0.95rem; margin-top: 0.5rem;">This condition is sufficient to derive every claim that follows.</p>
             </div>
@@ -544,7 +589,7 @@
 
                 <p>This alignment does not guarantee goodness, truth, or harmony. It guarantees only one thing:</p>
 
-                <blockquote style="border-left-color: #f9e2af;">
+                <blockquote style="border-left-color: #74c7ec;">
                     that coherence may appear, persist, and withdraw without being consumed.
                 </blockquote>
 
@@ -729,12 +774,13 @@
                 <hr>
 
                 <div class="integrative-lock" style="margin-top: 2rem;">
-                    <h4 style="margin-top: 0; color: #f9e2af;">Integrative Invariant</h4>
+                    <h4 style="margin-top: 0; color: #74c7ec;">Integrative Invariant</h4>
                     <p><strong>Agency is the capacity to make coherence legible without being required to do so.</strong></p>
                 </div>
             </div>
 
-        </section>
+        </article>
     </main>
 </body>
 </html>
+
