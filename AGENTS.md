@@ -257,7 +257,7 @@ schtasks /run /tn "PulseLogUpdater"
   - ⟁ Projects (Yellow #f9e2af) → `projects.html`
   - ⚗️ Utils (Green #a6e3a1) → `utils.html`
   - 🜍 Lexemantika (Sapphire #74c7ec) → `lexemantika-index.html`
-  - 🜃 Paneudæmonium (Sapphire #74c7ec) → `paneudaemonium.html`
+  - 🜃 Paneudæmonium (Mauve #cba6f7) → `paneudaemonium.html`
   - ♓︎ Somniorum (Lavender #b4befe) → `drift-index.html`
 - **Active tab styling**: Gradient mutation effect (brightness 1.2, saturate 1.3)
 - **Page headers**: Match their tab colors for visual consistency

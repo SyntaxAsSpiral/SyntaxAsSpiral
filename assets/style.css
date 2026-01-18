@@ -556,4 +556,35 @@ a.codex-link:hover {
   main.content ul li a {
     font-size: 1.4rem;
   }
+  
+  /* Mobile padding adjustment */
+  .pulse-content {
+    padding: 1rem;
+  }
+
+  /* Force long text (Zalgo) to wrap */
+  .pulse-content p {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Larger touch targets for hamburger */
+  .menu-toggle {
+    padding: 0.75rem;
+    min-width: 48px;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  .menu-toggle span {
+    width: 24px;
+    height: 3px;
+    margin: 2px 0;
+  }
+
+  /* Simply easier to tap side tabs */
+  .side-tabs a {
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+  }
 }
