@@ -506,7 +506,7 @@ def main():
     # === RENDER STATIC PAGES WITH PULSE DATA ===
     # Static pages use injection markers: <!--{{var}}-->...<!--/{{var}}-->
     # Markers are preserved, content between is replaced with fresh values
-    static_pages = ["about.html", "projects.html", "utils.html", "zalgo-lexigon.html", "palette-mutator.html"]
+    static_pages = ["about.html", "projects.html", "utils.html", "zalgo-lexigon.html", "palette-mutator.html", "drift-index.html", "lexemantika-index.html", "paneudaemonium.html"]
     for page_name in static_pages:
         page_path = output_dir / page_name
         if page_path.exists():
@@ -540,7 +540,7 @@ def main():
     logs_dir = output_dir / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    logs_link_html_archive = '<p><a href="index.html">See past logs :: ></a></p>'
+    logs_link_html_archive = '<p><a href="../logs-index.html">See past logs :: ></a></p>'
     archive_html = (
         html_content
         .replace('href="assets/theme.css"', 'href="../assets/theme.css"')

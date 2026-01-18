@@ -162,8 +162,11 @@ generated output 2
   - `utils.html`: Gets icon_tag
   - `zalgo-lexigon.html`: Gets icon_tag
   - `palette-mutator.html`: Gets icon_tag
-  - `logs-index.html`: Gets icon_tag + dynamically generated log list with icons
-- **Icon syncing**: All pages share the same daily divination icon for unified aesthetic
+  - `drift-index.html`: Gets icon_tag
+  - `lexemantika-index.html`: Gets icon_tag
+  - `paneudaemonium.html`: Gets icon_tag
+  - `logs-index.html`: Gets icon_tag + dynamically generated log list with icons (rendered from template with {{icon_tag}} and {{log_items}} placeholders)
+- **Icon syncing**: All pages share the same daily divination icon for unified aesthetic (via injection markers `<!--{{icon_tag}}-->...<!--/{{icon_tag}}-->`)
 
 ### 5. Log Archiving & Index Rebuild
 - Archives rendered HTML to `logs/YYYY-MM-DD.html` (rewrite paths for ../assets/)
@@ -358,7 +361,7 @@ schtasks /run /tn "PulseLogUpdater"
 - `logs/pulses/pulse.json`
 - `README.md`
 - `logs/*.html` (daily archives)
-- `logs-index.html` (archive index at root)
+- `logs-index.html` (rendered from template with {{icon_tag}} and {{log_items}} placeholders)
 - `assets/theme.css`
 - `logs/esotericons_cache.json`
 - Cache sections in `logs/pulses/*_cache.txt` (LLM appends here)
