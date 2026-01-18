@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panther Editorials 2004-2005 — Palimpsest</title>
+    
+    <meta name="description" content="Collected editorials from The Panther newspaper, 2004-2005. Systems-oriented takes on politics, science, technology, and culture.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../../assets/theme.css">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-palimpsest {
+            --palimpsest-ink: rgba(205, 214, 244, 0.7);
+            --palimpsest-fade: rgba(166, 173, 200, 0.5);
+            --palimpsest-glow: rgba(249, 226, 175, 0.15);
+        }
+        
+        .drift-page {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #f9e2af;
+            text-shadow: 0 0 20px rgba(249, 226, 175, 0.3);
+            text-align: center;
+            margin-bottom: 0.25rem;
+            font-size: 1.8rem;
+        }
+        
+        .drift-page .subtitle {
+            text-align: center;
+            color: #a6adc8;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        
+        .drift-page h2 {
+            border-bottom: 1px solid rgba(250, 179, 135, 0.2);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        /* Rainbow Catppuccin titles */
+        .drift-page h2:nth-of-type(19n+1) { color: #f38ba8; } /* Red - Consilience */
+        .drift-page h2:nth-of-type(19n+2) { color: #fab387; } /* Peach - Is Anyone Still Buying */
+        .drift-page h2:nth-of-type(19n+3) { color: #f9e2af; } /* Yellow - Calendar Change */
+        .drift-page h2:nth-of-type(19n+4) { color: #a6e3a1; } /* Green - America Ready */
+        .drift-page h2:nth-of-type(19n+5) { color: #94e2d5; } /* Teal - Bush vs Science */
+        .drift-page h2:nth-of-type(19n+6) { color: #89dceb; } /* Sky - Size Matters */
+        .drift-page h2:nth-of-type(19n+7) { color: #74c7ec; } /* Sapphire - Internet */
+        .drift-page h2:nth-of-type(19n+8) { color: #89b4fa; } /* Blue - Not Exactly */
+        .drift-page h2:nth-of-type(19n+9) { color: #b4befe; } /* Lavender - Stem Cells */
+        .drift-page h2:nth-of-type(19n+10) { color: #cba6f7; } /* Mauve - Economics */
+        .drift-page h2:nth-of-type(19n+11) { color: #f5c2e7; } /* Pink - Wars Cost Money */
+        .drift-page h2:nth-of-type(19n+12) { color: #f38ba8; } /* Red - Case for Gays */
+        .drift-page h2:nth-of-type(19n+13) { color: #fab387; } /* Peach - What is a Soul */
+        .drift-page h2:nth-of-type(19n+14) { color: #f9e2af; } /* Yellow - Right to Die */
+        .drift-page h2:nth-of-type(19n+15) { color: #a6e3a1; } /* Green - Protest Era */
+        .drift-page h2:nth-of-type(19n+16) { color: #94e2d5; } /* Teal - America's Good Example */
+        .drift-page h2:nth-of-type(19n+17) { color: #74c7ec; } /* Sapphire - Money Crime */
+        .drift-page h2:nth-of-type(19n+18) { color: #89b4fa; } /* Blue - Trust Yourself */
+        .drift-page h2:nth-of-type(19n+19), .drift-page h2:nth-of-type(19n) { color: #cba6f7; } /* Mauve - There is a Point */
+        
+        .drift-page h3 {
+            color: #89b4fa;
+            margin-top: 2rem;
+        }
+        
+        .editorial-meta {
+            color: #6c7086;
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .byline {
+            color: #a6adc8;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(166, 173, 200, 0.2);
+        }
+        
+        .toc {
+            background: rgba(249, 226, 175, 0.04);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            columns: 2;
+            column-gap: 2rem;
+        }
+        
+        .toc ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            list-style: none;
+        }
+        
+        .toc li {
+            margin: 0.3rem 0;
+            break-inside: avoid;
+        }
+        
+        .toc a {
+            color: #89b4fa;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .toc a:hover {
+            color: #f9e2af;
+        }
+        
+        @media (max-width: 600px) {
+            .toc { columns: 1; }
+        }
+</style>
+</head>
+<body class="theme-palimpsest">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        function openNav() { sidePanel.classList.add('open'); navOverlay.classList.add('open'); localStorage.setItem('navOpen', '1'); }
+        function closeNav() { sidePanel.classList.remove('open'); navOverlay.classList.remove('open'); localStorage.setItem('navOpen', '0'); }
+        menuToggle.addEventListener('click', () => { sidePanel.classList.contains('open') ? closeNav() : openNav(); });
+        navOverlay.addEventListener('click', closeNav);
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+        <h1>📰 Panther Editorials</h1>
+        <p class="subtitle">Opinions Editor · The Panther · 2004-2005</p>
+        
+        <p style="color: #a6adc8; text-align: center; margin-bottom: 2rem;">This collection of editorials, published during the 2004–2005 academic year in The Panther, reflects a sharp, systems-oriented approach to politics, science, and culture. The essays confront major debates of the early 21st century—war, technology, identity, economics—through a voice both skeptical and integrative.</p>
+        
+        <nav class="toc">
+            <ul>
+                <li><a href="#consilience">Consilience</a></li>
+                <li><a href="#is-anyone-still-buying-this">Is Anyone Still Buying This?</a></li>
+                <li><a href="#call-for-calendar-change">Call for Calendar Change</a></li>
+                <li><a href="#is-america-ready">Is America Ready to Move Beyond 9-11?</a></li>
+                <li><a href="#bush-vs-science">Bush vs Science</a></li>
+                <li><a href="#size-matters">Size Matters</a></li>
+                <li><a href="#internet-removes-language-barriers">Internet Removes Language Barriers</a></li>
+                <li><a href="#not-exactly-what-you-had-in-mind">Not Exactly What You Had in Mind</a></li>
+                <li><a href="#its-raining-stem-cells">It's Raining Stem Cells</a></li>
+                <li><a href="#economics-has-finally-woken-up">Economics Has Finally Woken Up</a></li>
+                <li><a href="#wars-cost-money">Wars Cost Money</a></li>
+                <li><a href="#the-case-for-gays">The Case for Gays</a></li>
+                <li><a href="#what-is-a-soul">What is a Soul?</a></li>
+                <li><a href="#dont-i-deserve-the-right-to-die">Don't I Deserve the Right to Die?</a></li>
+                <li><a href="#moving-beyond-the-protest-era">Moving Beyond the Protest Era</a></li>
+                <li><a href="#americas-good-example">America's Good Example</a></li>
+                <li><a href="#money-its-a-crime">Money: It's a Crime</a></li>
+                <li><a href="#trust-yourself-not-a-pharmacy">Trust Yourself, Not a Pharmacy</a></li>
+                <li><a href="#there-is-a-point">There is a Point</a></li>
+            </ul>
+        </nav>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 2rem 0;">
+
+        <h2 id="consilience">Consilience</h2>
+        
+        <p>Is it possible to truly understand something as a whole without first understanding its component parts? Many social "scientists" would tell you that it is. In fact, James Coleman, a mainstream sociologist from the University of Chicago once said that "the principal task of the social sciences is the explanation of social phenomena, not the behavior of single individuals. The essential requirement is that the explanatory focus be on the system as a unit, not on the individuals or other components that make it up."</p>
+        
+        <p>To illustrate how insane that is, imagine the same statement coming from a biologist. It would go something like, "The essential requirement is that the explanatory focus be on the organism as a unit, not on the cell or molecules which make it up." If biologists truly thought this way then their science would still be nothing more than an elaborate classification system for animals.</p>
+        
+        <p>Instead, biology — and, actually, all of the natural sciences including chemistry, physics, etc. — have something going for them that the social sciences don't. Natural scientists talk to each other across disciplines. They compare notes with one another. They also use the same technical language, so an oxygen molecule is an oxygen molecule, whether you're talking to a molecular biologist or a physicist. Basically, natural scientists realize that they are all studying different components of the same whole.</p>
+        
+        <p>It wasn't until biology began to branch out and connect with other scientific disciplines that it yielded knowledge that was useful in our everyday lives. Now biology influences fields as diverse as engineering and design to chemical and material production, and it's even moving slowly into the social sciences through fields like cognitive science.</p>
+        
+        <p>The social sciences — anthropology, sociology, economics, and political science — on the other hand view themselves as distinct fields with little to do with one another, and even less to do with the natural sciences. While their methods often include heavy statistical analysis of large amounts of data, which is very scientific, the theories they produce are not grounded in the physical realities of the world we live in because they refuse to integrate them with the cold hard facts of the natural sciences.</p>
+        
+        <p>For any skeptics out there, all I can say is that the proof is in the pudding. Both the social and natural sciences are entrusted with huge problems to solve. The natural sciences have continuously solved these problems and moved on to new ones throughout their existence. In the process, they have changed, evolved, and in some cases combined into new disciplines. This was only possible because they were willing to work together. The social sciences, however, have grown little and still retain many of their founding ideologies — a bad sign for a scientific discipline. They are expected to tell us how to moderate ethnic conflict, help developing countries, and optimize world trade. How good of a job do you think they're doing?</p>
+        
+        <p>Right now, the social sciences are kind of like biology was before it expanded and fused with other sciences. They classify cultures, customs, and trends into different groups, but they don't really understand how those groups form or how they interact. Until they branch out amongst themselves, and into the natural sciences they will never have to whole picture of the human condition.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="is-anyone-still-buying-this">Is Anyone Still Buying This?</h2>
+        
+        <p>President George W. Bush has made a lot of flimsy arguments in his day. Cutting taxes doesn't benefit the rich even though they stand to get the most back—that makes sense. Stripping away the safety net that has protected those of us who need it from the ups and downs of a post-industrial economy since the Great Depression can be done "compassionately", right? Oh, and who can forget, "The terrorists hate us for our freedom."—duh! Obviously, Bush's strongpoint isn't airtight logic.</p>
+        
+        <p>My biggest gripe with his logic, however, is actually the most unquestioned aspect of his presidency. It's also the aspect that is being predictably pounded into our heads the most as the election draws nearer. Will someone please tell me, in the days after September 11, 2001 what did George W. Bush actually do that was so spectacular? How do we get from then to now with this image of him as such a strong leader in a time of crisis?</p>
+        
+        <p>It's not as if I expected him to strip off his blazer, loosen his snappy red tie and jump into the disaster area pulling victims from the rubble or anything. I just don't understand how he reacted differently than any other person in his position would, or more importantly could.</p>
+        
+        <p>A president doesn't really have a lot of creative control in situations of national crisis. He gets on television, reads a speech that was written by someone else with the intention of comforting us, and starts thinking of how he can benefit from the state of affairs and spin the momentum his way. This is something that any president would do, regardless of ideology, and it is part of being an effective chief executive. Why then, does the Bush administration insist that following this basic protocol is the crown jewel of his presidency?</p>
+        
+        <p>I remember 9-11 vividly, like most of us. I was actually here at Chapman and I watched the second plane hit on a huge projector screen in an Argyros Forum lecture hall. I remember it felt like watching an action movie. I don't remember there being any kind of swift and coherent retaliation, like when Clinton authorized cruise missile strikes against al-Queda after the bombing of American embassies in Africa in 1998. I don't even remember a particularly sensible explanation as to what happened for at least two weeks afterwards. The most we got was an occasional "We're working on it, don't let the terrorists get you down and take your freedom" from Bush, and endless loops of gray people running through clouds of ash and towers falling from the media. His long term post 9-11 decisions are even more substandard but that's an entirely different column.</p>
+        
+        <p>Now, I'm not saying that Bush didn't handle the situation adequately. We're still in one piece—kind of. I just don't see anything stand out in his performance. He didn't really unite the country, shared trauma did—and even that was only temporary. And although he's fond of saying it, the planet isn't really that much safer with us being ever more unpopular by the day. In a perfect world, three years after 9-11 a successful president would be ticking off accomplishments like a renewed global unity and cooperation that was nurtured after the attacks making the world safer and happier for all. Instead Bush gets to brag about how he bullied his way into being a war president. Where's the logic?</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="call-for-calendar-change">Call for Calendar Change</h2>
+        
+        <p>To many, a calendar is just a place to write things down so they don't forget them. Sometimes they have pretty pictures, cartoons, or funny quotes. What most people do not realize is that it's really the macro-programming device of our culture.</p>
+        
+        <p>If you think of society as a large (now computerized) machine, the date-keeping device is like the program which keeps things in synch. The calendar schedules everything from business transactions to religious holidays and fundamentally affects every aspect of our lives.</p>
+        
+        <p>According to the Oxford English Dictionary, the word calendar comes from the word <em>kalendae</em> in Latin. The kalendae was an account book. The calendar we still use today was originally conceived to determine when it was time to pay the interest on account balances in ancient Rome. Is it any wonder then that in our society time equals money?</p>
+        
+        <p>Philosophical musings aside, our Gregorian calendar just does not make sense. Months can be anywhere from 28-31 days, and there is no logical order that decides which months have which day-count. Days of the week constantly shift dates depending on the year. It's a mess.</p>
+        
+        <p>To find a solution one need only look to the universe around us. The moon revolves around the earth 13 times in one year, and each of these revolutions is 28 days long. 28 days is exactly four weeks, or one month. That makes 364 days in a lunar year, plus one extra day that could be used as a transition from the old to the New Year — and make one hell of an excuse for a party. The best part is that every day of the week falls on the same date every year.</p>
+        
+        <p>Now it may seem a little new-agey to seriously consider a lunar calendar, but in fact many of the greatest ancient cultures of the world including the Maya, Aztec, and Chinese used them. A couple of wikipedia searches on calendars shows that the Hebrew and Islamic calendars are lunar too.</p>
+        
+        <p>For all those different cultures that are separated in space and time to use the same sort of time-keeping systems tells me that there's something to them. They were attuned to the flow of time in the cosmos, not a contrivance of the Catholic Church. With all our distractions in modern times, it's easy to think that what happens up there doesn't affect stuff down here, but on a purely scientific level, if that were true then there wouldn't be an Earth in the first place.</p>
+        
+        <p>In 1931 there was even a movement led by the International Fixed Calendar League to adopt a 13-month 28-day calendar worldwide. According to the International Institute of Social History, the IFCL even had the support of the League of Nations until the late 1930's. Unfortunately it was defeated by opposition from the Vatican, creators of the Gregorian calendar as we know it today.</p>
+        
+        <p>Imagine how nice it would be to have a perpetual calendar that makes sense. Calculating dates in your head is no longer a hassle. Mom's birthday is always Wednesday, June 22. Thanksgiving can finally pick a Thursday. And the day long New Year's party certainly doesn't hurt, either.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="is-america-ready">Is America Ready to Move Beyond 9-11?</h2>
+        
+        <p>Watching the vice presidential debates last week, an interesting thought struck me. Aside from renewed curiosity over who's really calling the shots in the White House — it's a pretty sad state of affairs when your vice president outshines you on every issue, I think that the dynamic between Senator Edwards and Vice President Cheney is a perfect metaphor for the main dilemma confronting voters in this election.</p>
+        
+        <p>While even Republicans agree that Kerry seems to be a little more poised and skillful than Bush during debates, the situation is reversed with the vice presidential candidates. Cheney projected a sense of stern authoritative dignity throughout the debate. Even when he got cranky it seemed like the tired irritability of someone who has spent a long time doing a job they are underappreciated for. While I may not agree with what he says, I can at least admit that he probably did a pretty good job of presenting himself to swing voters.</p>
+        
+        <p>John Edwards seemed like a naïve kid in comparison. This is surprising considering he is generally known for being charismatic and intelligent. His arguments were not dulled, but how many people really listen to the arguments more than their overall perception of a candidate? A positive connotation of his performance is that he isn't a Washington insider. Why, then, should he be expected to have the polish of a veteran? People like Edwards are the ones that bring in fresh ideas and help institutions to grow.</p>
+        
+        <p>Come November 2nd, voters will have to decide which of these two administrations they want to be in charge. The Bush Administration presents itself as the stern, parental authority figure — exemplified by Dick Cheney — that America needs to keep it safe in these "post 9-11" times. That is both laughable and insulting. As the most economically and militarily powerful nation on the earth, we literally have nothing to fear except fear itself. However, it makes sense that after a tragedy like September 11 the nation would cling to this image for comfort.</p>
+        
+        <p>Kerry's team, on the other hand, seems to want to move on and return our national focus to issues here at home. This may seem naïve, but terrorism has always been a risk. The problem won't go away until we stop giving the terrorists reasons to terrorize us. Americans will ultimately have to decide whether they are still so scared that they need the aggressive, protective, parent or ready to let go of the emotional baggage and let in the fresh air.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="bush-vs-science">Bush vs Science</h2>
+        
+        <p>I know that a lot of people are probably put off by the scientific slant of the topics of these editorials. A lot of it may seem random, but that's the beauty of science — it's all connected. That is actually the entire point of science, to find these connections and apply them to the world around us.</p>
+        
+        <p>I am passionate about and write about science, because it is the main force driving the evolution of our society. Everything that makes modern life different from the Dark Ages can be traced back to science. It also gives us a picture of where we are headed as a species, since the discoveries that have yet to be made will have direct effects on our everyday lives — like cars, electricity and the internet have.</p>
+        
+        <p>One of the reasons America has been so successful in the world is because of a strong tradition of excellence in the sciences. This success can be measured in areas like the number of academic papers published, numbers of new scientists and new patents. Other countries — specifically in Asia and Europe — long ago realized that science and technology are the key to prosperity and economic growth in the new millennium, and have been steadily overtaking the United States in these areas since the 1990s.</p>
+        
+        <p>Japan, for example, is positioning itself to become the market leader of materials-nanotechnology by perfecting the mass production of carbon nanotubes and other industrially valuable molecules according to a report by the Journal of Japanese Trade & Industry.</p>
+        
+        <p>Why are we falling behind? Many scientists are blaming the Bush administration. On Feb. 18, 2004 the Union of Concerned Scientists (UCS) prepared a statement that was signed by over 4,000 scientists — including 48 Nobel laureates, 62 recipients of the National Medal of Science, and 127 members of the National Academy of Science.</p>
+        
+        <p>They charge the president with blatantly using science as a sort of public relations mechanism for his policies by screening scientists and agency heads based on political ideologies. This corrupts the entire point of these agencies which exist to find some sort of objective truth to aid in policy-making.</p>
+        
+        <p>Bush is effectively cherry picking science the way fundamentalists do with scripture, picking out only what validates his personal view and ignoring any other disputing evidence. This is affecting the distribution of research funds, with most money being earmarked for defense and security, which in turn affects the types of jobs available to young researchers.</p>
+        
+        <p>By turning science into a mouthpiece for his own political agenda, Bush is making decisions that affect our everyday lives and the world around us based on half-truths and misrepresentations and presenting them as facts. Is it so hard to imagine, then, that if he can lie about the basic truths of reality — to the detriment of everyone — for his own ends then he could also lie about something like why we should invade Iraq?</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="size-matters">Size Matters</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 4 — October 4, 2004</p>
+        
+        <p>Since the industrial revolution, humanity has been following specific trends in technological development. One of these trends is miniaturization. This seems so natural — smaller size means you can pack in more bang for the buck — that it's easy to miss the bigger significance.</p>
+        
+        <p>Nanotechnology is the word used to describe machines that work at an extremely small scale, generally defined in nanometers. To give you an idea of how small this is, one nanometer is only about 10 times the diameter of a single hydrogen atom.</p>
+        
+        <p>Some speculate that nanotechnology will eventually allow us to build machines, objects and materials from the molecule up, but for now it just refers to any machine operating at the nano-scale. Machines that operate at this level are on the scale of biological "technology."</p>
+        
+        <p>Our bodies are really just machines that work on the molecular level. Inside each of our cells, we produce tiny machines made of carbon called proteins. They do all of the work that it takes to keep us running smoothly.</p>
+        
+        <p>Once the machines that we create can work better than our own biology, it's a whole new ballgame. By themselves nanomachines can't do much, but when you put them together to form machines that are big enough for us to use with our hands, the improvement is dramatic. Imagine computers that can literally think at and above a human level, or a modem that can actually interface directly with a brain — putting the internet right in your head. Better technology also means better weapons, and I am of the opinion that nuclear weapons were already a bit of overkill. The implications are kind of staggering.</p>
+        
+        <p>Right now, the biggest thing in nanotechnology is a simple tube-shaped molecule made of carbon. These carbon nano-tubes, though simple, are revolutionizing many industries. They can be used to make wire for circuits that are smaller and more powerful than we could ever fathom building with conventional technology. They can be mixed into a variety of industrial materials to dramatically increase their durability. But these simple tubes are just the beginning.</p>
+        
+        <p>It is important to realize that nanotechnology isn't a specific science, it's a culmination of what humans started when we made the first tool. Since then, we've been constantly working to make them smaller and able to do more tasks. Scientists in a number of different fields are all working towards nanotechnology at the same time.</p>
+        
+        <p>Virtually all industrialized nations — as well as numerous corporations — are sinking tens of billions of dollars on nanotechnology research annually. Two-thirds of that money is coming from outside the United States.</p>
+        
+        <p>That kind of funding does not happen for long-shot ideas and far-off technologies. It implies that we could very well be seeing the full impact of nanotechnology on society within our lifetimes.</p>
+        
+        <p>As a nation, we need to start paying attention to the implications of these new technologies so we can use them safely, and stop letting governments and corporations make the important decisions for us.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="internet-removes-language-barriers">Internet Removes Language Barriers</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 7 — October 25, 2004</p>
+        
+        <p>The book of Genesis gives us the story of the tower of Babel. The human race, united by a single language, nearly succeeds in building a tower to the heavens after the Great Flood which decimated the world's population. In Genesis 11:6, it says, "And the Lord said, 'Behold, the people is one, and they all have one language; and this they begin to do: and now nothing will be restrained from them, which they have imagined to do.'"</p>
+        
+        <p>This verse is a profound testament to the power of language and its ability to link human brains together. This link allows us to tackle problems bigger than anyone could solve alone. It's helpful to think of language as a network that links humans together, like a crude Internet. The problem is that each culture has its own mini-network, divided from the others by language barriers.</p>
+        
+        <p>Since the Internet became accessible to the masses back in the 1990s, it has set us on a path toward completely removing these barriers to knowledge. Some say it will unleash the full potential of the human race by uniting us into a world culture capable of working together on the biggest questions facing us. Others see this as an example of humans overstepping their bounds; presuming to play God.</p>
+        
+        <p>Whether or not you agree with it, it is happening under our noses. If modern linguistics is correct, then all human languages are united by a common structure or formula. Once we understand this formula, it shouldn't be hard to give the task of translation to computers. This may seem like a small thing, but the implications are profound. Translation will become effortless, and the amount of human knowledge that will be easily accessible will grow dramatically. Just because the dot-com era is finished doesn't mean that the Internet has finished changing our lives.</p>
+        
+        <p>The translation software industry is already up and running, making money from products that are estimated to provide translations that are only 85 percent accurate. It is no stretch of the imagination to picture machines that can capture the full richness of language in translation, once we have the right programming. Text will be particularly easy, because we already have the ability to work with text as data more readily than we do human speech.</p>
+        
+        <p>The Internet has already given us the ability to remove geographical and temporal constrictions from information. When information is online, it's always there, whether or not the person who put it there is currently online, and we can get information from anywhere in the world regardless of distance, as long as it is in our language.</p>
+        
+        <p>That's the problem, though. Huge chunks of the Internet are still inaccessible because of language barriers. Without these barriers there will be nothing preventing humans from working together, at least conceptually, on any problem they can imagine regardless of national identity.</p>
+        
+        <p>It's hard to imagine what might happen if everyone in the world could communicate and work together regardless of language. In a way, it is a test of human nature. Can we put aside our miscommunications and cultural differences to work together on the problems that affect everyone — like the environment — or are humans so driven by the base instincts of intolerance and nationalism that they remain divided by choice?</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="not-exactly-what-you-had-in-mind">Not Exactly What You Had in Mind</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 10 — November 15, 2004</p>
+        
+        <p>The term "moral values" is this election's "hanging chad." Everything in our 24/7 media culture demands a catchphrase, and this election's was moral values. With 22 percent of voters citing moral values as their No. 1 issue when selecting a candidate, many are saying that it was the deciding issue in the presidential election.</p>
+        
+        <p>But what exactly are moral values? A good friend told me that she thinks both conservatives and liberals were voting according to their moral values, but for conservatives, those values focus on sex, while for liberals they focus on violence.</p>
+        
+        <p>This makes sense in light of the pundits who said that gay marriage bans were strategically placed on state ballots where they were needed to get conservatives to the polls. Gay marriage is an issue that is practically radioactive among conservative political circles, making it the perfect bait for fundamentalist voters.</p>
+        
+        <p>For the last eight years, all we have heard about the state of American politics is that the country is bitterly divided ideologically. The media hold up maps of election returns by county and show how rural areas go Republican and urban areas invariably go Democratic. We hear polls that show 90 percent of post-graduate degree holders voting for Sen. John Kerry, and 69 percent of President Bush's voters believing that world opinion supports the U.S. invasion of Iraq. It's always framed as rural versus urban or educated versus ignorant.</p>
+        
+        <p>The conservatives seem frustrated with the increasing vulgarity and decadence of culture. What many don't seem to realize is that they are supporting the very source of that culture.</p>
+        
+        <p>Take Rupert Murdoch—owner of the global media empire, News Corp. and a major Bush campaign donor—for example. Now, Bush is not financially accountable to the average maligned Chapman Republican, or religious conservative for that matter, for his or her vote. He is, however, beholden to the people that paid for his campaign.</p>
+        
+        <p>The entertainment branch of Murdoch's media empire, Fox Broadcasting, is responsible for some of the most culturally demoralizing content on television. Think of such reality show favorites as "Temptation Island" and "Trading Spouses," or how about the absolutely bone-chilling plastic-surgery-torture-fest that is "The Swan."</p>
+        
+        <p>The ultimate irony is that the money to produce these shows is coming from the No. 1—and rising—24-hour news station in the country, Fox News Broadcasting Corp. None of this seems to matter to the people who supposedly vote according to their moral values, and none of these values present them with any guilt about the people of many nations who have died under Bush's name. Conservatives know that in reality, they are losing the culture war, which is why they are fighting so hard to retake the country and roll back progressive legislation that has been building since World War II.</p>
+        
+        <p>The most they are going to get are symbolic gestures like the proposed constitutional ban on gay marriage, but as long as shows like "Queer Eye for the Straight Guy" and "Will and Grace" keep putting homosexuals into the living rooms of average Americans, it will go down as one more battle in the culture war where conservatives have sided with their enemies.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="its-raining-stem-cells">It's Raining Stem Cells — Hallelujah</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 12 — December 6, 2004</p>
+        
+        <p>It's hard to imagine there was once a time, a little more than a month ago, when stem cells were somewhat of a fringe issue. In these weeks after the death of actor Christopher Reeve — a vocal stem cell research advocate — and the 2004 presidential election, when California voters decided to earmark $3 billion for stem cell research, the progress made in the field has been skyrocketing.</p>
+        
+        <p>Stem cells are the body's own natural template. They are able to rearrange their internal components to become any kind of human cell — from a brain cell to a skin cell.</p>
+        
+        <p>Using stem cells, researchers are working on treatments for some of the most serious ailments of our species, such as spinal cord injuries and retinal disease. They are also creating cures to some of our more inane ailments like incontinence and balding.</p>
+        
+        <p>In other areas, scientists are working on ways to gain access to stem cells from adults, bypassing the controversy surrounding fetal stem cell use. The amazing thing is that researchers are already reporting successes.</p>
+        
+        <p>This might be attributed to the nature of stem cells, which are inherently flexible and good at growing into fresh, healthy cells by default.</p>
+        
+        <p>These treatment breakthroughs are happening all around the world, which suggests that California's recent legislation supporting stem cell research was well timed, to say the least.</p>
+        
+        <p>However, many worry about the potential hazardous possibilities associated with the areas that the biotechnology industry focuses on — areas such as genetic manipulation, behavioral control, and stem cell research. As a naturalist, I can somewhat understand their arguments.</p>
+        
+        <p>The human body, and all life, works in a certain way. We may not understand exactly how, but it has been going on just fine for ages. If we had any respect for humanity, we would let the process remain a mystery — remain natural.</p>
+        
+        <p>However, if we really followed that logic we would still be living in caves. The fact is that humans have been manipulating nature since the beginning of our existence. We have been selectively breeding plants and animals for thousands of years. We have been using chemicals to alter our brain chemistry for just as long. We have been using technology to extend our natural abilities since we first picked up a rock and used it to crack open a nut.</p>
+        
+        <p>Biotechnology is just the next step in this process. It is the culmination of all the knowledge we have gained about the natural world, and it is the key to unlocking the full potential of our species.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="economics-has-finally-woken-up">Economics Has Finally Woken Up</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 13 — February 14, 2005</p>
+        
+        <p>The beginning of a new semester inevitably comes with fresh outlooks, new points of view and a reshuffling of our old routines. Last semester, I wrote a column vilifying the social sciences for not being grounded in the natural sciences — i.e. reality. So what better way to start this semester than with a change of tune?</p>
+        
+        <p>Any attempt at understanding the behavior of people — whether in groups or individually — should begin with the human brain. All social scientists study people, but few of them actually show an interest in linking their knowledge with what we know of how the brain works.</p>
+        
+        <p>The field of economics, however, is one field that has recently taken its first steps toward integration. Thanks to new brain imaging technology, it is moving from a generalized world of incomplete and hopelessly vague statistics to an actual science of how people make economic decisions.</p>
+        
+        <p>Up until the last few months, economists were forced to view people as calculating machines only concerned with their own rational self-interest. This model works to a degree, but evidence suggests that human emotion plays a significant role in economic decision-making — as anyone who has ever helped a stranger or splurged on something can attest to.</p>
+        
+        <p>There are functional Magnetic Resonance Imaging — or fMRI. This technology allows scientists to actually see which structures in the brain are activated when a certain activity is performed, whether it involves the simple act of moving a finger or gambling.</p>
+        
+        <p>Economists and their partners in the cognitive sciences are using fMRI at colleges, including Harvard University, Stanford University and the California Institute of Technology, to see with unprecedented clarity into the brains of people who are asked to perform simple economic tasks and games.</p>
+        
+        <p>Many of the findings are surprisingly intuitive. For example, in a game of mutual trust, conducted by P. Read Montague of Baylor College of Medicine, women's brains showed a large reward response in the form of dopamine when trusted by others, while men had no such response. Bullish investors showed different patterns of dopamine release when compared with bearish investors as well.</p>
+        
+        <p>The research has also spawned an entirely new field of economic research, dubbed neuroeconomics. It will be a long time before scientists are able to use information on individual behavior and apply it to groups of people, but at least economists are taking the first steps.</p>
+        
+        <p>All of the social sciences stand to benefit from fMRI. Political scientists, for example, could study how charisma sways the political decision-making process in the brain.</p>
+        
+        <p>The tools exist now for social scientists to begin reaching for previously unthinkable heights in their quest to understand how people interact with one another. Real science is the best way to jump-start these stagnate disciplines.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="wars-cost-money">Wars Cost Money</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 15 — February 28, 2005</p>
+        
+        <p>The most vicious political battles usually revolve around money. That's why budget season is so much fun. Earlier this month, President Bush unveiled his proposed 2006 federal budget. While military and homeland security spending would receive a slight boost, many other worthwhile federal programs have been targeted in the president's proposal to rein in deficit spending.</p>
+        
+        <p>The Department of Education would take the brunt of the budget beating, with $4.3 billion in suggested cuts. This would effectively kill 48 of the department's programs, many of which are aimed at helping college students. No child left behind, right?</p>
+        
+        <p>Community police would also be hard hit. I cannot understand this reasoning as far as security is concerned. The president seems to feel that national security is best achieved through a large bureaucracy, conveniently based in Washington, close to the White House. While it's true that these sort of organizations have historically led internal security, it's usually not what citizens had in mind. Think Gestapo or other internal "homeland protection" systems used by dictators like Joseph Stalin and Saddam Hussein.</p>
+        
+        <p>Ironically, Bush has also targeted many rural investment and firefighter programs. These are the lifeblood for much of the president's rural conservative base. But since these sharp heartlanders have decided to vote with their moral values instead of their brains, I suppose they have already given their tacit support of being left in the dust, more so than they already are.</p>
+        
+        <p>Perhaps most distressing is Bush's attitude toward scientific research. The United States has already suffered a relative brain drain thanks to tightened immigration restrictions. Now, Bush's proposed budget would drastically reduce spending for basic research and investments in education designed to produce our future scientists.</p>
+        
+        <p>The president is drawing fire from both sides of the political spectrum for his proposed cuts. Critics argue that even if Bush does get everything he asks for, there would still be a budget shortfall. The harm he would be doing by cutting these federal programs would vastly outweigh minuscule reductions in the budget. We all know where the rest of the money is going — to fight (non U.S. sponsored) terror.</p>
+        
+        <p>Interestingly, Bush's military budget proposal shows a slight increase in spending, but shows nothing of proposed funding past 2005 for the ongoing campaigns in Iraq and Afghanistan. These campaigns currently average around $5 billion a month.</p>
+        
+        <p>Sure, the president may not have much chance of getting every cut he asks for. And maybe he has targeted many of these programs unsuccessfully in the past. But — as gracious receivers of unwanted gifts all over the world have learned — it's the thought that counts, right?</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="the-case-for-gays">The Case for Gays</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 16 — March 7, 2005</p>
+        
+        <p>I know that in today's political climate it may be taboo to take a strong stance on the issue of gay rights. Fortunately there will be no lecture about gays deserving to marry or be protected by hate crime laws. I think gays have won the battle just by starting it and making ourselves visible. It's our positions in society that make change so inevitable. The gay community makes up a huge chunk of the best and brightest minds in America.</p>
+        
+        <p>I'm not arguing that one causes the other, but the relationship between brilliance and sexual openness is well documented. From Walt Whitman in literature to Andy Warhol in art or Alan Turing in science, the contribution of gay Americans to our cultural legacy is disproportionately large. I have a theory as to why.</p>
+        
+        <p>Hear me out. Great minds do not grow safe in the womb of convention. They come from the fringe, where they accumulate ideas outside of societal norms. The most influential people in history are those who bring these ideas back from the edge and share them. Those new ideas then create the ripples of change that propel our culture forward.</p>
+        
+        <p>Openly gay people commonly describe "feeling different" from an early age. It forces many of us to adopt a personal identity that is outside of our culturally ordained roles. Growing up feeling fundamentally different can also free other parts of your mind. Once you have taken the plunge and accepted that society may be wrong about homosexuality, it opens up the doors for more questioning of cultural norms. It's also why gay people who are comfortable with themselves are generally more open minded and accepting of differences and new ideas.</p>
+        
+        <p>The U.S. Military is beginning to perceive this connection. Just last month, the Government Accountability Office completed the first study on the effects of President Clinton's "Don't Ask, Don't Tell" policy. Beyond the $200 million that it has reportedly cost in taxpayer dollars, the statistics of those who were dismissed for being homosexual were telling. Nearly a quarter of the 9,488 troops either spoke a foreign language or performed a job that was labeled by the Pentagon as critical.</p>
+        
+        <p>These numbers — which don't include some costs, such as for discharging officers — are fueling a push in Congress to end the policy. Proponents of the bill say that it harms military readiness and is a useless waste of tax dollars.</p>
+        
+        <p>This brings me back to my original point. Just by making people aware of their presence, these gay soldiers may potentially end discriminatory practices in the armed services. If all the gays discharged by the U.S. Military were infantry, it wouldn't be much of a problem. However, they are coming from the best and brightest of their personnel, making them more expensive to replace.</p>
+        
+        <p>Gay people are more than your hair dressers, court jesters and sassy sidekicks — we are your artists, your thinkers, your leaders and your role models. It is only when America realizes this that gay people will get equal access to the things heterosexuals take for granted, and all it takes is for us to keep creating and contributing, bringing back ideas from the edge.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="what-is-a-soul">What is a Soul?</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 17 — March 14, 2005</p>
+        
+        <p>For a concept that is so widely accepted, not much is really known about the soul. I — like most I imagine — find the idea of being nothing more than a sum of chemical processes depressingly antiseptic.</p>
+        
+        <p>I want to believe there is some intangible aspect of me that will survive my death. Who wouldn't? There's just one problem — no one can tell me what the hell a soul is. The most honest answer I've ever received is, "I don't know what it is, but I know I have one."</p>
+        
+        <p>Many religious traditions and schools of philosophy have taught that the soul is the essence of a being. It's what makes me, me and you, you. Many traditional views also equated the soul with consciousness.</p>
+        
+        <p>These ideas started losing support in the mainstream scientific community, however, as people in the 16th century began to learn more about how our bodies and minds actually work.</p>
+        
+        <p>The dominant scientific view today is that the brain is like a computer — with neurons either being on or off, like the "1" and "0" of computer code. The mind is considered the software. They argue that without the hardware, the software could not exist.</p>
+        
+        <p>Many also believe that life is nothing more than a set of complex chemical processes which can be recreated in a lab. People who hold these beliefs are referred to as reductionists.</p>
+        
+        <p>Since the beginning of this schism, proponents of the soul have mostly relied on whatever areas of the human organism science hadn't yet understood to be the hiding place of this mysterious force which has so much effect on who we are. These people fall into the vitalist camp.</p>
+        
+        <p>Vitalists believe that life cannot be explained simply by understanding its physical processes. They maintain there is an immaterial "life essence" that is impenetrable to science and unable to be created by simple chemical processes alone — also known as the soul.</p>
+        
+        <p>Vitalism has only recently seen a resurgence of popularity after centuries of decline in the face of scientific discoveries. As scientific understanding of biology has become more sophisticated, however, so has our appreciation of its overwhelming complexity.</p>
+        
+        <p>Along with the fact that no one reductionist theory has ever been able to fully describe the complex workings of a single cell (much less a whole organism), this has allowed several scientific theories of how the human brain works that are compatible with the concept of a soul to arise.</p>
+        
+        <p>The most promising of these is called quantum mind theory. It says that the microscopic tubes that make up the skeleton of each neuron in your brain are actually responsible for doing the "computing" of the brain, and not the individual neurons themselves.</p>
+        
+        <p>This would make the brain a much more powerful computer than anyone ever expected. So powerful, in fact, that it would be essentially indecipherable to science.</p>
+        
+        <p>Since no one has been able to yet prove or disprove the existence of a soul, it's possible that both sides could be right. Perhaps someday science will be able to confirm the existence of a soul, even if they can't fully understand it. Until then, I guess I'll just be left to wonder.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="dont-i-deserve-the-right-to-die">Don't I Deserve the Right to Die?</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 18 — April 4, 2005</p>
+        
+        <p>In President Bush's brave new ownership society, it appears there is now a new item on the list of things that people can't own. Along with a lack of ownership of our love lives, we apparently do not own the right to choose whether we want to be living vegetables either. Yes, that's right — I am referring to the case of the late Terri Schiavo.</p>
+        
+        <p>Last issue I wrote about the existence of a soul. The Schiavo case is a perfect example of this issue played out in real life. One side believes when the brain dies, the person dies. The other argues there's something beyond brains and science that makes people who they are.</p>
+        
+        <p>In case you've been asleep for the last two weeks, Schiavo was the Florida woman who, until Thursday, had spent 15 years on life support. Doctors said her brain had actually deteriorated to the point where much of the space it used to take up in her skull was spinal fluid.</p>
+        
+        <p>Her parents said they still believe there was something left of their daughter in that shell. When Schiavo's guardian decided it was time to honor her wishes and remove the life support after eight years of intensive treatments and therapy, her parents called in the big guns — conservative interest groups with lots of money to pay for their lawsuits. Even Bush and his Republican Congress took a break from pillaging to get involved.</p>
+        
+        <p>Referring to the case, the president recently said the "strong have a duty of protecting the weak." Ironically this noble sentiment doesn't seem to apply to Bush when one is talking about corporations protecting their customers or stronger countries protecting weaker ones. (Unless they have oil, in which case we will "protect" the heck out of them.)</p>
+        
+        <p>This sort of hypocrisy abounds in the Schiavo case, and not just from the conservative camp. The facts of the matter are, however, that two separate courts looked at all of the available evidence and agreed Terri Schiavo would not want to be kept alive on life support. "If I ever go like that just let me go. Don't leave me there. I don't want to be kept alive on a machine," were Schiavo's own words according to court documents.</p>
+        
+        <p>And, let's not forget how Schiavo came to be brain dead in the first place. It's not as if she was in an accident or had her consciousness taken away from her by some outside event. She had such a raging eating disorder that she suffered from cardiac arrest at the age of 26. This is not the action of a vivacious, life-loving person.</p>
+        
+        <p>It's understandable that Schiavo's parents do not want to lose their daughter. If that had been their only motivation I would be a little more sympathetic. However, their willingness to court the lascivious media frenzy that we have all been experiencing makes me wonder just how much their daughter's best interests were in their minds.</p>
+        
+        <p>In trying to save their daughter, they only made her the unwitting pawn of a number of lobbyist groups and institutions that were too happy to use her and the media to further their own legislative agendas. To me, this is a fate worse than death, especially if I was not even cognizant enough to have a choice in the matter.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="moving-beyond-the-protest-era">Moving Beyond the Protest Era</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 19 — April 11, 2005</p>
+        
+        <p>It is common knowledge that since the 2004 presidential election, the Democratic Party and its liberal base have been looking for a new face. It seems that its populist messages just aren't reaching Americans like they used to, and no one can really agree on what the left stands for.</p>
+        
+        <p>We could sit and argue about the reasons for this, but the simple fact of the matter is that Conservatives did a better job than Liberals during the 1960s because they focused on developing a long-lasting political philosophy and institutions to further their aims. Liberals, by contrast, are most commonly remembered for using the confrontational politics of protest to achieve their goals, rather than focusing on policy and lobbying.</p>
+        
+        <p>It is easy to romanticize the politics of that era, especially for young people who don't generally hold much political power. However, direct nonviolent action is rarely the most effective way to vent political frustrations.</p>
+        
+        <p>Protests create conflict in order to highlight tension, but they demand that the protestors undeniably have the moral high ground. Otherwise, it just creates conflict. It's easy to see how pissed-off Conservatives can say that Liberals must hate America when they see a bunch of angry, spoiled college vegans taking to the streets every time the government makes a decision they disagree with.</p>
+        
+        <p>This attempt at recycling the 1960s is obviously not working. The state of the Liberal left today is fragmented and impotent, with numerous groups tied together by nothing else than the fact that they are in opposition to the status quo. There is no message that transcends and unites these narrow interests. Liberals need to get smarter and start actually engaging the political process with their brains, not just their hearts.</p>
+        
+        <p>I understand that one cannot just come up with such a message overnight. Maybe a good start would be to find different role models. Despite the similarities between Iraq and Vietnam, it is actually the Cold War politics of the 40s and 50s that most resembles our era. Liberals of that generation faced Conservatives with agendas involving pre-emptive wars against an international enemy — i.e. Communists — as we do today. They lived an age of unchecked industrial power using the military to get what it wanted. They were also an opposition party up until the election of President Kennedy.</p>
+        
+        <p>This generation knew that the Cold War was a war of ideas just as much as military power and intelligence, just like the war on terror.</p>
+        
+        <p>They focused on developing a broad political philosophy that viewed the nation as a community of citizens with obligations to one another. They inspired the foreign policy of containment, which tempered America's responsibilities abroad with humility. They worked within the system to create real alternatives to what the right was offering.</p>
+        
+        <p>That means making investments for the future. Liberals should develop a political philosophy for the long haul, not just unite when it's convenient for a weekend protest. They have good values. They just need to start finding the common threads that unite their separate causes, and build an enduring framework for disseminating those ideas.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="americas-good-example">America's Good Example</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 20 — April 18, 2005</p>
+        
+        <p>It probably does not come as any surprise that much of the world is not happy with the United States right now. Five years of treating the world as our personal china shop has taken its toll.</p>
+        
+        <p>This doesn't necessarily bother me on a moral level as I'm pretty Libertarian on foreign relations, and isn't some of the fun of being the most powerful nation on earth getting to slap the small fries around a little?</p>
+        
+        <p>The timing of our arrogance, however, is ill-timed. While we are busy waving around our big, macho military muscles in the Middle East, our future rivals are stepping up their efforts to overtake us — and their negative opinions of us are causing them to band together.</p>
+        
+        <p>Take Europe for example. A recent international poll conducted by the Program on International Policy Attitudes found that a majority of citizens in 20 out of 23 nations polled want to see Europe dominating world affairs instead of the United States.</p>
+        
+        <p>According to the poll, our negative image is matched only by Russia — and this is without the opinion of countries in the Middle East.</p>
+        
+        <p>Europeans know that in order to be effective global leaders in the future they have to put aside their differences and focus on their real enemy — us. And so far they have been successful. Their currency, the Euro, has become the world's strongest in a very short amount of time, and since Sept. 11 they have been ramping up military spending.</p>
+        
+        <p>Although it's easy to think of Europe as a continent of snooty pacifists, that's not always the case. Right now, America is the No. 1 arms exporter in the world — big surprise, huh — and Europe wants a piece of the action.</p>
+        
+        <p>During the Cold War, Europe mostly subjugated what military it had to the needs of NATO. Since we have effectively sidelined NATO and other collective decision-making organizations, it gives the EU a perfect excuse to become more self-sufficient militarily.</p>
+        
+        <p>Now, with the establishment of the European Defense Agency in 2004, they are looking to catch up with the U.S. in research and development in order to compete for the next big arms market, China.</p>
+        
+        <p>There have been a lot of stories in the news lately about China competing with America — becoming increasingly more effective in mundane areas such as textiles — but the world's most populated country (and second biggest consumer of oil) also promises to be one of the biggest arms buyers in the coming decade. Weapons are pretty expensive, and the sight of all that money going across America's wallet is making a lot of people nervous.</p>
+        
+        <p>So, you have a world that hates us because we use our strength without responsibility. You have nations abandoning institutions that seek to solve intergovernmental conflicts through discussion instead of force. You have a future where oil is only getting scarcer, and nations like China are arming themselves to get as much of it as they can.</p>
+        
+        <p>Is this really the direction that America wants to be leading the world in?</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="money-its-a-crime">Money: It's a Crime</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 21 — April 25, 2005</p>
+        
+        <p>As a journalism student, one of the most often heard adages is "follow the money." Political scandal, crime and social unrest can all often be traced to economic inequality. Many say that money is the root of all evil. This is only slightly true.</p>
+        
+        <p>The fact is that the market economy on which the whole concept of money is based, is not equipped to handle the many challenges presented by technology — the chief among these being abundance.</p>
+        
+        <p>Throughout human history, up until about the 1920s, scarcity has been a fact of life. As a result of the Industrial Revolution, however, our methods of producing goods have become so much more efficient that we can do more with less. Not only that, but the amount of time that humans have to spend laboring to produce those goods dropped dramatically with the help of machine labor. So now we can create more with less energy and cost.</p>
+        
+        <p>These forces have combined to create a situation of abundance unprecedented in known history, yet we still divvy up all that wealth as we did in the past.</p>
+        
+        <p>All the economic systems in use today were created in times of scarcity. They represent the most efficient way of distributing national wealth when there is not enough to go around. Because of this, when goods and services are no longer scarce, they are no longer worth as much money.</p>
+        
+        <p>This is why when a store overstocks goods it has to lower its price to move them off the shelves. By then, the store is no longer selling the goods for profit, it is just distributing them. That is the main point. You can't sell an abundance in the current market system. Trade-based economies, then, must create scarcity in order to survive.</p>
+        
+        <p>This happens all the time. For example, when American farmers produce a surplus of corn, they don't lower the price of corn in America. Instead they use the North American Free Trade Agreement to get rid of the excess corn by exporting it to Mexico, underwriting Mexican corn farmers and hurting their economy in the process. This is just one very basic example of how our current system "corrects" itself at the expense of the people it's supposed to serve.</p>
+        
+        <p>The problem is that the perceived value of money does not really exist. Economists ask how much you would be willing to pay for a certain item or service and then charge the maximum that they can get away with. This creates a system where the person who can pay the most will set the price. But, how does this reflect a product's actual worth? The answer is, it can't. It is this sort of discrepancy between how much a product costs in materials compared to how much people will pay for it that causes waste, inefficiency and environmental pollution.</p>
+        
+        <p>In a system where every citizen is granted a firm economic foundation, many of the problems that we think of as insurmountable today would not exist. War, religion, sex and politics have all been corrupted by the influence of money. Perhaps if we created a system where everyone shared the abundance that we produce, people could start distinguishing themselves by making themselves smarter and more competent, rather than by how much money they can manage to get their hands on.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="trust-yourself-not-a-pharmacy">Trust Yourself, Not a Pharmacy</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 22 — May 2, 2005</p>
+        
+        <p>There is a new front in the battle over reproductive rights — your local pharmacy. All over the country, pharmacists are deciding that it is their moral obligation not to sell birth control pills and emergency contraception, also known as the "morning-after" pill. In several states, legislators are even pushing for laws that would allow pharmacists to refuse to stock and sell these medications on moral grounds.</p>
+        
+        <p>It seems that although most conservative anti-abortion supporters are quick to rail against activist judges making laws from the bench, they have no problems when it happens among those with less knowledge of our legal system.</p>
+        
+        <p>Unfortunately, this fight may not be the most politically savvy for the anti-abortion movement.</p>
+        
+        <p>Many are arguing that pharmacists have no right to intervene in the treatment agreed upon by a patient and his or her doctor based on an opinion. This misses the larger point, however.</p>
+        
+        <p>From a legal standpoint, this is simply a losing battle. William Saletan, author of <em>Bearing Right: How Conservatives Won the Abortion War</em>, writes, "A fight over morning-after pills would push the abortion debate backward, not just to the beginning of pregnancy, but beyond it, to the stage between conception and implantation."</p>
+        
+        <p>At this point it truly is just a microscopic cluster of cells that in no way resembles a human being, making it notoriously tricky for anti-abortion activists to argue that it should be treated like a baby.</p>
+        
+        <p>Among the women who have been turned away from pharmacies empty handed are a number of rape victims. By denying these women access to the morning-after pill, these pharmacists and their anti-abortion supporters are basically saying they deserve pregnancy as a "consequence for sex," as Senator Bob Boyce of New Hampshire did recently in a fight over emergency contraception.</p>
+        
+        <p>Perhaps most frightening is the idea that America is losing the difference in meanings between contraception and abortion. Despite being called the abortion pill by many anti-abortion supporters, the morning-after pill does not harm the zygote. It simply prevents it from implanting into the uterus. In this sense, it prevents pregnancy from occurring, rather than terminating an existing pregnancy.</p>
+        
+        <p>I have always been under the impression that condoms and birth control pills were OK. Regardless, anti-abortion advocates risk alienating a large portion of the public if they honestly try to impede access to these well known and accepted forms of personal responsibility. According to a recent CBS/New York Times poll, 78 percent of respondents said pharmacists should not be allowed to refuse to sell birth control pills for religious reasons.</p>
+        
+        <p>Historically, the tide has always moved from less freedom to more. Perhaps as the demands of anti-abortion activists get more and more ridiculous, the public will wake up to the destructiveness of their agenda.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.08); margin: 2.5rem 0;">
+        
+        <h2 id="there-is-a-point">There <em>is</em> a Point</h2>
+        <p class="editorial-meta">The Panther, Volume 83, No. 23 — May 9, 2005</p>
+        
+        <p>I've written a lot of columns this semester about the future. Even when I wasn't writing explicitly about technology or science, I was still talking about the future of politics and social change. This is because I don't see the world around me as fixed or static.</p>
+        
+        <p>In my worldview, things are dynamic, fluid and constantly changing. Every day the entire planet everyone on it changes a little bit, and nothing can ever go back to the way it was the day before. Over time, these changes add up to something bigger. This happens regardless if people want it to or not, which is why I find conservative political ideologies that try to limit progress and change laughable.</p>
+        
+        <p>The question is, what are we all changing into? Luckily for our generation, we are probably going to find out. People have been stacking fuel on tomorrow's powder kegs since World War II, in every area of human endeavor. It's going to be hard, as most social upheavals are, and a lot of people will probably die. But historically these things lead to new beginnings that are inherently good. Whatever happens, our generation will be the one dealing with it, and the signs are everywhere.</p>
+        
+        <p>Technology, for example, is the set of tools that man uses to organize and manipulate the world around him. Historically, the most significant social changes are the results of people trying to catch up mentally with the new abilities and knowledge given to them by technological and scientific progress.</p>
+        
+        <p>Over the course of the year I have written about several disruptive technologies on the horizon that have the potential to rock the foundations our society is built on. Things like nanotechnology, artificial intelligence and biotechnology are all significant, and not just because they are new and a little better than what came before. They are culmination technologies — the perfection of things people have been doing for hundreds of years. We should begin feeling the impact from these and other disruptive technologies within the next 15 to 20 years, according to futurists.</p>
+        
+        <p>Politics is a system of decision making within a group of people. As the technology that supports these systems has improved, the systems themselves have evolved through many different forms, from tribalism to feudalism to nation-states. We are now seeing the emergence of a next level of political organization, partly in the success of regional supra-governmental cooperation — such as the European Union and the progressive governments of the southern cone of South America.</p>
+        
+        <p>Another key force in the formation of these new types of organization is globalization — the process by which the economies and cultures of nations knit together regardless of geographical differences. I've talked a lot this year about how the rise of countries like China and India to a level of technological competitiveness with the west will affect our lives. The U.S. government estimates that by 2020, these nations will be our peers economically and politically.</p>
+        
+        <p>The similarities between today and other periods leading up to crises like World War II are staggering. Whether you believe that it's as big as all that, the truth remains that nothing stays the same forever. As a rule, the future is always more insane than can be imagined in the present.</p>
+        
+        <p class="byline">— Battin is a senior English/Journalism major.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.15); margin: 3rem 0;">
+        
+        <nav class="drift-nav" style="text-align: center;">
+            <a href="linguistics-2004.html" style="color: #f9e2af;">← Linguistics Papers 2004</a><br>
+            <a href="/drift-index.html" style="color: #b4befe;">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>

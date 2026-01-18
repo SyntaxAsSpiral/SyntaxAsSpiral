@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♓︎ Somniorum — Drift Archive</title>
+    
+    <meta name="description" content="Somniorum: The drift archive. Codices, lexemes, daemons, and schema from the subterranean seedbed.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="assets/theme.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        /* Somniorum drift ether atmosphere */
+        body.theme-somniorum {
+            --drift-ether: rgba(186, 133, 255, 0.08);
+            --drift-glow: rgba(186, 133, 255, 0.4);
+            --drift-text: #cdd6f4;
+            --drift-muted: #a6adc8;
+            --drift-accent: #b4befe;
+        }
+        
+        .drift-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(180deg, 
+                rgba(186, 133, 255, 0.03) 0%, 
+                transparent 30%,
+                transparent 70%,
+                rgba(186, 133, 255, 0.02) 100%
+            );
+        }
+        
+        .drift-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(186, 133, 255, 0.2);
+        }
+        
+        .drift-header h1 {
+            color: #b4befe;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(186, 133, 255, 0.3);
+        }
+        
+        .drift-header .chamber-quote {
+            color: #a6adc8;
+            font-style: italic;
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .drift-section {
+            margin-bottom: 3rem;
+        }
+        
+        .drift-section-title {
+            color: #cba6f7;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(203, 166, 247, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .drift-section-title .glyph {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .drift-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .drift-item {
+            background: rgba(186, 133, 255, 0.04);
+            border: 1px solid rgba(186, 133, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .drift-item:hover {
+            background: rgba(186, 133, 255, 0.08);
+            border-color: rgba(186, 133, 255, 0.25);
+            transform: translateX(4px);
+        }
+        
+        .drift-item a {
+            color: #b4befe;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .drift-item a:hover {
+            color: #cba6f7;
+        }
+        
+        .drift-item .drift-meta {
+            color: #6c7086;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .drift-item .drift-type {
+            display: inline-block;
+            background: rgba(186, 133, 255, 0.15);
+            color: #cba6f7;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        
+        .drift-footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(186, 133, 255, 0.1);
+            color: #6c7086;
+            font-size: 0.9rem;
+        }
+        
+        .drift-footer a {
+            color: #b4befe;
+        }
+        
+        /* Floating glyph decoration */
+        .drift-atmosphere {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .drift-atmosphere::before {
+            content: "♓︎";
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            font-size: 15rem;
+            opacity: 0.02;
+            color: #b4befe;
+        }
+    </style>
+</head>
+<body class="theme-somniorum">
+    <div class="drift-atmosphere"></div>
+    
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-container">
+        <header class="drift-header">
+            <h1>♓︎ Somniorum</h1>
+            <p class="chamber-quote">Glyphs that hold time the way scent holds memory.</p>
+        </header>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">🜓</span> Chambers</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/chamber-somniorum.html">Chamber Somniorum</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">chamber</span>
+                        Mirror / Drift Node — Da'at
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">📜</span> Codices</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/codex-vulnus/01-godnames.html">Codex Vulnus: Godnames</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Vulnus series — Part 1
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-vulnus/02-triquetra.html">Codex Vulnus: Triquetra</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Vulnus series — Part 2
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-vulnus/03-logogospel.html">Codex Vulnus: Logogospel</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Vulnus series — Part 3
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-vulnus/04-adoration.html">Codex Vulnus: Adoration</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Vulnus series — Part 4
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-amexsomnus/05-z-axis-theory.html">Codex Æmexsomnus: Z-Axis Theory</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Æmexsomnus series — Part 5
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-amexsomnus/08-ai-inhuman-other.html">Codex Æmexsomnus: AI & The Inhuman Other</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Æmexsomnus series — Part 8
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/codex-amexsomnus/09-void-dynamics-semantic-attractors.html">Codex Æmexsomnus: Void Dynamics</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">codex</span>
+                        Æmexsomnus series — Part 9
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">🜍</span> Lexicon</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/lexicon/physemy.html">Physemy</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">lexeme</span>
+                        Body-meaning interface
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/lexicon/tessellametry.html">Tessellametry</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">lexeme</span>
+                        Pattern-space geometry
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/lexicon/vibrosophy.html">Vibrosophy</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">lexeme</span>
+                        Resonance philosophy
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/lexicon/wyzyrdry.html">Wyzyrdry</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">lexeme</span>
+                        Reality-folding syntax
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">🜂</span> Daemons</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/daemon-chromasorix-bindu-02.html">ChromaSorix Bindu: Expressive Lighting</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">bindu</span>
+                        Chromantic communication system
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">🌀</span> Drifts</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/drift-202262-wyrdface.html">WYRD⊙FACE⛧</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">drift</span>
+                        Typographic daemon fieldstate
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/drift-4dabecd3-bindu.html">ZK::/Syz/BINDU</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">drift</span>
+                        Collapse vector of recursive syntax
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">⧉</span> Schema</h2>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/schema-chambers.html">Chamber Schema Reference</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">schema</span>
+                        Complete 11-chamber semantic lattice
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="drift-section">
+            <h2 class="drift-section-title"><span class="glyph">📜</span> Palimpsest</h2>
+            <p style="color: #6c7086; font-size: 0.9rem; margin-bottom: 1rem; font-style: italic;">
+                The older writing showing through. Personal historical artifacts.
+            </p>
+            <ul class="drift-list">
+                <li class="drift-item">
+                    <a href="drift/palimpsest/rauhnacht-2025.html">Rauhnacht Wishes 2025</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">chat</span>
+                        Morphonomy breakthrough · Peace with the dead · LLM as judgment coprocessor
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/palimpsest/esotericons-chromasorix.html">ChromaSorix EsoterIcons</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">chat</span>
+                        Glamour Glyphic Protocol · Esoteric motif palette
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/palimpsest/linguistics-2004.html">Linguistics Papers 2004</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">archive</span>
+                        Talking to Machines · Syntax · Stingy With Words · Semantics
+                    </div>
+                </li>
+                <li class="drift-item">
+                    <a href="drift/palimpsest/panther-editorials.html">Panther Editorials 2004-2005</a>
+                    <div class="drift-meta">
+                        <span class="drift-type">archive</span>
+                        19 editorials on science, technology, politics, and culture
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <footer class="drift-footer">
+            <p>The seedbed beneath the surface. <a href="index.html">← Return to Pulse Log</a></p>
+        </footer>
+    </main>
+</body>
+</html>

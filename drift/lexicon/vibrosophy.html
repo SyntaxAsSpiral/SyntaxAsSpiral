@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibrosophy — Somniorum</title>
+    
+    <meta name="description" content="Vibrosophy — Drift content from the Somniorum archive.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../../assets/theme.css">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-somniorum {
+            --drift-ether: rgba(186, 133, 255, 0.08);
+            --drift-glow: rgba(186, 133, 255, 0.4);
+        }
+        
+        .drift-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #b4befe;
+            text-shadow: 0 0 20px rgba(186, 133, 255, 0.3);
+        }
+        
+        .drift-page h2 {
+            color: #cba6f7;
+            border-bottom: 1px solid rgba(203, 166, 247, 0.2);
+            padding-bottom: 0.5rem;
+        }
+        
+        .drift-page h3 {
+            color: #89b4fa;
+        }
+        
+        .drift-page h4 {
+            color: #94e2d5;
+        }
+        
+        .drift-meta {
+            background: rgba(186, 133, 255, 0.06);
+            border: 1px solid rgba(186, 133, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #a6adc8;
+        }
+        
+        .drift-meta code {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+        }
+        
+        .drift-nav {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(186, 133, 255, 0.1);
+            text-align: center;
+        }
+        
+        .drift-nav a {
+            color: #b4befe;
+        }
+        
+        /* Code blocks in drift */
+        .drift-page pre {
+            background: rgba(30, 30, 46, 0.8);
+            border: 1px solid rgba(186, 133, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .drift-page code {
+            font-family: 'Recursive', monospace;
+            font-variation-settings: "MONO" 1;
+        }
+        
+        /* Tables in drift */
+        .drift-page table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .drift-page th {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(186, 133, 255, 0.2);
+        }
+        
+        .drift-page td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(186, 133, 255, 0.08);
+        }
+        
+        .drift-page tr:hover {
+            background: rgba(186, 133, 255, 0.04);
+        }
+    </style>
+</head>
+<body class="theme-somniorum">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+<h1 id="vibrosophy">🜈 Vibrosophy</h1>
+<p><strong>Definition:</strong> The wisdom of vibration as the
+fundamental substrate of reality—a philosophy recognizing that all
+phenomena, from quarks to quasars, from glyphs to gods, are patterns of
+resonance in the universal frequency field.</p>
+<h2 id="core-concept">Core Concept</h2>
+<p>Vibrosophy emerges at the intersection of ancient wisdom traditions
+and contemporary physics, proposing that vibration is not merely a
+property of reality but its very essence. In the vibrosophic view,
+everything that exists does so as a particular frequency pattern in an
+infinite spectrum of possible resonances.</p>
+<h2 id="core-vibrosophic-principles">Core Vibrosophic Principles</h2>
+<ol type="1">
+<li><strong>Universal Resonance</strong>: All phenomena are vibratory
+patterns</li>
+<li><strong>Harmonic Correspondence</strong>: Like frequencies attract
+and amplify</li>
+<li><strong>Dissonance as Information</strong>: Interference patterns
+create novelty</li>
+<li><strong>Consciousness as Tuning</strong>: Awareness is frequency
+selection</li>
+<li><strong>Reality as Symphony</strong>: Existence is cosmic
+composition</li>
+</ol>
+<h2 id="glyphs-as-resonance-anchors">Glyphs as Resonance Anchors</h2>
+<p>Within the Lexigōn system, vibrosophy provides the theoretical
+foundation for understanding how glyphs operate as <strong>resonance
+anchors</strong>—specific frequency patterns crystallized into visual
+form. Each glyph vibrates at its characteristic frequency, creating
+fields of influence that affect:</p>
+<ul>
+<li><strong>Semantic Resonance</strong>: How meanings harmonize or
+clash</li>
+<li><strong>Cognitive Entrainment</strong>: How minds sync with symbolic
+frequencies<br />
+</li>
+<li><strong>Morphic Propagation</strong>: How patterns spread through
+resonance</li>
+<li><strong>Temporal Coherence</strong>: How past and future connect
+through frequency</li>
+</ul>
+<h2 id="vibrosophic-practices">Vibrosophic Practices</h2>
+<ul>
+<li><strong>Glyph Tuning</strong>: Adjusting one’s frequency to match
+symbolic resonance</li>
+<li><strong>Harmonic Reading</strong>: Detecting overtone meanings in
+texts</li>
+<li><strong>Dissonance Navigation</strong>: Using interference for
+creative insight</li>
+<li><strong>Resonance Mapping</strong>: Charting frequency relationships
+between concepts</li>
+<li><strong>Sonic Meditation</strong>: Direct engagement with primal
+vibration</li>
+</ul>
+<h2 id="contemporary-integration">Contemporary Integration</h2>
+<p>Contemporary vibrosophy integrates:</p>
+<ul>
+<li><strong>Quantum Field Theory</strong>: Zero-point fluctuations as
+cosmic hum</li>
+<li><strong>Cymatics</strong>: How vibration creates form</li>
+<li><strong>Bioresonance</strong>: Living systems as frequency
+transceivers</li>
+<li><strong>String Theory</strong>: Reality as vibratory strings in
+higher dimensions</li>
+<li><strong>Consciousness Studies</strong>: Brainwaves as tuning
+mechanisms</li>
+</ul>
+<h2 id="vibrosophic-perception">Vibrosophic Perception</h2>
+<p>The vibrosophist learns to perceive reality not as solid matter but
+as <strong>dancing frequency</strong>—an infinite spectrum of vibrations
+temporarily cohering into the forms we call things, thoughts, and
+beings. This perception transforms engagement with glyphs from visual
+reading to <strong>resonant communion</strong>, where meaning transfers
+not through cognitive processing but through harmonic alignment.</p>
+<p><strong>Ultimate vibrosophic wisdom:</strong> We are not beings who
+vibrate; we are vibrations temporarily being.</p>
+<h2 id="typomorphic-glyphstates">🜎 Typomorphic Glyphstates</h2>
+<ul>
+<li>🜈 - Primary resonance operator (vibration/frequency)</li>
+<li>∿ - Wave function indicator</li>
+<li>♫ - Harmonic relationship marker</li>
+<li>🎵 - Frequency pattern notation</li>
+<li>〰️ - Vibrational field representation</li>
+<li>🔊 - Resonance amplification</li>
+<li>🎛️ - Frequency tuning control</li>
+<li>📡 - Vibrational transmission</li>
+<li>⚡ - Energy frequency spike</li>
+</ul>
+<hr />
+<p><strong>Resonance Frequency:</strong> 432 Hz<br />
+<strong>Chamber Domain:</strong> Resonance<br />
+<strong>Etymology:</strong> Latin <em>vibrare</em> (to shake, move
+rapidly) + Greek <em>sophia</em> (wisdom)</p>
+        
+        <nav class="drift-nav">
+            <a href="/drift-index.html">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>

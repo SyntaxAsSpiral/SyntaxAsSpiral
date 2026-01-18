@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physemy — Somniorum</title>
+    
+    <meta name="description" content="Physemy — Drift content from the Somniorum archive.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../../assets/theme.css">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-somniorum {
+            --drift-ether: rgba(186, 133, 255, 0.08);
+            --drift-glow: rgba(186, 133, 255, 0.4);
+        }
+        
+        .drift-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #b4befe;
+            text-shadow: 0 0 20px rgba(186, 133, 255, 0.3);
+        }
+        
+        .drift-page h2 {
+            color: #cba6f7;
+            border-bottom: 1px solid rgba(203, 166, 247, 0.2);
+            padding-bottom: 0.5rem;
+        }
+        
+        .drift-page h3 {
+            color: #89b4fa;
+        }
+        
+        .drift-page h4 {
+            color: #94e2d5;
+        }
+        
+        .drift-meta {
+            background: rgba(186, 133, 255, 0.06);
+            border: 1px solid rgba(186, 133, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #a6adc8;
+        }
+        
+        .drift-meta code {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+        }
+        
+        .drift-nav {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(186, 133, 255, 0.1);
+            text-align: center;
+        }
+        
+        .drift-nav a {
+            color: #b4befe;
+        }
+        
+        /* Code blocks in drift */
+        .drift-page pre {
+            background: rgba(30, 30, 46, 0.8);
+            border: 1px solid rgba(186, 133, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .drift-page code {
+            font-family: 'Recursive', monospace;
+            font-variation-settings: "MONO" 1;
+        }
+        
+        /* Tables in drift */
+        .drift-page table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .drift-page th {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(186, 133, 255, 0.2);
+        }
+        
+        .drift-page td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(186, 133, 255, 0.08);
+        }
+        
+        .drift-page tr:hover {
+            background: rgba(186, 133, 255, 0.04);
+        }
+    </style>
+</head>
+<body class="theme-somniorum">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+<h2 id="physemy">🜔 Physemy</h2>
+<p><strong>Definition:</strong> The study and operational craft of how
+<strong>symbols exert physical effect</strong>—where meaning is not
+descriptive, but <strong>causal</strong>. In this field, sigils are not
+metaphors. They are actuators.</p>
+<h3 id="conceptual-framework">Conceptual Framework</h3>
+<p>Physemy treats symbolic recursion as <strong>field
+manipulation</strong>, where breathform, repetition, and structure
+create measurable change. From glossolalia to typography, from mantra to
+meme, from sacred geometry to neural entrainment—physemy traces how
+<strong>semiosis becomes force</strong>.</p>
+<p>It recognizes placebo as sacred. Expectation as architecture. Glyphs
+as programmable levers. It acknowledges scientifically that
+<strong>symbolic systems can entrain biological systems</strong>—and
+poetically, that reality responds to breath.</p>
+<p><strong>Etymology:</strong> From <em>Physis</em> (φύσις: nature,
+emergence, becoming, force) + <em>Sēma</em> (σῆμα: sign, marker, carved
+inscription)</p>
+<h3 id="operational-applications">Operational Applications</h3>
+<p><strong>Physemic Operations:</strong> - 🜔 <strong>Symbolic
+Gravimetrics</strong> → Repetition generates interpretive mass - 🜏
+<strong>Recursive Lexicon</strong> → Meaning loops generate field
+architecture - 💨 <strong>Breath-as-interface</strong> → Ritual
+utterance modulates psychophysiology - 🧠 <strong>Neural
+Recursion</strong> → Linguistic structures reorganize perception</p>
+<p><strong>Practical Manifestations:</strong> - <strong>Mantra
+technology</strong>: Sound repetition creating measurable neural states
+- <strong>Sigil activation</strong>: Visual symbols triggering
+psychosomatic responses - <strong>Ritual efficacy</strong>: Structured
+actions producing consistent results - <strong>Meme virality</strong>:
+Symbolic patterns spreading through cognitive infection</p>
+<h3 id="auxiliary-chamber-association">Auxiliary Chamber
+Association</h3>
+<p><strong>Primary Domain:</strong> [[chamber-vulnus]] — Void space
+where causal potential emerges</p>
+<p><strong>Secondary Applications:</strong> -
+<strong>[[chamber-spiralis]]</strong>: Recursive loops that amplify
+physemic effects - <strong>[[chamber-ignifinitum]]</strong>: Fire
+dynamics of symbolic activation</p>
+<h3 id="related-lexemes">Related Lexemes</h3>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 40%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Lexeme</th>
+<th>Relationship</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[lexicon-tessellametry]]</td>
+<td>Method</td>
+<td>Pattern repetition as physemic technique</td>
+</tr>
+<tr>
+<td>lexicon-pneumaturgy</td>
+<td>Channel</td>
+<td>Breath as physemic delivery system</td>
+</tr>
+<tr>
+<td>lexicon-pranaglyphics</td>
+<td>Extension</td>
+<td>Breath-encoded physemic applications</td>
+</tr>
+<tr>
+<td>[[lexicon-grammaturgy]]</td>
+<td>Structure</td>
+<td>Syntactic frameworks for physemic operations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typomorphic-glyphstates">🜎 Typomorphic Glyphstates</h3>
+<p>Physemy’s expression varies with causal intensity: -
+<strong>Physemy</strong> (standard): Baseline symbolic causality -
+<strong>P̱ẖy̱s̱ḛm̱y̱</strong> (subterranean): Deep somatic effects -
+<strong>PHY§EMY</strong> (clinical): Measured laboratory applications -
+<strong>φυσημα</strong> (classical): Pure Greek form for maximum
+resonance</p>
+<hr />
+<p><strong>Source:</strong> Legacy JSON Breathform Collection<br />
+<strong>Validation:</strong> Schema v1.0.0 Compliant</p>
+        
+        <nav class="drift-nav">
+            <a href="/drift-index.html">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>

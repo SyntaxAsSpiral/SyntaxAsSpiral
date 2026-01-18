@@ -38,7 +38,7 @@ def inject(content: str, data: dict) -> str:
     """
     Inject values into marker regions while preserving markers.
     
-    Pattern: <!--{{var}}-->...<!--/{{var}}-->
+    Pattern: <!--{{var}}-->...<!--/{{var}}--> (or <!--/...-->)
     Replaces content between markers with value from data dict.
     Markers are preserved so subsequent runs can re-inject fresh values.
     
@@ -47,19 +47,28 @@ def inject(content: str, data: dict) -> str:
     def replace_injection(match):
         key = match.group(1)
         value = str(data.get(key, ""))
+        # Preserve the marker structure with fresh value
         return f"<!--{{{{{key}}}}}-->{value}<!--/{{{{{key}}}}}-->"
     
-    # First: injection markers (preserved)
+    # Injection markers: <!--{{varname}}-->content<!--/{{varname}}--> 
+    # OR <!--{{varname}}-->content<!--/anything--> (for recovery from corruption)
+    # The key is inside double braces within the opening comment
     result = re.sub(
-        r"<!--\{\{(\w+)\}\}-->.*?<!--/\{\{\1\}\}-->",
+        r"<!--\{\{(\w+)\}\}-->.*?<!--/[^>]*-->",
         replace_injection,
         content,
         flags=re.DOTALL
     )
     
-    # Second: simple placeholders (replaced, not preserved)
+    # Simple placeholders (replaced, not preserved) - for templates like default.html
+    # Skip any that are inside comment markers (protected)
     def replace_var(match):
         key = match.group(1)
+        start = match.start()
+        # Check if inside a comment marker - look for "<!--" or "<!--/" before
+        prefix5 = result[max(0, start-5):start]
+        if "<!--" in prefix5:
+            return match.group(0)  # Leave it alone - it's a marker
         return str(data.get(key, ""))
     
     result = re.sub(r"\{\{(\w+)\}\}", replace_var, result)

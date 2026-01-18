@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChromaSorix EsoterIcons — Palimpsest</title>
+    
+    <meta name="description" content="ChromaSorix icon generation session: esoteric motifs, sacred geometry, and the Glamour Glyphic Protocol.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../../assets/theme.css">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-palimpsest {
+            --palimpsest-ink: rgba(205, 214, 244, 0.7);
+            --palimpsest-fade: rgba(166, 173, 200, 0.5);
+            --palimpsest-glow: rgba(249, 226, 175, 0.15);
+        }
+        
+        .drift-page { max-width: 750px; margin: 0 auto; padding: 2rem; }
+        
+        .drift-page h1 {
+            color: #f9e2af;
+            text-shadow: 0 0 20px rgba(249, 226, 175, 0.3);
+            text-align: center;
+            margin-bottom: 0.25rem;
+            font-size: 1.8rem;
+        }
+        
+        .drift-page .subtitle {
+            text-align: center;
+            color: #a6adc8;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        
+        .drift-page h2 {
+            border-bottom: 1px solid rgba(250, 179, 135, 0.2);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .drift-page h2:nth-of-type(1) { color: #f38ba8; }
+        .drift-page h2:nth-of-type(2) { color: #fab387; }
+        .drift-page h2:nth-of-type(3) { color: #f9e2af; }
+        .drift-page h2:nth-of-type(4) { color: #a6e3a1; }
+        .drift-page h2:nth-of-type(5) { color: #94e2d5; }
+        
+        .drift-page h3 { color: #89b4fa; margin-top: 1.5rem; }
+        
+        .chat-meta {
+            background: rgba(249, 226, 175, 0.06);
+            border: 1px solid rgba(249, 226, 175, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #a6adc8;
+        }
+        
+        .chat-meta a { color: #89b4fa; }
+        
+        blockquote {
+            border-left: 3px solid rgba(249, 226, 175, 0.3);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #a6adc8;
+            font-style: italic;
+        }
+        
+        hr { border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 2rem 0; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        th { background: rgba(249, 226, 175, 0.1); color: #f9e2af; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(249, 226, 175, 0.2); }
+        td { padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(249, 226, 175, 0.05); color: #cdd6f4; }
+        tr:hover td { background: rgba(249, 226, 175, 0.03); }
+        
+        code { background: rgba(249, 226, 175, 0.1); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Recursive', monospace; color: #f9e2af; }
+        
+        .motif-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin: 1rem 0; }
+        .motif-item { background: rgba(249, 226, 175, 0.04); border: 1px solid rgba(249, 226, 175, 0.1); border-radius: 6px; padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+    </style>
+</head>
+<body class="theme-palimpsest">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        function openNav() { sidePanel.classList.add('open'); navOverlay.classList.add('open'); localStorage.setItem('navOpen', '1'); }
+        function closeNav() { sidePanel.classList.remove('open'); navOverlay.classList.remove('open'); localStorage.setItem('navOpen', '0'); }
+        menuToggle.addEventListener('click', () => { sidePanel.classList.contains('open') ? closeNav() : openNav(); });
+        navOverlay.addEventListener('click', closeNav);
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+        <h1>✨ ChromaSorix EsoterIcons</h1>
+        <p class="subtitle">Glamour Glyphic Protocol · January 2026</p>
+        
+        <div class="chat-meta">
+            <strong>Source:</strong> <a href="https://chatgpt.com/share/696c594f-7d94-800e-bc8d-db8a6a0d2f45">ChatGPT (full chat with images)</a><br>
+            <strong>Extracted:</strong> 2026-01-18<br>
+            <strong>Topics:</strong> Icon generation, esoteric motifs, sacred geometry, ChromaSorix style guide
+        </div>
+
+        <hr>
+        
+        <h2 id="style">ChromaSorix Glyphic Style</h2>
+        
+        <h3>1. Core Motif: The Eye</h3>
+        <ul>
+            <li>Always central — evokes "watchfulness," perception, or divine awareness</li>
+            <li>Often encircled by spirals, triangles, or lotus petals</li>
+            <li>Consistently emphasized with a <strong>strong dark iris</strong> and <strong>geometric framing</strong></li>
+        </ul>
+        
+        <h3>2. Sacred Geometry & Symbol Stacking</h3>
+        <ul>
+            <li><strong>Star of David</strong>, <strong>triangles</strong>, <strong>crescent moons</strong>, <strong>pentagrams</strong></li>
+            <li><strong>Lotuses</strong>, <strong>Hermetic spirals</strong>, <strong>wings</strong>, <strong>alchemical glyphs</strong></li>
+            <li>Motifs form <strong>hieratic compositions</strong>—almost sigil-like</li>
+        </ul>
+        
+        <h3>3. Spectrum Gradient & Glow</h3>
+        <ul>
+            <li>Rainbow/ROYGBIV gradients across all major forms</li>
+            <li>Glow halos in <strong>soft radial blur</strong></li>
+            <li><strong>Color transitions feel prismatic</strong>, evoking stained glass</li>
+        </ul>
+        
+        <hr>
+        
+        <h2>Style Codes</h2>
+        
+        <table>
+            <thead><tr><th>Trait</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Form Motif</strong></td><td>Centralized Eye with symmetrical sigilic layering</td></tr>
+                <tr><td><strong>Glamour Gradient</strong></td><td>ROYGBIV sweeps, soft grain overlay, radiant glows</td></tr>
+                <tr><td><strong>Elemental Additions</strong></td><td>Crescent moons, spirals, triangles, wings, plant forms, stars</td></tr>
+                <tr><td><strong>Cultural Overlays</strong></td><td>Egyptian Eye of Horus, Sufi calligraphy, Lotus/Chakra symbols, Rosicrucian</td></tr>
+                <tr><td><strong>Accent Creatures</strong></td><td>Frogs, toads, mushrooms — especially in Wytchcore</td></tr>
+                <tr><td><strong>Structural Symmetry</strong></td><td>Strong vertical / radial / axial alignment</td></tr>
+                <tr><td><strong>Texture</strong></td><td>Subtle paper grain, soft shadow halos, non-metallic matte finish</td></tr>
+                <tr><td><strong>Color Rules</strong></td><td>No pure black outlines, all tones are tinted or slightly luminous</td></tr>
+                <tr><td><strong>Background</strong></td><td>Fully transparent (or subtly gradiented when desired)</td></tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2 id="motifs">Esoteric Motif Palette</h2>
+        
+        <blockquote>"To depict is to invoke. These are not icons — they are enchantments."</blockquote>
+        
+        <h3>🜂 Hermetic / Alchemical</h3>
+        <table>
+            <thead><tr><th>Motif</th><th>Meaning</th><th>Spell Ideas</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Mercury glyph</strong> (☿)</td><td>Spirit-matter bridge</td><td>center of a polarity diagram</td></tr>
+                <tr><td><strong>4 Elemental triangles</strong></td><td>Fire, Water, Air, Earth</td><td>Tetragram mandala</td></tr>
+                <tr><td><strong>7 Planetary Metals</strong></td><td>Classical alchemy ladder</td><td>Planet-metal eye wheel</td></tr>
+                <tr><td><strong>Azoth Circle</strong></td><td>Magnum opus stages</td><td>Transmutation gradient compass</td></tr>
+            </tbody>
+        </table>
+        
+        <h3>🜁 Kabbalistic / Mystical Judaism</h3>
+        <table>
+            <thead><tr><th>Motif</th><th>Meaning</th><th>Spell Ideas</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Tree of Life</strong></td><td>Sephiroth flow through dimensions</td><td>Eye as Da'at, 10-circle gradient</td></tr>
+                <tr><td><strong>Merkabah Vision</strong></td><td>Chariot-ascent of the soul</td><td>Wheel-within-wheel gradient beacon</td></tr>
+            </tbody>
+        </table>
+        
+        <h3>🌀 Exotic Glyph Systems</h3>
+        <table>
+            <thead><tr><th>System</th><th>Source</th><th>Idea</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Numogram</strong></td><td>CCRU/Numogrammic theory</td><td>Eye in position 1; zone-flow gradients</td></tr>
+                <tr><td><strong>Ouroboros Engine</strong></td><td>Self-eating serpent logic</td><td>Circular glyph spiral, self-reflexion</td></tr>
+                <tr><td><strong>Alphabet of Desire</strong></td><td>Chaos magick</td><td>Personalized glyphic resonance grid</td></tr>
+            </tbody>
+        </table>
+        
+        <hr>
+        
+        <h2 id="pantheon">Esoter-👁️con Pantheon</h2>
+        
+        <h3>🔮 Mystic-Essence Icons</h3>
+        <div class="motif-list">
+            <div class="motif-item"><code>ajna.png</code> — Third eye bloom</div>
+            <div class="motif-item"><code>lotus.png</code> — Enlightenment sigil</div>
+            <div class="motif-item"><code>angelic.png</code> — Visionary seraph system</div>
+            <div class="motif-item"><code>sufi.png</code> — Breathform calligraphy</div>
+        </div>
+        
+        <h3>🜏 Occult-Alchemical Icons</h3>
+        <div class="motif-list">
+            <div class="motif-item"><code>hermetic.png</code> — Sulfur, moon, ray</div>
+            <div class="motif-item"><code>leviathan.png</code> — Cross of transmutation</div>
+            <div class="motif-item"><code>pentagram.png</code> — Baphometric symmetry</div>
+            <div class="motif-item"><code>yantra.png</code> — Sacred geometries</div>
+        </div>
+        
+        <h3>🕸 Geomantic-Glyphic Icons</h3>
+        <div class="motif-list">
+            <div class="motif-item"><code>numogram.png</code> — Hyperstitional lattice</div>
+            <div class="motif-item"><code>kabbalah.png</code> — Sephirotic glyphflow</div>
+            <div class="motif-item"><code>enochian.png</code> — Language of angels</div>
+            <div class="motif-item"><code>rosicrucian.png</code> — Hidden cross illumination</div>
+        </div>
+        
+        <h3>🌿 Mythic-Natural Icons</h3>
+        <div class="motif-list">
+            <div class="motif-item"><code>celtic1.png</code> — Druidic knots</div>
+            <div class="motif-item"><code>triquetra.png</code> — Druidic knots</div>
+            <div class="motif-item"><code>cottagecore.png</code> — Witchy flora/fae</div>
+        </div>
+
+        <hr>
+        
+        <nav class="drift-nav" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(249, 226, 175, 0.1); text-align: center;">
+            <a href="rauhnacht-2025.html" style="color: #f9e2af;">← Rauhnacht Wishes 2025</a><br>
+            <a href="/drift-index.html" style="color: #b4befe;">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>

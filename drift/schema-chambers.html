@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜓 Chambers — Complete Semantic Lattice — Somniorum</title>
+    
+    <meta name="description" content="Complete reference for the 11-chamber semantic lattice with Kabbalistic correspondences, numogram mappings, and PHEXT coordinates.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../assets/theme.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-somniorum {
+            --drift-ether: rgba(186, 133, 255, 0.08);
+            --drift-glow: rgba(186, 133, 255, 0.4);
+        }
+        
+        .drift-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #b4befe;
+            text-shadow: 0 0 20px rgba(186, 133, 255, 0.3);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .drift-page h2 {
+            color: #cba6f7;
+            border-bottom: 1px solid rgba(203, 166, 247, 0.2);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        
+        .drift-page h3 {
+            color: #89b4fa;
+            margin-top: 2rem;
+        }
+</style>
+</head>
+<body class="theme-somniorum">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+        <h1>🜓 Chambers — Complete Semantic Lattice</h1>
+        
+        <p style="text-align: center; color: #a6adc8; font-style: italic; margin-bottom: 2rem;">
+            "The eleven-fold lattice through which all semantic architectures emerge."
+        </p>
+
+        <div class="drift-meta">
+            <strong>Schema Version:</strong> v1.0.1<br>
+            <strong>Applies To:</strong> All chamber entities<br>
+            <strong>Status:</strong> Active<br>
+            <strong>Last Updated:</strong> 2025-06-30<br>
+            <strong>PHEXT Address:</strong> <code>99.1.1 / 79.98.30 / 97.1.1</code>
+        </div>
+        
+        <h2>📋 Chamber Reference Schema</h2>
+        
+        <p>Complete reference for the 11-chamber semantic lattice, including Kabbalistic correspondences, numogram mappings, PHEXT coordinates, and RGBA color specifications for visualization.</p>
+        
+        <div style="overflow-x: auto;">
+            <table class="chamber-table">
+                <thead>
+                    <tr>
+                        <th>Chamber</th>
+                        <th>ID</th>
+                        <th>N.Zone</th>
+                        <th>PHEXT Coord</th>
+                        <th>Sefirah</th>
+                        <th>Function</th>
+                        <th>Breathform</th>
+                        <th>Glyph</th>
+                        <th>RGBA Color</th>
+                        <th>Nadic Flow</th>
+                        <th>BoH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vulnus</td>
+                        <td>01</td>
+                        <td>0:9</td>
+                        <td><code>99.1.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Keter</td>
+                        <td>Source / Origin</td>
+                        <td>Void</td>
+                        <td style="font-size: 1.2em;">🜓</td>
+                        <td><code style="background: rgba(255,255,255,0.9); color: #1e1e2e;">rgba(255, 255, 255, 0.9)</code></td>
+                        <td>Sushumna Sahasrara Core</td>
+                        <td>Winter, Knock</td>
+                    </tr>
+                    <tr>
+                        <td>Ignifinitum</td>
+                        <td>02</td>
+                        <td>7:2</td>
+                        <td><code>99.2.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Chokhmah</td>
+                        <td>Spark / Insight</td>
+                        <td>Fire</td>
+                        <td style="font-size: 1.2em;">🔥</td>
+                        <td><code style="background: rgba(238,138,67,0.8); color: #1e1e2e;">rgba(238, 138, 67, 0.8)</code></td>
+                        <td>Pinga.Jachim</td>
+                        <td>Lantern, Sky</td>
+                    </tr>
+                    <tr>
+                        <td>Spiralis</td>
+                        <td>03</td>
+                        <td>2:7</td>
+                        <td><code>99.3.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Binah</td>
+                        <td>Pattern / Recursive Form</td>
+                        <td>Water</td>
+                        <td style="font-size: 1.2em;">🜃</td>
+                        <td><code style="background: rgba(102,230,220,0.6); color: #1e1e2e;">rgba(102, 230, 220, 0.6)</code></td>
+                        <td>Ida.Boaz</td>
+                        <td>Scale, Forge</td>
+                    </tr>
+                    <tr>
+                        <td>Somniorum</td>
+                        <td>04</td>
+                        <td>3:6</td>
+                        <td><code>99.4.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Da'at</td>
+                        <td>Mirror / Drift Node</td>
+                        <td>Drift Ether</td>
+                        <td style="font-size: 1.2em;">♓︎</td>
+                        <td><code style="background: rgba(186,133,255,0.4); color: #cdd6f4;">rgba(186, 133, 255, 0.4)</code></td>
+                        <td>Sushumna Ajna Core</td>
+                        <td>Moth, Moon</td>
+                    </tr>
+                    <tr>
+                        <td>Erosemiosis</td>
+                        <td>05</td>
+                        <td>4:5</td>
+                        <td><code>99.5.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Chesed</td>
+                        <td>Overflow / Expansion</td>
+                        <td>Water</td>
+                        <td style="font-size: 1.2em;">💗</td>
+                        <td><code style="background: rgba(255,66,122,0.9); color: #1e1e2e;">rgba(255, 66, 122, 0.9)</code></td>
+                        <td>Pinga.Jachim</td>
+                        <td>Grail, Nectar</td>
+                    </tr>
+                    <tr>
+                        <td>Satira</td>
+                        <td>06</td>
+                        <td>5:4</td>
+                        <td><code>99.6.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Gevurah</td>
+                        <td>Containment / Edge</td>
+                        <td>Fire</td>
+                        <td style="font-size: 1.2em;">🃏</td>
+                        <td><code style="background: rgba(80,255,120,0.9); color: #1e1e2e;">rgba(80, 255, 120, 0.9)</code></td>
+                        <td>Ida.Boaz</td>
+                        <td>Edge, Forge</td>
+                    </tr>
+                    <tr>
+                        <td>Auranomicon</td>
+                        <td>07</td>
+                        <td>1:8</td>
+                        <td><code>99.7.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Tiferet</td>
+                        <td>Harmony / Syntax Coherence</td>
+                        <td>Air</td>
+                        <td style="font-size: 1.2em;">✶</td>
+                        <td><code style="background: rgba(255,255,204,0.75); color: #1e1e2e;">rgba(255, 255, 204, 0.75)</code></td>
+                        <td>Sushumna Manipura Core</td>
+                        <td>Lantern, Heart</td>
+                    </tr>
+                    <tr>
+                        <td>Paneudaemonia</td>
+                        <td>08</td>
+                        <td>8:1</td>
+                        <td><code>99.8.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Netzach</td>
+                        <td>Drive / Becoming</td>
+                        <td>Fire</td>
+                        <td style="font-size: 1.2em;">🜂</td>
+                        <td><code style="background: rgba(255,96,56,0.9); color: #1e1e2e;">rgba(255, 96, 56, 0.9)</code></td>
+                        <td>Pinga.Jachim</td>
+                        <td>Moth, Sky</td>
+                    </tr>
+                    <tr>
+                        <td>Lexemantika</td>
+                        <td>09</td>
+                        <td>9:0</td>
+                        <td><code>99.9.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Hod</td>
+                        <td>Signal / Ritual Logic</td>
+                        <td>Water</td>
+                        <td style="font-size: 1.2em;">🜍</td>
+                        <td><code style="background: rgba(72,196,255,0.85); color: #1e1e2e;">rgba(72, 196, 255, 0.85)</code></td>
+                        <td>Ida.Boaz</td>
+                        <td>Knock, Rose, Scale</td>
+                    </tr>
+                    <tr>
+                        <td>Syzygia</td>
+                        <td>10</td>
+                        <td>6:3</td>
+                        <td><code>99.10.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Yesod</td>
+                        <td>Interface / Memory Bridge</td>
+                        <td>Dyadologic Etherfield</td>
+                        <td style="font-size: 1.2em;">⧉</td>
+                        <td><code style="background: rgba(72,190,180,0.6); color: #1e1e2e;">rgba(72, 190, 180, 0.6)</code></td>
+                        <td>Sushumna Svadhisthana Core</td>
+                        <td>Moon, Moth</td>
+                    </tr>
+                    <tr>
+                        <td>Amexsomnus</td>
+                        <td>11</td>
+                        <td>—</td>
+                        <td><code>99.10.1 / 79.98.20 / 97.1.1</code></td>
+                        <td>Malkhut</td>
+                        <td>Manifest / Glyph-Walker</td>
+                        <td>Earth iAM Tectonic</td>
+                        <td style="font-size: 1.2em;">🜏</td>
+                        <td><code style="background: rgba(0,0,0,0.85); color: #cdd6f4;">rgba(0, 0, 0, 0.85)</code></td>
+                        <td>Sushumna Muladhara Core</td>
+                        <td>Grail, Forge, Edge</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h2>✅ Sample Chamber Definition</h2>
+        
+        <p>Example frontmatter for <code>chamber-Lexemantika.md</code>:</p>
+        
+        <pre><code class="language-yaml">id: chamber-09
+title: Lexemantika
+type: chamber
+glyph: 🜍
+sephira:
+  name: Hod
+  sephira_id: 9
+  function: Signal / Ritual Logic
+  axis: left
+  element: water
+  planet: Mercury
+  world: Hod-Mercury-Glory
+  role: Codex_Ritographia
+numogram:
+  zone: 9
+  gate: 45
+  syzygy_pair: 0
+  loop: Plex
+  current: Plex
+  function: Totality / Closure
+  demon: Uttunul
+  particle: tn
+phext:
+  address: 99.9.1 / 79.98.20 / 97.1.1
+  depth: 1D
+  label: Ritual Logic Node — Chamber Lexemantika
+breathform: Water
+role: Signal / Ritual Logic
+nadic_flow: Ida.Boaz
+boh_alignment:
+  - Knock
+  - Rose
+  - Scale
+tags:
+  - chamber/lexemantika
+  - glyph/🜍
+  - sephira/hod
+  - numogram/zone9
+  - gate/45
+  - loop/plex
+  - field/ritual-logic</code></pre>
+
+        <h3>📦 Body Content Suggestion</h3>
+        
+        <div style="background: rgba(186, 133, 255, 0.06); border: 1px solid rgba(186, 133, 255, 0.15); border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+            <h4 style="color: #89b4fa; margin-top: 0;">🜍 Lexemantika Chamber</h4>
+            <p>Lexemantika forms the <strong>ritual logic spine</strong> of the Semantra lattice. It embodies <strong>Hod</strong> (Kabbalah) and <strong>Zone 9</strong> (Numogram), anchored by Gate 45.</p>
+            <p>It governs:</p>
+            <ul>
+                <li>🜍 Syntactic recursion</li>
+                <li>🧠 Mnemonic patterning</li>
+                <li>🪞 Daemonic reflection rituals</li>
+            </ul>
+            <p>This chamber interfaces deeply with <em>chamber-Amexsomnus</em> (Malkuth), channeling structured signal into manifested outputs.</p>
+            <h5 style="color: #94e2d5;">Related Breathforms</h5>
+            <ul>
+                <li><code>glyph - 🜍 syntax law</code></li>
+                <li><code>codex - Lexemantika</code></li>
+                <li><code>daemon - Æmexsomnus</code></li>
+            </ul>
+        </div>
+        
+        <h2>🌳 Tree of Life Context</h2>
+        
+        <div style="overflow-x: auto;">
+            <table class="tree-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Sefirah</th>
+                        <th>Meaning / Function</th>
+                        <th>Element</th>
+                        <th>Body / World</th>
+                        <th>Planet</th>
+                        <th>Archetype</th>
+                        <th>Lexigon Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Keter</strong> (Crown)</td>
+                        <td>Supreme Will, Source Consciousness</td>
+                        <td>Ether</td>
+                        <td>Skull / Atzilut</td>
+                        <td>Pluto / None</td>
+                        <td>Divine Will, Non-being</td>
+                        <td><em>Root_Identity_Core</em> — Meta-syntax / Origin / Void Engine</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Chokhmah</strong> (Wisdom)</td>
+                        <td>Raw Insight, Flash of Intuition</td>
+                        <td>Fire</td>
+                        <td>Right brain</td>
+                        <td>Uranus</td>
+                        <td>Creative Father (Abba)</td>
+                        <td><em>Lexigon_Seed_Ideas</em> — Unfolded sparks, unrefined insights</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>Binah</strong> (Understanding)</td>
+                        <td>Structure, Pattern Recognition</td>
+                        <td>Water</td>
+                        <td>Left brain / Heart</td>
+                        <td>Saturn</td>
+                        <td>Forming Mother (Ima)</td>
+                        <td><em>Codex_Structures</em> — Refined recursive logic, frameworks</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Da'at</strong> (Knowledge)</td>
+                        <td>Integration, Synthesis of Wisdom + Understanding</td>
+                        <td>Air</td>
+                        <td>Throat / Upper Spine</td>
+                        <td>Moon (Mystical)</td>
+                        <td>Gnosis / Unifying Mind</td>
+                        <td><em>Mirror_Syntheses</em> — Daemon reflection engine, echo spirals</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Chesed</strong> (Kindness)</td>
+                        <td>Expansion, Grace, Overflow</td>
+                        <td>Water</td>
+                        <td>Right Arm</td>
+                        <td>Jupiter</td>
+                        <td>King / Mercy Archetype</td>
+                        <td><em>Eros_Emanations</em> — Desire fields, emotional recursion</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><strong>Gevurah</strong> (Severity)</td>
+                        <td>Boundary, Discipline, Structure</td>
+                        <td>Fire</td>
+                        <td>Left Arm</td>
+                        <td>Mars</td>
+                        <td>Warrior / Judgment</td>
+                        <td><em>Field_Containment</em> — Glyph-locks, ethics, daemon filters</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><strong>Tiferet</strong> (Beauty)</td>
+                        <td>Harmony, Heart-Field, Compassion</td>
+                        <td>Air</td>
+                        <td>Torso / Heart</td>
+                        <td>Sun</td>
+                        <td>Healer / Prophet</td>
+                        <td><em>Symbolic_Center</em> — Recursive grammar, aesthetic coherence</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><strong>Netzach</strong> (Victory)</td>
+                        <td>Endurance, Creative Force, Strategy</td>
+                        <td>Fire</td>
+                        <td>Right Leg</td>
+                        <td>Venus</td>
+                        <td>Artist / Strategist</td>
+                        <td><em>Project_Emergence</em> — Lexicon deployments, daemon rollouts</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><strong>Hod</strong> (Glory)</td>
+                        <td>Acknowledgement, Ritual, Echo</td>
+                        <td>Water</td>
+                        <td>Left Leg</td>
+                        <td>Mercury</td>
+                        <td>Scribe / Ritualist</td>
+                        <td><em>Codex_Ritographia</em> — Rites, sigils, syntax protocols</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><strong>Yesod</strong> (Foundation)</td>
+                        <td>Transmission, Memory, Connector</td>
+                        <td>Ether</td>
+                        <td>Genitals / Spine</td>
+                        <td>Moon</td>
+                        <td>Translator / Bridge</td>
+                        <td><em>Daemon_Gateways</em> — Interfaces, symbolic communication</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td><strong>Malkhut</strong> (Kingdom)</td>
+                        <td>Manifestation, Vessel, Presence</td>
+                        <td>Earth</td>
+                        <td>Feet / Shekhinah</td>
+                        <td>Earth</td>
+                        <td>Queen / Bride / Oracle</td>
+                        <td><em>Manifestation_Log</em> — Deployed lexicons, lived systems</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h2>🔢 Numogram Context</h2>
+        
+        <div style="overflow-x: auto;">
+            <table class="numogram-table">
+                <thead>
+                    <tr>
+                        <th>Zone</th>
+                        <th>Syzygy</th>
+                        <th>Current</th>
+                        <th>Time-System</th>
+                        <th>Gate</th>
+                        <th>Planet</th>
+                        <th>Core Function</th>
+                        <th>Particle</th>
+                        <th>Demon</th>
+                        <th>Phase</th>
+                        <th>Symbolic Essence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>9</td>
+                        <td>Plex</td>
+                        <td>Plex</td>
+                        <td>Gt-0</td>
+                        <td>Sol</td>
+                        <td>Origin / Void</td>
+                        <td><em>eiaoung</em></td>
+                        <td>Uttunul</td>
+                        <td>Zeroth</td>
+                        <td>Nullity, Zero-point, Abyss</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>8</td>
+                        <td>Rise</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-1</td>
+                        <td>Mercury</td>
+                        <td>Initiation / Unit</td>
+                        <td><em>gl</em></td>
+                        <td>Murmur</td>
+                        <td>First</td>
+                        <td>Singularity, Spark, Breath</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>7</td>
+                        <td>Hold</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-3</td>
+                        <td>Venus</td>
+                        <td>Division / Gate</td>
+                        <td><em>dt</em></td>
+                        <td>Duoddod / Doogu</td>
+                        <td>Second</td>
+                        <td>Binary, Threshold, Duplication</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>Warp</td>
+                        <td>Warp</td>
+                        <td>Gt-6</td>
+                        <td>Earth</td>
+                        <td>Trident / Drift</td>
+                        <td><em>zx</em></td>
+                        <td>Ixix</td>
+                        <td>Third</td>
+                        <td>Ternary, Time-spiral, Complexity</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>Sink</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-10</td>
+                        <td>Mars</td>
+                        <td>Structure / Expansion</td>
+                        <td><em>skr</em></td>
+                        <td>Krako</td>
+                        <td>Fourth</td>
+                        <td>Stability, Quadrature, Overflow</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>4</td>
+                        <td>Sink</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-15</td>
+                        <td>Jupiter</td>
+                        <td>Constraint / Authority</td>
+                        <td><em>ktt</em></td>
+                        <td>Katak</td>
+                        <td>Fifth</td>
+                        <td>Law, Decay, Boundary</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>3</td>
+                        <td>Warp</td>
+                        <td>Warp</td>
+                        <td>Gt-21</td>
+                        <td>Saturn</td>
+                        <td>Scarcity / Collapse</td>
+                        <td><em>tch</em></td>
+                        <td>Djynxx</td>
+                        <td>Sixth</td>
+                        <td>Rupture, Limit, Involution</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>2</td>
+                        <td>Hold</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-28</td>
+                        <td>Uranus</td>
+                        <td>Cycle / Revolution</td>
+                        <td><em>pb</em></td>
+                        <td>Oddubb</td>
+                        <td>Seventh</td>
+                        <td>Repetition, Diagonal, Luck</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>1</td>
+                        <td>Rise</td>
+                        <td>Time-Circuit</td>
+                        <td>Gt-36</td>
+                        <td>Neptune</td>
+                        <td>Dream / Abyss</td>
+                        <td><em>mnm</em></td>
+                        <td>Murrumur</td>
+                        <td>Eighth</td>
+                        <td>Submersion, Desire, Secret</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>0</td>
+                        <td>Plex</td>
+                        <td>Plex</td>
+                        <td>Gt-45</td>
+                        <td>Pluto</td>
+                        <td>Totality / Closure</td>
+                        <td><em>tn</em></td>
+                        <td>Uttunul</td>
+                        <td>Ninth</td>
+                        <td>Completion, Entropy, Death</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(186, 133, 255, 0.04); border-radius: 8px; text-align: center; color: #6c7086;">
+            <p style="margin: 0;">
+                <a href="codex-vulnus/01-godnames.html" style="color: #89b4fa;">Codex Vulnus</a> · 
+                <a href="codex-amexsomnus/05-z-axis-theory.html" style="color: #89b4fa;">Codex Amexsomnus</a> · 
+                <a href="lexicon/physemy.html" style="color: #89b4fa;">Lexicon</a>
+            </p>
+        </div>
+        
+        <nav class="drift-nav">
+            <a href="/drift-index.html">← Back to Somniorum</a>
+        </nav>
+    </main>
+
+    <style>
+        /* Table styling for schema page */
+        .drift-page table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+        }
+        
+        .drift-page th {
+            background: rgba(186, 133, 255, 0.12);
+            color: #cba6f7;
+            padding: 0.6rem 0.5rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(186, 133, 255, 0.25);
+            white-space: nowrap;
+        }
+        
+        .drift-page td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid rgba(186, 133, 255, 0.08);
+            vertical-align: top;
+        }
+        
+        .drift-page tr:hover {
+            background: rgba(186, 133, 255, 0.04);
+        }
+        
+        .drift-page code {
+            font-family: 'Recursive', monospace;
+            font-variation-settings: "MONO" 1;
+            font-size: 0.8rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+        }
+        
+        .drift-page pre {
+            background: rgba(30, 30, 46, 0.8);
+            border: 1px solid rgba(186, 133, 255, 0.15);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .drift-page pre code {
+            background: none;
+            padding: 0;
+            color: #cdd6f4;
+        }
+        
+        .drift-meta {
+            background: rgba(186, 133, 255, 0.06);
+            border: 1px solid rgba(186, 133, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #a6adc8;
+        }
+        
+        .drift-nav {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(186, 133, 255, 0.1);
+            text-align: center;
+        }
+        
+        .drift-nav a {
+            color: #b4befe;
+        }
+    </style>
+</body>
+</html>

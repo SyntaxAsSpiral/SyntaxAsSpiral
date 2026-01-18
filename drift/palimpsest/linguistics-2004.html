@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguistics Papers 2004 — Palimpsest</title>
+    
+    <meta name="description" content="Four linguistics papers from 2004 exploring language, meaning, and human-machine communication.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../../assets/theme.css">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-palimpsest {
+            --palimpsest-ink: rgba(205, 214, 244, 0.7);
+            --palimpsest-fade: rgba(166, 173, 200, 0.5);
+            --palimpsest-glow: rgba(249, 226, 175, 0.15);
+        }
+        
+        .drift-page {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #f9e2af;
+            text-shadow: 0 0 20px rgba(249, 226, 175, 0.3);
+            text-align: center;
+            margin-bottom: 0.25rem;
+            font-size: 1.8rem;
+        }
+        
+        .drift-page .subtitle {
+            text-align: center;
+            color: #a6adc8;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        
+        .drift-page h2 {
+            border-bottom: 1px solid rgba(250, 179, 135, 0.2);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        /* Rainbow Catppuccin titles for 4 papers */
+        .drift-page h2:nth-of-type(1) { color: #f38ba8; } /* Red - Talking to Machines */
+        .drift-page h2:nth-of-type(2) { color: #a6e3a1; } /* Green - Syntax */
+        .drift-page h2:nth-of-type(3) { color: #74c7ec; } /* Sapphire - Stingy With Words */
+        .drift-page h2:nth-of-type(4) { color: #cba6f7; } /* Mauve - Semantics */
+        
+        .drift-page h3 {
+            color: #89b4fa;
+            margin-top: 2rem;
+        }
+        
+        .paper-meta {
+            background: rgba(249, 226, 175, 0.06);
+            border: 1px solid rgba(249, 226, 175, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #a6adc8;
+        }
+</style>
+</head>
+<body class="theme-palimpsest">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+        <h1>📜 Linguistics Papers</h1>
+        <p class="subtitle">Intro to Linguistics · Prof. Jan Osborn · Fall 2004</p>
+        
+        <nav style="background: rgba(249, 226, 175, 0.04); border-radius: 8px; padding: 1rem; margin-bottom: 2rem;">
+            <strong style="color: #f9e2af;">Contents:</strong>
+            <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
+                <li><a href="#talking-to-machines" style="color: #89b4fa;">Talking to Machines</a> — Human-computer linguistic interfaces</li>
+                <li><a href="#syntax" style="color: #89b4fa;">Syntax</a> — Phrase structure and discrete combinatorial systems</li>
+                <li><a href="#stingy-with-words" style="color: #89b4fa;">Stingy With Words</a> — Morphology and the primacy of meaning</li>
+                <li><a href="#semantics" style="color: #89b4fa;">Semantics</a> — Class notes on how language means</li>
+            </ul>
+        </nav>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 2rem 0;">
+        
+        <h2 id="talking-to-machines">Talking to Machines</h2>
+        
+        <div class="paper-meta">
+            <strong>Course:</strong> Eng 471-01: Intro. to Linguistics<br>
+            <strong>Date:</strong> December 1, 2004<br>
+            <strong>Focus:</strong> Natural language interfaces, predictive text, search engines, grammar checking
+        </div>
+        
+        <h3>Abstract</h3>
+        <p>In this paper I attempt to examine the budding linguistic relationship between human beings and computers through phonetically predictive text messaging, word processing functions (mainly grammar checking), and search engines. Each of these technologies requires human language as input and attempts to analyze and interpret that language for output. I surveyed 45 college students, heavy users of these technologies, to determine how often they were using them, how satisfied they were with them, and how accurate the technologies performed their jobs. I found that although they were generally satisfied with most of them, there was a general desire improvement before a natural linguistic user interface with computers could be achieved.</p>
+
+        <h3>Introduction</h3>
+        <p>Personal computing is more accessible now then it has ever been — especially in industrialized nations — yet there is still a significant knowledge barrier that keeps us from using a computer as easily as we use our brains. Computers are kind of complicated, and many people do not feel motivated to learn how to take advantage of all those bells and whistles. In order to get around this roadblock, and allow everyone easy access to the immense benefits of personal computing, researchers all over the world are attempting to teach computers to understand us on levels that previously only another human being could.</p>
+        
+        <p>It is commonly assumed, both in and out of the linguistic community, that human beings are the only entities capable of using language as we understand it. However, more and more linguists are being recruited to teach human language to another kind of intelligence. As they further their understanding of how we pass meaning between one another, they turn around and teach what they know to computers. Eventually they hope to make computer interfaces that can converse in natural human language with users.</p>
+        
+        <p>It's happening slowly in many different areas. The natural starting point is for computers to learn how to better understand the deeper meanings in our written text, since that is already how we communicate with them. For example, researchers from Cornell University are working hard on a computer program that can tell how objective or subjective a given block of text is by weeding out neutral sentences, and counting the frequency of emotionally laden sentences that are left behind. This will allow them to create search engines that can actually sift through volumes of information at a semantic or contextual level.</p>
+        
+        <p>Elsewhere, researchers at IBM and Rensselaer Polytechnic Institute are working on a program called <em>Brutus.1</em> that will be able to write fictional narratives comparable to that of any human writer. Brutus.1's capabilities are not yet that advanced, but it is able to generate short paragraphs of fiction that are surprisingly good, as I will demonstrate in my research.</p>
+        
+        <p>As amazing as these ideas are, if the systems these engineers dream up are not easy and intuitive then people are not going to use them. Some might say that we can barely keep up with the technology that we already have. This raises a few questions. There are computer programs that are made to interpret human language at a rudimentary level. How are people using them? Are they satisfied with their experience, or do they get frustrated when the computer cannot understand what it is they want the way another human would?</p>
+        
+        <h3>Research Methodology</h3>
+        <p>To try to answer these questions, I surveyed 45 college students. I chose this population because the 18-24 age group is generally considered to be more comfortable with the basic language technologies that exist today: mainly predictive text messaging, word processing functions like spell and grammar check, and internet search engines. College students, in particular, incorporate these into their everyday lives for academic and social reasons.</p>
+        
+        <p>For each of the technologies I asked students to rate their level of use, satisfaction, and openness to technological upgrades. I also asked them to rate the computer's performance in the three distinct tasks. I delineated between genders, however I did not attempt get an equal number of responses from males and females.</p>
+
+        <h3>Findings</h3>
+        <p>Predictive text messaging is an algorithm that tries to guess what a cell phone user is trying to type, in order to lessen the number of keystrokes that are required to type a message on a telephone keypad. I found that a majority of the people I surveyed, even those with cell phones, do not use predictive text messaging. The most often cited reason among cell phone owners was that they did not feel like learning how to use the system. The people who did use predictive text messaging reported generally high levels of satisfaction on their part, and accuracy on the cell phone's part however.</p>
+        
+        <p>In comparison to predictive text messaging, word processing and search engine use was almost universal among the study participants with only four people saying that they "never use a spell or grammar check" and one person saying he "never uses a search engine". People seemed the most satisfied by the skills of word processors, but search engines were not far behind. People also seemed to harbor less resentment against the shortcomings of these technologies compared to predictive text messaging, with mostly all of the participants claiming they would be "very open" to improvement. A vast majority of them also said that these technologies only made mistakes in interpreting them occasionally.</p>
+        
+        <h3>Conclusion</h3>
+        <p>My findings surprised me in some ways. To be honest, I expected young people to be more frustrated with the performance of word processors and search engines, and feel more benignly about text messaging on cell phones. The opposite appears to be the case. This may be just as well though, since predictive text messaging deals with language at a phonetic level, whereas search engines and grammar checks deal with it at a syntactic and semantic level. It is more important that technology is successful at these levels if the dream of a natural linguistic user interface is to become a reality. The fact that people who do actually use predictive text messaging seem pretty happy with it implies that it is only a learning curve, however, that keeps people from using it and not an actual flaw in the technology.</p>
+        
+        <p>Overall, the results point to a general restlessness in the generation that is poised to reap the most benefits from technologies that process natural language in the next decades. Although participants reported moderately high levels of satisfaction, they were more eager for improvements than anything else. This shows a willingness to keep learning and growing with linguistic technology, rather than just getting frustrated and giving up.</p>
+        
+        <p>On a final note, there is one area where computers may progress surprisingly faster than one may intuitively expect: <strong>fiction writing</strong>. The last question of my survey asked participants to compare a passage from J.D. Salinger's <em>Catcher in the Rye</em> to a passage written by the computer program I mentioned earlier, <em>Brutus.1</em>. <strong>38 out of 45 respondents chose the passage written by Brutus.1 as the one that was "written the best".</strong></p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 3rem 0;">
+
+        <h2 id="syntax">Syntax</h2>
+        
+        <div class="paper-meta">
+            <strong>Course:</strong> Intro to Linguistics<br>
+            <strong>Date:</strong> November 3, 2004<br>
+            <strong>Word Count:</strong> 619<br>
+            <strong>Focus:</strong> Phrase structure grammar, discrete combinatorial systems, machine language
+        </div>
+        
+        <p>What fascinates me the most about syntax is the structure that it provides to language, which I used to think of as amorphous. Also, it illuminates a lot of the problems found in the teaching of language rules to children. The "subject/predicate" model works in its own way, but does not actively reflect the natural way in which people use language. Phrase structure grammar is a system I personally find effortless to learn, most likely because it is a more accurate reflection of the way my mind is working to construct meaning.</p>
+        
+        <p>The conventional wisdom about language seems to be the view that languages are just utterly and arbitrarily different from one another. The phase structure of grammar, however, shows that all human language works in basically the same manner. Language takes a finite set of parts and creates an infinite number of expressions with them using the basic structure of the phrase. Because of this quality, Pinker refers to language as a <strong>discrete combinatorial system</strong>.</p>
+        
+        <p>I had heard of the concept of a discrete combinatorial system earlier, but after learning how phrase structure grammar works I found a lot of symmetry with the rest of reality in it. Other examples of discrete combinatorial systems kept springing to mind, like our bodies for example. They use basically the same set of stem cells and can turn them into (as far as we can discern) an infinite number of different types of cells for many different uses. The DNA within cells, in turn, uses four different nucleotides to make the infinite variety of proteins found in every living organism on the planet. The molecules within DNA, moving deeper, use a finite set of atoms to form the infinite number of possible compounds and chemicals that scientists can imagine and create. <strong>This sort of symmetry is the ultimate form of proof of any concept for me, and it reflects the fact that our brains follow the same sorts of rules as the rest of the universe.</strong></p>
+        
+        <p>Phrase structure also opens up a possibility I had never really considered before, that machines could be programmed to communicate with us as naturally as we communicate with each other. "The infinite use of finite media distinguishes the human brain from virtually all the artificial language devices we commonly come across, like pull-string dolls, cars that nag you to close the door, and cheery voice mail instruction…all of which use a fixed list of prefabricated sentences." Notice that Pinker says "<em>virtually</em> all" and "<em>commonly</em> come across." This implies that there are artificial language devices approaching the complexity necessary to model language.</p>
+        
+        <p>The University of Kyoto's graduate school of Informatics is one example of actual work that is being done in this area. One of their programs involves linking linguists, software programmers, and other specialists "to establish an academic discipline and technologies of handling and understanding language by machines." Another example is the <em>Persona</em> project that Microsoft Research is working on. They hope to produce the technologies required to create conversational assistants, or lifelike animated characters that interact with the user in a natural spoken dialogue.</p>
+        
+        <p>If and when scientists succeed in teaching machines the basic syntax of human language, the implications for society seem pretty profound. Language barriers will no longer be a roadblock to information. Anyone, including illiterates and people who have little to no computer experience will have access to the vast amounts of knowledge currently stored in the world's computers. Perhaps the most profound implication is for the machines themselves. <strong>If we could make machines that can use language as naturally as we do, they might even be able to convince us that they are people too.</strong></p>
+        
+        <p style="color: #6c7086; font-size: 0.85rem; margin-top: 1.5rem;"><em>Works Cited: Pinker, Stephen. The Language Instinct. New York: William Morrow and Company, 1994.</em></p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 3rem 0;">
+
+        <h2 id="stingy-with-words">Stingy With Words</h2>
+        
+        <div class="paper-meta">
+            <strong>Course:</strong> Intro to Linguistics<br>
+            <strong>Date:</strong> October 19, 2004<br>
+            <strong>Focus:</strong> Morphology, mentalese, the primacy of meaning over form
+        </div>
+        
+        <p>The concept in morphology that most stands out to me is linguist Steven Pinker's suggestion that people are <strong>"stingy with words, and profligate with meanings"</strong>. This statement rings true with me on a number of levels because it connects with other linguistic concepts in a way that supports them, and allows me to extend the ideas of morphology into other areas.</p>
+        
+        <p>Pinker says that few meanings have more than one word assigned to them, whereas words can easily take on a number of addition meanings. Even synonyms differ slightly in their definitions. This strongly implies that meanings or concepts are the more important of the two. Rather than maintain word-purity, humans innately try to preserve the clarity of ideas, which makes logical sense when one's goal is communication.</p>
+        
+        <p>This idea also supports Pinker's language = instinct philosophy in a very concrete way, through "arbitrariness of the sign". Since it is the meaning that is important, it does not matter how you choose to express it as long as everyone agrees on that particular method. Discovering the meanings of words when they are arbitrarily assigned is a very prickly problem that gets easier when you apply the "stingy with words" philosophy. Pinker's response to the "gavagai problem" shows that children actually expect this characteristic of language, and have an innate resistance to learning synonyms. This in turn helps them to learn new words more efficiently by simplifying the possibilities. <strong>This is further proof that language is not a human product or creation, but rather something that arose spontaneously without our knowledge or consent.</strong></p>
+        
+        <p>The idea of concepts being sacred also shatters a personal view of mine. I used to believe very strongly that one's language defines the boundaries of their thought processes. When I started to learn Japanese, I realized that people with different languages were not just <em>saying</em> things differently, they were <em>thinking</em> differently. That was not as obvious in a language like Spanish, which I had also studied. While I still think there is a strong link between language and the "shape" of one's mind, the idea of meanings being more important than words overtly conflicts with this notion. Pinker's idea of "mentalese" works better at the individual level. Culturally, however, the conforming effects of language on the individual consciousness are undeniable.</p>
+        
+        <p>Perhaps the ultimate example of our tendency to be stingy with words but profligate with meanings is our naming system. People use mostly the same birthnames over and over again, with certain names obviously being added and dropped over time by the whims of cultural taste. A new meaning for one of these particular words is created for every person whose name we bother to learn. Each is an individual "listeme" for that entity in our little mentalese dictionary. This is fundamental stuff. <strong>The sounds we pick for our own names reflect the very dominance that our ideas have over our language.</strong></p>
+        
+        <p style="color: #6c7086; font-size: 0.85rem; margin-top: 1.5rem;"><em>Works Cited: Pinker, Stephen. The Language Instinct. New York: William Morrow and Company, 1994.</em></p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 3rem 0;">
+
+        <h2 id="semantics">Semantics</h2>
+        
+        <div class="paper-meta">
+            <strong>Type:</strong> Class Notes<br>
+            <strong>Topic:</strong> How language means; language in context
+        </div>
+        
+        <h3>I. Examples of How Language Means</h3>
+        <ol>
+            <li>An invitation that listed "Newport Casual" as the preferred attire.</li>
+            <li>"The Family Circus" cartoon for 9/12/02 that said, "September Mourn."</li>
+            <li>A Cover Girl mascara advertisement that reads, "dramateyes."</li>
+            <li>A holiday card with a frog hanging over the door that reads, "mistletoad."</li>
+            <li>A photo of a boy standing in a shopping cart and fishing at Echo Park. The headline: "Fish a la Cart."</li>
+            <li>A "Gaytionary" with definitions for "Closet Case" (n. one who is secretly gay), "Bicurious" (adj. questioning heterosexuality), "Fag Hag" (n. straight woman who likes gay men), and "Gaytionary" (n. dictionary of gay terms).</li>
+            <li>A Los Angeles Times headline that reads, "The Inside Dope on '420' Buzz."</li>
+        </ol>
+        
+        <h3>II. Semantic Continuums</h3>
+        <p>A visual format that helps visualize that words mean in relation to other words:</p>
+        <p style="font-family: monospace; background: rgba(249, 226, 175, 0.06); padding: 1rem; border-radius: 4px; text-align: center;">
+            Hate — despise — dislike — enjoy — like — cherish — Love<br><br>
+            Dry — damp — moist — wet — soggy — drenched — soaked
+        </p>
+        
+        <h3>III. "Languages are stingy with words and profligate with meanings"</h3>
+        <ul>
+            <li><strong>Homonyms:</strong> identical forms with different meanings — sound and spelled the same, different meanings (pen/pen)</li>
+            <li><strong>Homophones:</strong> forms which sound the same but are spelled differently (tier/tear)</li>
+            <li><strong>Homographs:</strong> forms which sound different but are spelled the same — a written signifier with two signified (tear/tear — only the same graphically)</li>
+        </ul>
+        
+        <h3>IV. Meaning is Economical</h3>
+        <ul>
+            <li><strong>Polysemy:</strong> an economy in the number of signs used — can use words in multiple senses (screen)</li>
+            <li><strong>Antanaclasis:</strong> "the heart of the matter is often the matter of the heart"</li>
+            <li><strong>Zeugma:</strong> associating a verb with two or more words: "open the window; open your heart"</li>
+        </ul>
+        <p>With polysemy, the speaker is aware they are using the same word with different meanings. With homonymy, the speaker is aware they are using different words whether they sound the same or not.</p>
+        
+        <h3>V. Synonyms</h3>
+        <p>Several signifiers correspond to the same signified. Few if any true synonyms exist — there are always shades of meaning.</p>
+        
+        <h3>VI. Connotation</h3>
+        <p>Example: "feminists" — can be taken as positive or negative depending on context and speaker.</p>
+
+        <hr style="border: none; border-top: 1px solid rgba(249, 226, 175, 0.1); margin: 3rem 0;">
+        
+        <nav class="drift-nav" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(249, 226, 175, 0.1); text-align: center;">
+            <a href="panther-editorials.html" style="color: #f9e2af;">Panther Editorials 2004-2005 →</a><br>
+            <a href="/drift-index.html" style="color: #b4befe;">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>

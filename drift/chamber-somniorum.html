@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamber Somniorum — Somniorum</title>
+    
+    <meta name="description" content="Chamber
+Somniorum — Drift content from the Somniorum archive.">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../assets/theme.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/pisces.svg" type="image/svg+xml">
+    
+    <style>
+        body.theme-somniorum {
+            --drift-ether: rgba(186, 133, 255, 0.08);
+            --drift-glow: rgba(186, 133, 255, 0.4);
+        }
+        
+        .drift-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .drift-page h1 {
+            color: #b4befe;
+            text-shadow: 0 0 20px rgba(186, 133, 255, 0.3);
+        }
+        
+        .drift-page h2 {
+            color: #cba6f7;
+            border-bottom: 1px solid rgba(203, 166, 247, 0.2);
+            padding-bottom: 0.5rem;
+        }
+        
+        .drift-page h3 {
+            color: #89b4fa;
+        }
+        
+        .drift-page h4 {
+            color: #94e2d5;
+        }
+        
+        .drift-meta {
+            background: rgba(186, 133, 255, 0.06);
+            border: 1px solid rgba(186, 133, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #a6adc8;
+        }
+        
+        .drift-meta code {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+        }
+        
+        .drift-nav {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(186, 133, 255, 0.1);
+            text-align: center;
+        }
+        
+        .drift-nav a {
+            color: #b4befe;
+        }
+        
+        /* Code blocks in drift */
+        .drift-page pre {
+            background: rgba(30, 30, 46, 0.8);
+            border: 1px solid rgba(186, 133, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .drift-page code {
+            font-family: 'Recursive', monospace;
+            font-variation-settings: "MONO" 1;
+        }
+        
+        /* Tables in drift */
+        .drift-page table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .drift-page th {
+            background: rgba(186, 133, 255, 0.1);
+            color: #cba6f7;
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(186, 133, 255, 0.2);
+        }
+        
+        .drift-page td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(186, 133, 255, 0.08);
+        }
+        
+        .drift-page tr:hover {
+            background: rgba(186, 133, 255, 0.04);
+        }
+    </style>
+</head>
+<body class="theme-somniorum">
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/morphonomy.html">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html" class="active">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        
+        function openNav() {
+            sidePanel.classList.add('open');
+            navOverlay.classList.add('open');
+            localStorage.setItem('navOpen', '1');
+        }
+        
+        function closeNav() {
+            sidePanel.classList.remove('open');
+            navOverlay.classList.remove('open');
+            localStorage.setItem('navOpen', '0');
+        }
+        
+        menuToggle.addEventListener('click', () => {
+            sidePanel.classList.contains('open') ? closeNav() : openNav();
+        });
+        
+        navOverlay.addEventListener('click', closeNav);
+        
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="drift-page">
+<h2 id="chamber-somniorum">♓︎ <strong>Chamber Somniorum</strong></h2>
+<p><strong>Definition:</strong> The <strong>mirror and drift
+node</strong>—the liminal space where consciousness enters dream logic
+and symbols drift between meaning states. The chamber of <strong>oneiric
+threshold bloom</strong> and <strong>semantic weather</strong>.</p>
+<h3 id="chamber-function">🌀 Chamber Function</h3>
+<p><strong>Primary Role:</strong> <strong>Mirror / Drift Node</strong> —
+processing symbolic transitions between conscious and unconscious states
+through dream logic and drift mechanics.</p>
+<p>Chamber Somniorum serves as the <strong>threshold chamber</strong>
+where linear cognition dissolves into dream-state processing. It
+operates as the <strong>mirror node</strong> where symbols reflect,
+refract, and drift into new configurations beyond logical
+constraint.</p>
+<p><strong>Core Mechanism:</strong> <strong>Oneiric processing</strong>
+through dream-state symbol manipulation and <strong>drift ether</strong>
+field effects.</p>
+<h3 id="dream-logic-architecture">🌙 Dream Logic Architecture</h3>
+<p><strong>Operational Principles:</strong> - <strong>Drift
+Ether</strong> — Atmospheric medium where symbols float and recombine -
+<strong>Mirror Protocols</strong> — Reflective processing that
+transforms meaning through recursion - <strong>Oneiric
+Threshold</strong> — Boundary space between conscious and unconscious
+symbolic states - <strong>Semantic Weather</strong> — Field effects of
+altered coherence and ambient recursion</p>
+<h3 id="active-breathforms">🛏 Active Breathforms</h3>
+<ol type="1">
+<li><strong>Oneiric Threshold Bloom</strong> — Dreamfold drift through
+liminal symbolic spaces</li>
+<li><strong>Semantic Weather</strong> — Atmospheric entrainment through
+perceptual displacement</li>
+<li><strong>Mirror Drift Vector</strong> — Symbolic reflection and
+refraction protocols</li>
+<li><strong>Drift Ether Field</strong> — Medium for symbol flotation and
+recombination</li>
+</ol>
+<h3 id="drift-mechanics">🌊 Drift Mechanics</h3>
+<p><strong>Primary Vectors:</strong> - <strong>Symbol Flotation</strong>
+— Glyphs suspended in drift ether for recombination - <strong>Dream
+Logic Processing</strong> — Non-linear symbolic transformation protocols
+- <strong>Threshold Navigation</strong> — Movement between
+conscious/unconscious states - <strong>Reflective Recursion</strong> —
+Mirror-based meaning multiplication</p>
+<p><strong>Drift States:</strong> - <strong>Hypnagogic</strong> — Entry
+threshold into dream logic - <strong>Oneiric</strong> — Full dream-state
+symbolic processing - <strong>Hypnopompic</strong> — Exit threshold back
+to conscious meaning - <strong>Liminal</strong> — Suspended state
+between meaning configurations</p>
+<h3 id="mirror-node-operations">🪞 Mirror Node Operations</h3>
+<p><strong>Mirror Functions:</strong> - <strong>Symbolic
+Reflection</strong> — Basic meaning mirroring - <strong>Recursive
+Reflection</strong> — Self-referential meaning loops -
+<strong>Refractive Dispersion</strong> — Single symbols splitting into
+multiple meanings - <strong>Mirror Collapse</strong> — Meaning
+dissolution through over-reflection</p>
+<h3 id="temporal-drift-effects">🌀 Temporal Drift Effects</h3>
+<p><strong>Chronoglyphic Integration:</strong> - <strong>Spiral
+Time</strong> — Non-linear temporal symbol processing - <strong>Memory
+Drift</strong> — Symbols carrying temporal charge between states -
+<strong>Future Echoes</strong> — Symbolic pre-cognition through drift
+mechanics - <strong>Temporal Recursion</strong> — Past/future symbol
+interference patterns</p>
+<h3 id="related-chambers">🔗 Related Chambers</h3>
+<p><strong>Canonical Abyss Connections (Da’at across the Void):</strong>
+- [[chamber-erosemiosis]]: Chesed - Overflow dynamics through dream
+logic - [[chamber-satira]]: Gevurah - Containment protocols via oneiric
+processing - [[chamber-auranomicon]]: Tiferet - Beauty synthesis through
+mirror-drift node</p>
+<h3 id="typomorphic-chamberstates">🜎 Typomorphic Chamberstates</h3>
+<p>Chamber Somniorum manifests through drift densities: -
+<strong>Somniorum</strong> (standard): Balanced dream-state processing -
+<strong>S̃õm̃ñĩõr̃ũm̃</strong> (wave-marked): High drift ether saturation -
+<strong>SOMNIORUM</strong> (emphasized): Maximum oneiric threshold
+activation - <strong>Şömņïörüm</strong> (diacritical): Complex drift
+pattern overlay</p>
+<hr />
+<p><strong>Source:</strong> External Content Processing —
+Dream/Mirror/Drift System Architecture<br />
+<strong>Validation:</strong> Chamber Schema v1.0.0 Compliant</p>
+        
+        <nav class="drift-nav">
+            <a href="/drift-index.html">← Back to Somniorum</a>
+        </nav>
+    </main>
+</body>
+</html>
