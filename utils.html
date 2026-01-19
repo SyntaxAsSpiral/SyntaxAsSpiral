@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lexemantic Utils — Glyphic Manipulation & Chromatic Alchemy</title>
-    
+
     <!-- SEO & Attribution -->
-    <meta name="description" content="Lexemantic Utils: Tools for glyphic manipulation and chromatic alchemy. Zalgo Lexigon text transformer and Palette Mutator color generator.">
+    <meta name="description"
+        content="Lexemantic Utils: Tools for glyphic manipulation and chromatic alchemy. Zalgo Lexigon text transformer and Palette Mutator color generator.">
     <meta name="author" content="Zach Battin">
-    <meta name="keywords" content="zalgo, text transformer, palette generator, color alchemy, lexemancy, glyphic manipulation, Zach Battin, web tools">
-    
+    <meta name="keywords"
+        content="zalgo, text transformer, palette generator, color alchemy, lexemancy, glyphic manipulation, Zach Battin, web tools">
+
     <!-- Open Graph -->
     <meta property="og:title" content="Lexemantic Utils — Glyphic Manipulation & Chromatic Alchemy">
     <meta property="og:description" content="Tools for glyphic manipulation and chromatic alchemy.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lexemancy.com/utils.html">
     <meta property="og:site_name" content="Lexemancy">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@paneudaemonium">
-    
+
     <!-- Canonical -->
     <link rel="canonical" href="https://lexemancy.com/utils.html">
-    
+
     <link rel="stylesheet" href="assets/theme.css">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
 </head>
+
 <body>
     <nav class="nav-bar">
         <button class="menu-toggle" id="menuToggle">
@@ -36,9 +40,9 @@
             <span></span>
         </button>
     </nav>
-    
+
     <div class="nav-overlay" id="navOverlay"></div>
-    
+
     <aside class="side-panel" id="sidePanel">
         <div class="panel-header">Navigation</div>
         <nav class="side-tabs">
@@ -51,34 +55,34 @@
             <a href="/drift-index.html">♓︎ Somniorum</a>
         </nav>
     </aside>
-    
+
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const sidePanel = document.getElementById('sidePanel');
         const navOverlay = document.getElementById('navOverlay');
-        
+
         function openNav() {
             sidePanel.classList.add('open');
             navOverlay.classList.add('open');
             localStorage.setItem('navOpen', '1');
         }
-        
+
         function closeNav() {
             sidePanel.classList.remove('open');
             navOverlay.classList.remove('open');
             localStorage.setItem('navOpen', '0');
         }
-        
+
         menuToggle.addEventListener('click', () => {
             sidePanel.classList.contains('open') ? closeNav() : openNav();
         });
-        
+
         navOverlay.addEventListener('click', closeNav);
-        
+
         // Restore panel state on page load
         if (localStorage.getItem('navOpen') === '1') openNav();
     </script>
-    
+
     <main class="pulse-frame">
         <section class="pulse-content">
             <header>
@@ -89,20 +93,29 @@
             <div class="utils-grid">
                 <div class="util-card">
                     <h3>🜍 Zalgo Lexigon</h3>
-                    <p>Transform text into zalgo-corrupted glyphforms. Configure intensity, mark types, and witness language dissolve into its diacritical ghost.</p>
+                    <p>Transform text into zalgo-corrupted glyphforms. Configure intensity, mark types, and witness
+                        language dissolve into its diacritical ghost.</p>
                     <p><a href="zalgo-lexigon.html">→ Enter Lexigon</a></p>
                 </div>
 
                 <div class="util-card">
                     <h3>🌈 Palette Mutator</h3>
-                    <p>Alchemical color palette generator. Mutate hues, shift harmonics, and extract CSS variables for your chromatic rituals.</p>
+                    <p>Alchemical color palette generator. Mutate hues, shift harmonics, and extract CSS variables for
+                        your chromatic rituals.</p>
                     <p><a href="palette-mutator.html">→ Mutate Palette</a></p>
                 </div>
 
                 <div class="util-card">
                     <h3>📜 Prompt Vault</h3>
-                    <p>Curated collection of my best prompts for LLM interactions. System prompts, agent configurations, and hyperstitional invocations.</p>
-                    <p><a href="https://github.com/SyntaxAsSpiral/zk-context-vault/blob/master/prompts/README.md" target="_blank">→ Browse Prompts</a></p>
+                    <p>Curated collection of my best prompts for LLM interactions. System prompts, agent configurations,
+                        and hyperstitional invocations.</p>
+                    <p><a href="https://github.com/SyntaxAsSpiral/zk-context-vault/blob/master/prompts/README.md"
+                            target="_blank">→ Browse Prompts</a></p>
+                </div>
+                <div class="util-card">
+                    <h3>🜎 Esoter👁️cons</h3>
+                    <p>Divination glyphs for the digital age. Daily icons for the pulse log.</p>
+                    <p><a href="https://github.com/SyntaxAsSpiral/esotericons" target="_blank">→ View Repo</a></p>
                 </div>
             </div>
 
@@ -112,4 +125,5 @@
         </section>
     </main>
 </body>
+
 </html>

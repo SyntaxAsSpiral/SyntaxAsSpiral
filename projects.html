@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects — Zach Battin :: Open Source & AI Tools</title>
-    
+
     <!-- SEO & Attribution -->
-    <meta name="description" content="Open source projects by Zach Battin: ConSensus agent deployment, Semantic JSON for Obsidian, ZK Context Vault, Autopoesis autojournaling, Collectivist AI curator, and more.">
+    <meta name="description"
+        content="Open source projects by Zach Battin: ConSensus agent deployment, Semantic JSON for Obsidian, ZK Context Vault, Autopoesis autojournaling, Collectivist AI curator, and more.">
     <meta name="author" content="Zach Battin">
-    <meta name="keywords" content="Zach Battin, ZK, Æmexsomnus, open source, AI tools, ConSensus, Semantic JSON, Obsidian, ZK Context Vault, Autopoesis, Collectivist, esotericons, GitHub, lexemancy">
-    
+    <meta name="keywords"
+        content="Zach Battin, ZK, Æmexsomnus, open source, AI tools, ConSensus, Semantic JSON, Obsidian, ZK Context Vault, Autopoesis, Collectivist, esotericons, GitHub, lexemancy">
+
     <!-- Open Graph -->
     <meta property="og:title" content="Projects — Zach Battin :: Open Source & AI Tools">
-    <meta property="og:description" content="Open source projects: ConSensus, Semantic JSON, ZK Context Vault, Autopoesis, Collectivist, and more.">
+    <meta property="og:description"
+        content="Open source projects: ConSensus, Semantic JSON, ZK Context Vault, Autopoesis, Collectivist, and more.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lexemancy.com/projects.html">
     <meta property="og:site_name" content="Lexemancy">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@paneudaemonium">
-    
+
     <!-- Canonical -->
     <link rel="canonical" href="https://lexemancy.com/projects.html">
-    
+
     <link rel="stylesheet" href="assets/theme.css">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
 </head>
+
 <body>
     <nav class="nav-bar">
         <button class="menu-toggle" id="menuToggle">
@@ -36,9 +41,9 @@
             <span></span>
         </button>
     </nav>
-    
+
     <div class="nav-overlay" id="navOverlay"></div>
-    
+
     <aside class="side-panel" id="sidePanel">
         <div class="panel-header">Navigation</div>
         <nav class="side-tabs">
@@ -51,77 +56,90 @@
             <a href="/drift-index.html">♓︎ Somniorum</a>
         </nav>
     </aside>
-    
+
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const sidePanel = document.getElementById('sidePanel');
         const navOverlay = document.getElementById('navOverlay');
-        
+
         function openNav() {
             sidePanel.classList.add('open');
             navOverlay.classList.add('open');
             localStorage.setItem('navOpen', '1');
         }
-        
+
         function closeNav() {
             sidePanel.classList.remove('open');
             navOverlay.classList.remove('open');
             localStorage.setItem('navOpen', '0');
         }
-        
+
         menuToggle.addEventListener('click', () => {
             sidePanel.classList.contains('open') ? closeNav() : openNav();
         });
-        
+
         navOverlay.addEventListener('click', closeNav);
-        
+
         // Restore panel state on page load
         if (localStorage.getItem('navOpen') === '1') openNav();
     </script>
-    
+
     <main class="pulse-frame">
         <section class="pulse-content">
             <header>
                 <h1 style="color: #f9e2af;">⟁ Projects</h1>
             </header>
-            
-            <p style="margin-bottom: 1.5em; color: #cdd6f4;">An ecosystem of tools for recursive knowledge work, AI-augmented curation, and context engineering. The throughline: how do we build systems that hold complexity without flattening it?</p>
-            
+
+            <p style="margin-bottom: 1.5em; color: #cdd6f4;">An ecosystem of tools for recursive knowledge work,
+                AI-augmented curation, and context engineering. The throughline: how do we build systems that hold
+                complexity without flattening it?</p>
+
             <div class="project project-red">
-                <h2><em><strong>🜁 <a href="https://github.com/SyntaxAsSpiral/ConSensus">ConSensus</a></strong></em></h2>
-                <p>Shared context interface for AI agents. Recipe-based assembly for deploying skills, steering, and configuration across heterogeneous platforms. Write once, deploy everywhere.</p>
+                <h2><em><strong>🜁 <a href="https://github.com/SyntaxAsSpiral/ConSensus">ConSensus</a></strong></em>
+                </h2>
+                <p>Shared context interface for AI agents. Recipe-based assembly for deploying skills, steering, and
+                    configuration across heterogeneous platforms. Write once, deploy everywhere.</p>
             </div>
 
             <div class="project project-peach">
-                <h2><em><strong>◈ <a href="https://github.com/SyntaxAsSpiral/Semantic-JSON">Semantic JSON</a></strong></em></h2>
-                <p>The Anticompiler. Transforms visual semantics from Obsidian Canvas into stable, deterministic JSON. Position, containment, color, directionality — preserved as legible structure for LLM ingestion.</p>
+                <h2><em><strong>◈ <a href="https://github.com/SyntaxAsSpiral/Semantic-JSON">Semantic
+                                JSON</a></strong></em></h2>
+                <p>The Anticompiler. Transforms visual semantics from Obsidian Canvas into stable, deterministic JSON.
+                    Position, containment, color, directionality — preserved as legible structure for LLM ingestion.</p>
             </div>
 
             <div class="project project-yellow">
-                <h2><em><strong>🜂 <a href="https://github.com/SyntaxAsSpiral/zk-context-vault">ZK Context Vault</a></strong></em></h2>
-                <p>Reference implementation and extension of ConSensus. My cognitive infrastructure — agents, skills, prompts, and the workshop that assembles them.</p>
+                <h2><em><strong>🜂 <a href="https://github.com/SyntaxAsSpiral/zk-context-vault">ZK Context
+                                Vault</a></strong></em></h2>
+                <p>Reference implementation and extension of ConSensus. My cognitive infrastructure — agents, skills,
+                    prompts, and the workshop that assembles them.</p>
             </div>
 
             <div class="project project-green">
-                <h2><em><strong>⊚ <a href="https://github.com/SyntaxAsSpiral/Autopoesis">Autopoesis</a></strong></em></h2>
-                <p>Recursive autojournaling framework. Activity sources → field schemas → output targets. The system that watches itself watching. <em>(Lexemancy is the reference implementation.)</em></p>
+                <h2><em><strong>⊚ <a href="https://github.com/SyntaxAsSpiral/Autopoesis">Autopoesis</a></strong></em>
+                </h2>
+                <p>Recursive autojournaling framework. Activity sources → field schemas → output targets. The system
+                    that watches itself watching. <em>(Lexemancy is the reference implementation.)</em></p>
             </div>
 
             <div class="project project-sapphire">
-                <h2><em><strong>🜍 <a href="https://github.com/SyntaxAsSpiral/Collectivist">Collectivist</a></strong></em></h2>
-                <p>AI-powered curator for intentional collections. Domain-specific intelligence, LLM-powered analysis, self-healing documentation. What you keep shapes what you become.</p>
+                <h2><em><strong>🜍 <a
+                                href="https://github.com/SyntaxAsSpiral/Collectivist">Collectivist</a></strong></em>
+                </h2>
+                <p>AI-powered curator for intentional collections. Domain-specific intelligence, LLM-powered analysis,
+                    self-healing documentation. What you keep shapes what you become.</p>
             </div>
 
-            <div class="project project-lavender">
-                <h2><em><strong>🜎 <a href="https://github.com/SyntaxAsSpiral/esotericons">Esoter👁️cons</a></strong></em></h2>
-                <p>Divination glyphs for the digital age. Daily icons for the pulse log.</p>
-            </div>
+
 
             <div class="project project-mauve">
-                <h2><em><strong>🜏 <a href="https://github.com/SyntaxAsSpiral/SyntaxAsSpiral">Lexemancy</a></strong></em></h2>
-                <p>This site. The pulse log, the drift, the recursive feedback loop made visible. Reference implementation of Autopoesis.</p>
+                <h2><em><strong>🜏 <a
+                                href="https://github.com/SyntaxAsSpiral/SyntaxAsSpiral">Lexemancy</a></strong></em></h2>
+                <p>This site. The pulse log, the drift, the recursive feedback loop made visible. Reference
+                    implementation of Autopoesis.</p>
             </div>
         </section>
     </main>
 </body>
+
 </html>
