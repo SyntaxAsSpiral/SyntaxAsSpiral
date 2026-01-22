@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic JSON Spec — Lexemantika</title>
+    
+    <meta name="description" content="Semantic JSON Extension for JSON Canvas — Anticompiler specification for stable, deterministic, LLM-friendly canvas serialization">
+    <meta name="author" content="Zach Battin">
+    
+    <link rel="stylesheet" href="../assets/theme.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/SyntaxAsSpiral/esotericons/main/icons/hieroglyphic.ico">
+    
+    <style>
+        body.theme-lexemantika {
+            --lex-ether: rgba(72, 196, 255, 0.08);
+            --lex-glow: rgba(72, 196, 255, 0.4);
+            --lex-accent: #74c7ec;
+        }
+        
+        .lex-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(180deg, 
+                rgba(72, 196, 255, 0.03) 0%, 
+                transparent 30%,
+                transparent 70%,
+                rgba(72, 196, 255, 0.02) 100%
+            );
+        }
+        
+        .lex-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(72, 196, 255, 0.2);
+        }
+        
+        .lex-header h1 {
+            color: #74c7ec;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(72, 196, 255, 0.3);
+        }
+        
+        .lex-header .subtitle {
+            color: #a6adc8;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        
+        .lex-header .version {
+            color: #6c7086;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .lex-content h1 { color: #74c7ec; border-bottom: 1px solid rgba(72, 196, 255, 0.2); padding-bottom: 0.5rem; margin-top: 2.5rem; }
+        .lex-content h2 { color: #89dceb; margin-top: 2rem; }
+        .lex-content h3 { color: #94e2d5; margin-top: 1.5rem; }
+        .lex-content h4 { color: #a6e3a1; margin-top: 1rem; }
+        .lex-content h5 { color: #f9e2af; margin-top: 0.75rem; }
+        
+        .lex-content blockquote {
+            border-left: 3px solid #74c7ec;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #a6adc8;
+            font-style: italic;
+        }
+        
+        .lex-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .lex-content th, .lex-content td {
+            border: 1px solid rgba(72, 196, 255, 0.2);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .lex-content th {
+            background: rgba(72, 196, 255, 0.1);
+            color: #74c7ec;
+        }
+        
+        .lex-content strong { color: #74c7ec; }
+        .lex-content em { color: #89dceb; }
+        
+        .lex-content hr {
+            border: none;
+            border-top: 1px solid rgba(72, 196, 255, 0.15);
+            margin: 2.5rem 0;
+        }
+        
+        .lex-content pre {
+            background: rgba(17, 17, 27, 0.8);
+            border: 1px solid rgba(72, 196, 255, 0.15);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .lex-content code {
+            font-family: 'Recursive', 'Fira Code', monospace;
+            background: rgba(72, 196, 255, 0.1);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        .lex-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* Syntax highlighting for code blocks */
+        .highlight .kw, .highlight .k { color: #cba6f7; } /* keyword */
+        .highlight .dt { color: #f9e2af; } /* datatype */
+        .highlight .dv, .highlight .mi { color: #fab387; } /* decimal value */
+        .highlight .st, .highlight .s, .highlight .s2 { color: #a6e3a1; } /* string */
+        .highlight .co, .highlight .c1 { color: #6c7086; } /* comment */
+        .highlight .fu, .highlight .nf { color: #89b4fa; } /* function */
+        .highlight .at, .highlight .na { color: #94e2d5; } /* attribute */
+        .highlight .cf { color: #cba6f7; } /* control flow */
+        .highlight .op, .highlight .o { color: #89dceb; } /* operator */
+        .highlight .ot { color: #f38ba8; } /* other */
+        .highlight .p { color: #cdd6f4; } /* punctuation */
+        .highlight .nb { color: #f9e2af; } /* builtin */
+        .highlight .nc { color: #f9e2af; } /* class */
+        .highlight .nn { color: #89b4fa; } /* namespace */
+        
+        .section-divider {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(72, 196, 255, 0.2);
+            border-bottom: 1px solid rgba(72, 196, 255, 0.2);
+            color: #74c7ec;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+        }
+        
+        .lex-footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(72, 196, 255, 0.1);
+            color: #6c7086;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+        
+        .lex-footer a { color: #74c7ec; }
+        
+        .lex-atmosphere {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .lex-atmosphere::before {
+            content: "◈";
+            position: absolute;
+            top: 20%; right: 10%;
+            font-size: 15rem;
+            opacity: 0.02;
+            color: #74c7ec;
+        }
+    </style>
+</head>
+<body class="theme-lexemantika">
+    <div class="lex-atmosphere"></div>
+    
+    <nav class="nav-bar">
+        <button class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <aside class="side-panel" id="sidePanel">
+        <div class="panel-header">Navigation</div>
+        <nav class="side-tabs">
+            <a href="/index.html">🌀 Pulse Log</a>
+            <a href="/about.html">🜏 About</a>
+            <a href="/projects.html">⟁ Projects</a>
+            <a href="/utils.html">⚗️ Utils</a>
+            <a href="/lexemantika-index.html" class="active">🜍 Lexemantika</a>
+            <a href="/paneudaemonium.html">🜃 Paneudæmonium</a>
+            <a href="/drift-index.html">♓︎ Somniorum</a>
+        </nav>
+    </aside>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidePanel = document.getElementById('sidePanel');
+        const navOverlay = document.getElementById('navOverlay');
+        function openNav() { sidePanel.classList.add('open'); navOverlay.classList.add('open'); localStorage.setItem('navOpen', '1'); }
+        function closeNav() { sidePanel.classList.remove('open'); navOverlay.classList.remove('open'); localStorage.setItem('navOpen', '0'); }
+        menuToggle.addEventListener('click', () => { sidePanel.classList.contains('open') ? closeNav() : openNav(); });
+        navOverlay.addEventListener('click', closeNav);
+        if (localStorage.getItem('navOpen') === '1') openNav();
+    </script>
+    
+    <main class="lex-container">
+        <header class="lex-header">
+            <h1>◈ Semantic JSON</h1>
+            <p class="subtitle">JSON Canvas Extension Specification</p>
+            <p class="version">v0.3.0 — The Anticompiler</p>
+        </header>
+        
+        <article class="lex-content">
+
+<nav class="toc" style="background: rgba(72, 196, 255, 0.04); border: 1px solid rgba(72, 196, 255, 0.15); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+    <h4 style="color: #74c7ec; margin: 0 0 1rem 0; font-size: 1rem;">Contents</h4>
+    <ol style="margin: 0; padding-left: 1.25rem; line-height: 1.8;">
+        <li><a href="#i-base-spec" style="color: #89dceb;">Base Specification</a></li>
+        <li><a href="#ii--semantic-json-extension" style="color: #89dceb;">◈ Semantic JSON Extension</a>
+            <ul style="padding-left: 1rem; margin: 0.25rem 0;">
+                <li><a href="#-compilation" style="color: #94e2d5;">Compilation</a></li>
+                <li><a href="#main-process" style="color: #94e2d5;">Main Process</a></li>
+            </ul>
+        </li>
+        <li><a href="#iii-video_game-commands--settings" style="color: #89dceb;">🎮 Commands &amp; Settings</a></li>
+        <li><a href="#iv-fish_cake-the-anticompiler" style="color: #89dceb;">🍥 The Anticompiler</a></li>
+        <li><a href="#brain-llm-integration" style="color: #89dceb;">🧠 LLM Integration</a></li>
+    </ol>
+</nav>
+<hr />
+<h2 id="balance_scale-foundational-constraints">⚖️ Foundational
+Constraints</h2>
+<ol type="1">
+<li><strong>Semantic JSON never infers meaning; it only surfaces meaning
+explicitly encoded in syntax conventions.</strong></li>
+<li><strong>Semantic JSON will always remain spec compliant with JSON
+Canvas, neither adding nor removing data, just interpreting and
+arranging what is there.</strong></li>
+</ol>
+<hr />
+<h2 id="i-base-spec">I. Base Spec</h2>
+<h3 id="json-canvas">JSON Canvas</h3>
+<p><a href="https://jsoncanvas.org/">Full Spec</a></p>
+<h3 id="top-level">Top level</h3>
+<p>The top level of JSON Canvas contains two arrays:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nodes</span><span class="kw">:</span><span class="at"> Node[]</span><span class="co">  # optional: array of nodes</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">edges</span><span class="kw">:</span><span class="at"> Edge[]</span><span class="co">  # optional: array of edges</span></span></code></pre></div>
+<h3 id="nodes">Nodes</h3>
+<p>Nodes are objects within the canvas. Nodes may be text (including
+structured text like Markdown or YAML), files, links, or groups.</p>
+<p>Nodes are placed in the array in ascending order by
+<strong>z-index</strong> in vanilla.</p>
+<h4 id="generic-node">Generic node</h4>
+<p>All nodes include the following attributes:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span><span class="kw">:</span><span class="at"> string</span><span class="co">           # required: unique ID for the node</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">type</span><span class="kw">:</span><span class="at"> NodeType</span><span class="co">       # required: node type (text | file | link | group)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">x</span><span class="kw">:</span><span class="at"> integer</span><span class="co">           # required: x position in pixels</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">y</span><span class="kw">:</span><span class="at"> integer</span><span class="co">           # required: y position in pixels</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">width</span><span class="kw">:</span><span class="at"> integer</span><span class="co">       # required: width in pixels</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">height</span><span class="kw">:</span><span class="at"> integer</span><span class="co">      # required: height in pixels</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">color?</span><span class="kw">:</span><span class="at"> CanvasColor</span><span class="co">  # optional: see Color section</span></span></code></pre></div>
+<h4 id="text-type-nodes">Text type nodes</h4>
+<p>Text type nodes store text. Along with generic node attributes, text
+nodes include the following attribute:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span><span class="kw">:</span><span class="at"> string</span><span class="co">  # required: plain text with Markdown syntax</span></span></code></pre></div>
+<h4 id="file-type-nodes">File type nodes</h4>
+<p>File type nodes reference other files or attachments, such as images,
+videos, etc. Along with generic node attributes, file nodes include the
+following attributes:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file</span><span class="kw">:</span><span class="at"> string</span><span class="co">      # required: path to file within the system</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">subpath?</span><span class="kw">:</span><span class="at"> string</span><span class="co">  # optional: subpath to heading/block (starts with #)</span></span></code></pre></div>
+<h4 id="link-type-nodes">Link type nodes</h4>
+<p>Link type nodes reference a URL. Along with generic node attributes,
+link nodes include the following attribute:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">url</span><span class="kw">:</span><span class="at"> string</span><span class="co">  # required</span></span></code></pre></div>
+<h4 id="group-type-nodes">Group type nodes</h4>
+<p>Group type nodes are used as a visual container for nodes within it.
+Along with generic node attributes, group nodes include the following
+attributes:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">label?</span><span class="kw">:</span><span class="at"> string</span><span class="co">            # optional: text label for the group</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">background?</span><span class="kw">:</span><span class="at"> string</span><span class="co">       # optional: path to background image</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">backgroundStyle?</span><span class="kw">:</span><span class="at"> string</span><span class="co">  # optional: rendering style (cover | ratio | repeat)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">  # cover:  fills entire width and height</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">  # ratio:  maintains aspect ratio</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">  # repeat: repeats as pattern in both directions</span></span></code></pre></div>
+<h3 id="edges">Edges</h3>
+<p>Edges are lines that connect one node to another.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span><span class="kw">:</span><span class="at"> string</span><span class="co">             # required: unique ID for the edge</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fromNode</span><span class="kw">:</span><span class="at"> string</span><span class="co">       # required: node id where connection starts</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fromSide?</span><span class="kw">:</span><span class="at"> string</span><span class="co">      # optional: edge start side (top | right | bottom | left)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fromEnd?</span><span class="kw">:</span><span class="at"> string</span><span class="co">       # optional: endpoint shape (none | arrow), defaults to none</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toNode</span><span class="kw">:</span><span class="at"> string</span><span class="co">         # required: node id where connection ends</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">toSide?</span><span class="kw">:</span><span class="at"> string</span><span class="co">        # optional: edge end side (top | right | bottom | left)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">toEnd?</span><span class="kw">:</span><span class="at"> string</span><span class="co">         # optional: endpoint shape (none | arrow), defaults to arrow</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">color?</span><span class="kw">:</span><span class="at"> CanvasColor</span><span class="co">    # optional: line color, see Color section</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">label?</span><span class="kw">:</span><span class="at"> string</span><span class="co">         # optional: text label for the edge</span></span></code></pre></div>
+<h3 id="color">Color</h3>
+<p>The <code>canvasColor</code> type is used to encode color data for
+nodes and edges. Colors attributes expect a string. Colors can be
+specified in hex format e.g. <code>"#FF0000"</code>, or using one of the
+preset colors, e.g. <code>"1"</code> for red. Six preset colors exist,
+mapped to the following numbers:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;1&quot;</span><span class="kw">:</span><span class="at"> red</span><span class="co">      # preset color 1</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;2&quot;</span><span class="kw">:</span><span class="at"> orange</span><span class="co">   # preset color 2</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;3&quot;</span><span class="kw">:</span><span class="at"> yellow</span><span class="co">   # preset color 3</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;4&quot;</span><span class="kw">:</span><span class="at"> green</span><span class="co">    # preset color 4</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;5&quot;</span><span class="kw">:</span><span class="at"> cyan</span><span class="co">     # preset color 5</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">&quot;6&quot;</span><span class="kw">:</span><span class="at"> purple</span><span class="co">   # preset color 6</span></span></code></pre></div>
+<p>Specific values for the preset colors are intentionally not defined
+so that applications can tailor the presets to their specific brand
+colors or color scheme.</p>
+<hr />
+<h2 id="ii--semantic-json-extension">II. ◈ Semantic JSON Extension</h2>
+<h3 id="before--after-the-transformation">Before &amp; After: The
+Transformation</h3>
+<p><strong>Problem:</strong> Obsidian scrambles Canvas JSON on every
+save, discarding semantic order and randomizing both node positions in
+the array and field order within objects.</p>
+<h3 id="face_with_spiral_eyes-before-vanilla-json-canvas">😵‍💫 Before
+(Vanilla JSON Canvas)</h3>
+<p>Real-world example: A Cavapoos information canvas saved in
+Obsidian.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;appearance&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Appearance</span><span class="ch">\n\n</span><span class="st">- Size: Small to medium (9-14 inches tall)</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">100</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">400</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">200</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#FFD166&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;temperament&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Temperament</span><span class="ch">\n\n</span><span class="st">- Friendly and affectionate</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">450</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">400</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">200</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#06D6A0&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;health&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Health Considerations</span><span class="ch">\n\n</span><span class="st">- Inherited conditions from parent breeds</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">100</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">650</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">200</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#EF476F&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;history&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## History &amp; Origin</span><span class="ch">\n\n</span><span class="st">- Developed in the 1990s</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">1180</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">850</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">200</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#540D6E&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;care&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Care Requirements</span><span class="ch">\n\n</span><span class="st">- Grooming: Regular brushing</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">1030</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">400</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">350</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#118AB2&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;adoption&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Adoption &amp; Cost</span><span class="ch">\n\n</span><span class="st">Cavapoos typically cost $1,500-$4,000...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">120</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">1030</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">500</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">150</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#F77F00&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;training&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Training &amp; Exercise</span><span class="ch">\n\n</span><span class="st">- Highly trainable due to intelligence</span><span class="ch">\n</span><span class="st">...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">700</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">663</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">375</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#073B4C&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;resources&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;link&quot;</span><span class="fu">,</span><span class="dt">&quot;url&quot;</span><span class="fu">:</span><span class="st">&quot;https://www.akc.org/expert-advice/dog-breeds/cavapoo-breed-facts-temperament-traits/&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">120</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">1340</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">500</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">320</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#2196F3&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;title&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;# Cavapoos</span><span class="ch">\n\n</span><span class="st">A comprehensive guide to the Cavalier King Charles Spaniel and Poodle mix&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">300</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">-140</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">500</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">180</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#FF6B6B&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;overview&quot;</span><span class="fu">,</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;text&quot;</span><span class="fu">:</span><span class="st">&quot;## Overview</span><span class="ch">\n\n</span><span class="st">Cavapoos are a crossbreed between a Cavalier King Charles Spaniel and a Poodle...&quot;</span><span class="fu">,</span><span class="dt">&quot;x&quot;</span><span class="fu">:</span><span class="dv">350</span><span class="fu">,</span><span class="dt">&quot;y&quot;</span><span class="fu">:</span><span class="dv">100</span><span class="fu">,</span><span class="dt">&quot;width&quot;</span><span class="fu">:</span><span class="dv">500</span><span class="fu">,</span><span class="dt">&quot;height&quot;</span><span class="fu">:</span><span class="dv">180</span><span class="fu">,</span><span class="dt">&quot;color&quot;</span><span class="fu">:</span><span class="st">&quot;#4ECDC4&quot;</span><span class="fu">}</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Issues:</strong></p>
+<ul>
+<li>❌ <strong>Title appears at the END</strong> (y=-140, but position
+9/10 in array!)</li>
+<li>❌ Overview last despite being at top of canvas</li>
+<li>❌ Random sections scattered: "appearance" → "temperament" →
+"health" → "history" → "care" → "adoption" → "training"</li>
+<li>❌ Field order is chaotic (<code>text</code> before <code>id</code>,
+<code>color</code> at the end sometimes, <code>x</code> before
+<code>y</code>)</li>
+<li>❌ Impossible to read as a document—requires mental reconstruction
+of spatial layout</li>
+<li>❌ Git diffs show massive object repositioning on every save</li>
+<li>❌ LLMs receive incoherent structure: "Here's appearance... now
+temperament... oh wait, here's the title at the end"</li>
+</ul>
+<p><strong>Solution:</strong> Semantic JSON compiles spatial layout into
+deterministic order, preserving visual semantics as stable, legible
+structure.</p>
+<h3 id="nerd_face-after-semantic-json">🤓 After (Semantic JSON)</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;title&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">-140</span><span class="fu">,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">180</span><span class="fu">,</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#FF6B6B&quot;</span><span class="fu">,</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;# Cavapoos</span><span class="ch">\n\n</span><span class="st">A comprehensive guide to the Cavalier King Charles Spaniel and Poodle mix&quot;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;overview&quot;</span><span class="fu">,</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">350</span><span class="fu">,</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">100</span><span class="fu">,</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">180</span><span class="fu">,</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#4ECDC4&quot;</span><span class="fu">,</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Overview</span><span class="ch">\n\n</span><span class="st">Cavapoos are a crossbreed between a Cavalier King Charles Spaniel and a Poodle...&quot;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;appearance&quot;</span><span class="fu">,</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">100</span><span class="fu">,</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">400</span><span class="fu">,</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#FFD166&quot;</span><span class="fu">,</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Appearance</span><span class="ch">\n\n</span><span class="st">- Size: Small to medium (9-14 inches tall)</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;temperament&quot;</span><span class="fu">,</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">450</span><span class="fu">,</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">400</span><span class="fu">,</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#06D6A0&quot;</span><span class="fu">,</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Temperament</span><span class="ch">\n\n</span><span class="st">- Friendly and affectionate</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;care&quot;</span><span class="fu">,</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">1030</span><span class="fu">,</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">400</span><span class="fu">,</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">350</span><span class="fu">,</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#118AB2&quot;</span><span class="fu">,</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Care Requirements</span><span class="ch">\n\n</span><span class="st">- Grooming: Regular brushing</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;training&quot;</span><span class="fu">,</span></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">700</span><span class="fu">,</span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">663</span><span class="fu">,</span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">375</span><span class="fu">,</span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#073B4C&quot;</span><span class="fu">,</span></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Training &amp; Exercise</span><span class="ch">\n\n</span><span class="st">- Highly trainable due to intelligence</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;health&quot;</span><span class="fu">,</span></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">100</span><span class="fu">,</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">650</span><span class="fu">,</span></span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#EF476F&quot;</span><span class="fu">,</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Health Considerations</span><span class="ch">\n\n</span><span class="st">- Inherited conditions from parent breeds</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;history&quot;</span><span class="fu">,</span></span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">1180</span><span class="fu">,</span></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span></span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">300</span><span class="fu">,</span></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#540D6E&quot;</span><span class="fu">,</span></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## History &amp; Origin</span><span class="ch">\n\n</span><span class="st">- Developed in the 1990s</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;adoption&quot;</span><span class="fu">,</span></span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">1030</span><span class="fu">,</span></span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">150</span><span class="fu">,</span></span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#F77F00&quot;</span><span class="fu">,</span></span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;## Adoption &amp; Cost</span><span class="ch">\n\n</span><span class="st">Cavapoos typically cost $1,500-$4,000...&quot;</span></span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;resources&quot;</span><span class="fu">,</span></span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;link&quot;</span><span class="fu">,</span></span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;x&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;y&quot;</span><span class="fu">:</span> <span class="dv">1340</span><span class="fu">,</span></span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;width&quot;</span><span class="fu">:</span> <span class="dv">500</span><span class="fu">,</span></span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;height&quot;</span><span class="fu">:</span> <span class="dv">320</span><span class="fu">,</span></span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#2196F3&quot;</span><span class="fu">,</span></span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://www.akc.org/expert-advice/dog-breeds/cavapoo-breed-facts-temperament-traits/&quot;</span></span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>✅ <strong>Title first!</strong> Spatial order preserved (y=-140 →
+y=1340)</li>
+<li>✅ Document flows naturally: Title → Overview → Appearance →
+Temperament → Care → Training → Health → History → Adoption →
+Resources</li>
+<li>✅ Consistent field order: <code>id</code> → <code>type</code> →
+<code>x</code> → <code>y</code> → <code>width</code> →
+<code>height</code> → <code>color</code> →
+<code>text</code>/<code>url</code></li>
+<li>✅ Stable Git diffs—only changed fields show up as
+modifications</li>
+<li>✅ <strong>LLMs read it as a coherent document</strong> without
+spatial reconstruction</li>
+<li>✅ Array position encodes visual reading order (top-to-bottom,
+left-to-right)</li>
+<li>✅ Humans can parse the JSON and understand the canvas structure
+immediately</li>
+</ul>
+<p><strong>Key insight:</strong> The transformation preserves
+<em>all</em> Canvas data while compiling spatial semantics into linear
+order. The "scrambled" version and "compiled" version are functionally
+identical for rendering, but only the compiled version is semantically
+legible as a document.</p>
+<hr />
+<h3 id="-compilation">◈ Compilation</h3>
+<p>Semantic JSON extends the base JSON Canvas spec with intelligently
+<strong>compiled ordering</strong> of the z-index array for stable,
+deterministic serialization. This enables:</p>
+<ul>
+<li>Stable diffs for version control</li>
+<li>Low cognitive load, token friendly LLM ingestion</li>
+<li>Visuospatial encoding (visual field semantics → logical order)</li>
+</ul>
+<p><strong>Visual dimensions encoded:</strong></p>
+<ul>
+<li><strong>Position</strong> (x, y) → Linear reading sequence</li>
+<li><strong>Containment</strong> (bounding boxes) → Hierarchical
+structure</li>
+<li><strong>Color</strong> (node/edge colors) → Semantic
+taxonomy/categories</li>
+<li><strong>Directionality</strong> (arrow endpoints) → Information flow
+topology</li>
+</ul>
+<p>The plugin reads the canvas as a <strong>visual language</strong>,
+where position, containment, color, and directional flow all carry
+semantic meaning that gets compiled into stable, linear JSON order.</p>
+<h3 id="classical_building-architectural-layers">🏛️ Architectural
+Layers</h3>
+<p>Semantic JSON operates through three explicit layers, each with clear
+boundaries and responsibilities:</p>
+<h4 id="layer-1-spatial-semantic-compilation-implemented"><strong>Layer
+1: Spatial Semantic Compilation</strong> <em>(implemented)</em></h4>
+<p>The foundation. Surfaces meaning explicitly encoded in Canvas visual
+syntax:</p>
+<ul>
+<li><code>x</code>, <code>y</code> coordinates → Linear reading
+order</li>
+<li>Bounding box containment → Hierarchical nesting</li>
+<li>Edge directionality → Flow topology</li>
+<li>Color values → Semantic taxonomy</li>
+</ul>
+<h4 id="layer-2-content-identity-extraction-planned"><strong>Layer 2:
+Content Identity Extraction</strong> <em>(planned)</em></h4>
+<p>Identity key extraction from structured text node content:</p>
+<ul>
+<li><strong>YAML</strong>: <code>title</code>, <code>name</code>,
+<code>id</code> fields</li>
+<li><strong>Markdown</strong>: First header + level
+(<code># Title</code> → <code>"Title"</code>)</li>
+<li><strong>JSON</strong>: <code>id</code>, <code>name</code>,
+<code>title</code> keys</li>
+<li><strong>Code blocks</strong>: Language tag only (not content)</li>
+</ul>
+<p>Not parsing. Not interpreting. <strong>Extracting identity keys from
+existing syntax conventions.</strong></p>
+<h4 id="layer-3-fallback-determinism-always-active"><strong>Layer 3:
+Fallback Determinism</strong> <em>(always active)</em></h4>
+<p>Ensures stable, predictable ordering when higher layers don't
+apply:</p>
+<ul>
+<li>Plain text: Alphabetical sorting (Unicode collation)</li>
+<li>Long content: Stable truncation rules</li>
+<li>No content: ID fallback (lexicographic)</li>
+</ul>
+<p>All three layers preserve JSON Canvas spec compliance—no data added,
+removed, or mutated. Only interpretation and arrangement.</p>
+<hr />
+<h3 id="main-process">Main Process</h3>
+<h3 id="1-package-round_pushpin-compiled-node-ordering-zk-index">1) 📦
++📍 Compiled Node Ordering (ZK-INDEX)</h3>
+<h4 id="eye_speech_bubble-node-visual-semantics">👁️‍🗨️ Node Visual
+Semantics</h4>
+<p><strong>Link node placement</strong>: Link nodes function as
+references/citations, appearing after primary content (like footnotes)
+when not in a flow group.</p>
+<p><strong>Color taxonomy</strong>: Color grouping (when enabled)
+preserves visual semantic categories such as:</p>
+<ul>
+<li>🔴 = urgent/error</li>
+<li>🟠 = warning</li>
+<li>🟡 = in-progress</li>
+<li>🟢 = success/complete</li>
+<li>🔵 = info/reference</li>
+<li>🟣 = special/custom</li>
+</ul>
+<p><strong>Flow topology</strong>: When flow sorting is enabled,
+directional arrows define information flow, transforming spatial
+diagrams into linear reading order based on dependency graphs. Workflows
+and pipelines become sequential narratives.</p>
+<p><strong>Reading order</strong>: Top-left to bottom-right spatial
+interpretation, depth-first through the containment hierarchy (or
+topological flow order when flow sorting enabled).</p>
+<p><strong>Hierarchical containment</strong>: Spatial containment
+(bounding boxes) creates explicit nesting. A node is contained by a
+group if its bounding box (x, y, width, height) falls entirely within
+the group's bounding box. For overlapping groups, the smallest
+containing group is chosen. This makes group structure explicit for
+linear readers without requiring spatial reconstruction.</p>
+<p><strong>Example order</strong>: <code>orphan-1</code> →
+<code>group-A</code> → <code>group-A-child-1</code> →
+<code>group-A-child-2</code> → <code>nested-group-B</code> →
+<code>nested-group-B-child-1</code> → <code>group-C</code> → ...</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hierarchical node ordering (depth-first traversal)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">class</span> <span class="dt">HierarchicalOrdering</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> root_orphan_nodes</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Not contained by any group</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="wa">sort_by: </span><span class="kw">[</span>spatial_or_flow, type, color, content<span class="kw">]</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">def</span> root_groups</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Not nested within other groups</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="wa">sort_by: </span><span class="kw">[</span>spatial_or_flow, type, color, content<span class="kw">]</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="wa">followed_immediately_by: </span><span class="kw">[</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      non_group_children,    <span class="co"># sorted by rules below</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      nested_group_children  <span class="co"># sorted recursively with their contents</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p>This creates depth-first traversal: each group appears immediately
+followed by all its contents before the next sibling group.</p>
+<h4 id="dizzy-core-sorting-rules">💫 Core Sorting Rules</h4>
+<p>When <strong>flow sorting is disabled</strong> (default), nodes
+within each scope are sorted by:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Spatial mode sorting (cascading comparison keys)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> sort_nodes(nodes)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  nodes<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>node<span class="kw">|</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.y</span>,      <span class="co"># ascending</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.x</span>,      <span class="co"># ascending</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.type_priority</span>,   <span class="co"># content nodes (text/file/group) first, links last</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.color</span>,           <span class="co"># optional: group same colors (uncolored first)</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.content_key</span>      <span class="co"># alphabetical by semantic content</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Content key extraction by node type</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> content_key(node)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> node<span class="at">.type</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">when</span> <span class="st">&quot;text&quot;</span>  <span class="cf">then</span> node<span class="at">.text</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">when</span> <span class="st">&quot;file&quot;</span>  <span class="cf">then</span> <span class="dt">File</span><span class="at">.basename</span>(node<span class="at">.file</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">when</span> <span class="st">&quot;link&quot;</span>  <span class="cf">then</span> node<span class="at">.url</span>  <span class="co"># preserves protocol</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">when</span> <span class="st">&quot;group&quot;</span> <span class="cf">then</span> node<span class="at">.label</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> node<span class="at">.id</span>  <span class="co"># fallback</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span><span class="at">.downcase.strip</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<h4 id="link-flow-sorting-rules">🔗 Flow Sorting Rules</h4>
+<p>When <strong>flow sorting is enabled</strong> (optional, disabled by
+default), nodes within each scope are sorted by:</p>
+<p><strong>Edge directionality</strong>:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Flow analysis: edge direction semantics</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>enum <span class="dt">EdgeDirection</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">ForwardArrow</span>        <span class="co"># fromEnd: none, toEnd: arrow (default)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">ReverseArrow</span>        <span class="co"># fromEnd: arrow, toEnd: none (dependency)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Bidirectional</span>       <span class="co"># fromEnd: arrow, toEnd: arrow (chain connector)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">NonDirectional</span>      <span class="co"># fromEnd: none, toEnd: none (ignored)</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Bidirectional edge resolution (inherits from neighbors)</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># → ↔ → becomes → → → (forward chain)</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ← ↔ → becomes ← ← → (split point)</span></span></code></pre></div>
+<p><strong>For nodes in flow groups</strong> (connected by directional
+edges):</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Flow mode sorting (topological order takes precedence)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> sort_flow_group_nodes(nodes, flow_group)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  nodes<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>node<span class="kw">|</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      flow_group<span class="at">.min_position</span>,    <span class="co"># top-left node (min y, min x)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.flow_depth</span>,            <span class="co"># topological order (overrides type priority!)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.y</span>,            <span class="co"># within same depth</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.x</span>,            <span class="co"># within same depth</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.color</span>,                 <span class="co"># optional: group same colors</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.content_key</span>            <span class="co"># alphabetical</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Flow depth assignment (BFS-based topological sort)</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="cf">class</span> <span class="dt">FlowDepth</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="cn">SOURCE</span>      <span class="kw">=</span> <span class="dv">0</span>              <span class="co"># only outgoing arrows</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="cn">INTERMEDIATE</span> <span class="kw">=</span> longest_path  <span class="co"># based on longest path from source</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="cn">SINK</span>        <span class="kw">=</span> max_depth      <span class="co"># only incoming arrows</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p><strong>For isolated nodes</strong> (not in any flow group):</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Isolated nodes (standard spatial sorting, no flow depth)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> sort_isolated_nodes(nodes)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  nodes<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>node<span class="kw">|</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.y</span>,      <span class="co"># ascending</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.position.x</span>,      <span class="co"># ascending</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.type_priority</span>,   <span class="co"># links to bottom (like footnotes)</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.color</span>,           <span class="co"># optional: group same colors</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.content_key</span>      <span class="co"># alphabetical</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<h4 id="house-orphan-node-sorting">🏠 Orphan Node Sorting</h4>
+<p><strong>Orphan nodes</strong> are nodes not contained within any
+group. By default, they sort spatially (by position), but can optionally
+be grouped and sorted semantically.</p>
+<p><strong>Default behavior</strong> (spatial sorting):</p>
+<ul>
+<li>Orphans sort by position (y, x coordinates) alongside groups</li>
+<li>Maintains original Canvas spatial layout</li>
+<li>Mixed positioning: orphans interspersed with groups based on
+coordinates</li>
+</ul>
+<p><strong>🏠 Group orphan nodes</strong> (optional,
+<code>--group-orphan-nodes</code>):</p>
+<ul>
+<li>All orphan nodes grouped together at the top of the document</li>
+<li>Within the orphan group, nodes sort semantically (by content)
+instead of spatially</li>
+<li>Groups still sort spatially and appear after orphans</li>
+<li>Creates clear document structure: orphans → groups → nested
+content</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group orphan nodes (when enabled)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> group_orphan_nodes(orphan_nodes)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  orphan_nodes<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>node<span class="kw">|</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.type_priority</span>,   <span class="co"># content nodes before links</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.color</span>,           <span class="co"># optional: group same colors</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      node<span class="at">.content_key</span>      <span class="co"># alphabetical by content</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Document structure with group orphan nodes:</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. All orphan nodes (sorted semantically)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. All root groups (sorted spatially)</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#    - Group children (sorted semantically within groups)</span></span></code></pre></div>
+<p><strong>Use cases:</strong></p>
+<ul>
+<li><strong>🏠 Group orphan nodes</strong>: When orphans represent
+metadata, references, or standalone concepts that should be grouped
+together</li>
+<li><strong>Spatial orphan sorting</strong> (default): When orphans are
+positioned intentionally and should maintain their spatial relationships
+with groups</li>
+</ul>
+<h3 id="2-arrow_lower_right-compiled-edge-ordering">2) ↘️ Compiled Edge
+Ordering</h3>
+<h4 id="eye_speech_bubble-edge-visual-semantics">👁️‍🗨️ Edge Visual
+Semantics</h4>
+<p><strong>Spatial topology</strong>: Edges encode directional
+information flow. They appear in the order a reader would trace them
+visually (top-to-bottom, left-to-right).</p>
+<p><strong>Color-coded flows</strong>: Edge colors (when enabled)
+preserve visual flow semantics such as:</p>
+<ul>
+<li>🟢 = success path / horizontal connections</li>
+<li>🔴 = error path / critical flow</li>
+<li>🔵 = vertical connections / downward flow</li>
+<li>🟡 = alternative path / horizontal flow</li>
+<li>🟠 = warning path</li>
+<li>🟣 = special connections</li>
+</ul>
+<p><strong>Flow inheritance</strong>: When flow sorting is enabled,
+edges follow the topological order of their connected nodes rather than
+spatial positions. This transforms flow diagrams, system architectures,
+and dependency graphs into sequential narratives where edges appear in
+execution/causation order.</p>
+<p><strong>Example</strong>: In a data pipeline
+<code>Extract → Transform → Load</code>, edges appear as:
+<code>Extract→Transform</code>, <code>Transform→Load</code> (sequential
+flow) rather than random ID order.</p>
+<p>When <strong>flow sorting is disabled</strong> (default), edges are
+sorted by <strong>spatial topology</strong>:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Edge ordering: spatial mode (topology-based)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> sort_edges_spatial(edges, node_positions)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  edges<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>edge<span class="kw">|</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    from_pos <span class="kw">=</span> node_positions<span class="kw">[</span>edge<span class="at">.from_node</span><span class="kw">]</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    to_pos <span class="kw">=</span> node_positions<span class="kw">[</span>edge<span class="at">.to_node</span><span class="kw">]</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>      from_pos<span class="at">.y</span>,       <span class="co"># fromNode y position (ascending)</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      from_pos<span class="at">.x</span>,       <span class="co"># fromNode x position (ascending)</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>      to_pos<span class="at">.y</span>,         <span class="co"># toNode y position (ascending)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>      to_pos<span class="at">.x</span>,         <span class="co"># toNode x position (ascending)</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>      edge<span class="at">.color</span>,       <span class="co"># optional: group same colors (uncolored first)</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>      edge<span class="at">.id</span>           <span class="co"># fallback: lexicographic determinism</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p>When <strong>flow sorting is enabled</strong> (optional, disabled by
+default), edges inherit their connected nodes' flow order:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode crystal"><code class="sourceCode crystal"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Edge ordering: flow mode (inherits topological depth)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> sort_edges_flow(edges, flow_groups, node_positions)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  edges<span class="at">.sort_by</span> <span class="cf">do</span> <span class="kw">|</span>edge<span class="kw">|</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    from_depth <span class="kw">=</span> flow_groups<span class="kw">[</span>edge<span class="at">.from_node</span><span class="kw">]&amp;</span><span class="at">.depth</span> <span class="kw">||</span> <span class="dt">Float</span><span class="kw">::</span><span class="cn">INFINITY</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    to_depth <span class="kw">=</span> flow_groups<span class="kw">[</span>edge<span class="at">.to_node</span><span class="kw">]&amp;</span><span class="at">.depth</span> <span class="kw">||</span> <span class="dt">Float</span><span class="kw">::</span><span class="cn">INFINITY</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Spatial fallback for isolated nodes</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    from_pos <span class="kw">=</span> node_positions<span class="kw">[</span>edge<span class="at">.from_node</span><span class="kw">]</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    to_pos <span class="kw">=</span> node_positions<span class="kw">[</span>edge<span class="at">.to_node</span><span class="kw">]</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      from_depth,       <span class="co"># fromNode flow depth (topological order)</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>      to_depth,         <span class="co"># toNode flow depth (topological order)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      from_pos<span class="at">.y</span>,       <span class="co"># spatial fallback: fromNode y</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      from_pos<span class="at">.x</span>,       <span class="co"># spatial fallback: fromNode x</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      to_pos<span class="at">.y</span>,         <span class="co"># spatial fallback: toNode y</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      to_pos<span class="at">.x</span>,         <span class="co"># spatial fallback: toNode x</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      edge<span class="at">.color</span>,       <span class="co"># optional: group same colors</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      edge<span class="at">.id</span>           <span class="co"># fallback: lexicographic determinism</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">]</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<h2 id="iii-video_game-commands--settings">III. 🎮 <strong>Commands
+&amp; Settings</strong></h2>
+<h3 id="control_knobs-plugin-settings">🎛️ Plugin Settings</h3>
+<p>The following sorting options can be configured in plugin
+settings:</p>
+<ul>
+<li><strong>Auto-compile on save</strong> (default: enabled):
+Automatically compile canvas files when saved</li>
+<li><strong>Color sort nodes</strong> (default: enabled): Group nodes by
+color within same position</li>
+<li><strong>Color sort edges</strong> (default: enabled): Group edges by
+color within same topology</li>
+<li><strong>Flow sort nodes</strong> (default: disabled): Sort by
+directional flow topology instead of spatial position</li>
+<li><strong>🏠 Group orphan nodes</strong> (default: disabled): Group
+orphan nodes first before sorting spatially</li>
+<li><strong>Strip edges from pure JSON when flow-sorted</strong>
+(default: enabled): Remove edges from pure JSON exports when flow
+topology is compiled into node sequence order</li>
+<li><strong>🧠 LLM Integration</strong> (default: disabled): Enable
+LLM-based semantic ID assignment with support for local (LMStudio,
+Ollama) and cloud providers (OpenAI, Anthropic, OpenRouter)</li>
+</ul>
+<h3 id="outbox_tray-pure-json-export">📤 Pure JSON Export</h3>
+<p>The <strong>"Export as pure JSON"</strong> command strips
+Canvas-specific metadata to produce clean data artifacts while
+preserving compiled semantic structure.</p>
+<p><strong>Stripped fields:</strong></p>
+<ul>
+<li>Spatial metadata: <code>x</code>, <code>y</code>,
+<code>width</code>, <code>height</code></li>
+<li>Visual metadata: <code>fromSide</code>, <code>toSide</code>,
+<code>toEnd</code>, <code>fromEnd</code></li>
+<li>Rendering metadata: <code>background</code>,
+<code>backgroundStyle</code></li>
+</ul>
+<p><strong>Preserved fields:</strong></p>
+<ul>
+<li>Node structure: <code>id</code>, <code>type</code>,
+<code>text</code>, <code>file</code>, <code>url</code>,
+<code>label</code></li>
+<li>Graph topology: <code>edges</code> array with <code>id</code>,
+<code>fromNode</code>, <code>toNode</code>, <code>label</code></li>
+<li>Taxonomy visualization: <code>color</code> for nodes and edges
+(enables visual parsing of semantic categories)</li>
+<li>Compiled ordering: Hierarchical and flow-based sequence</li>
+<li><strong>Labeled edge relationships</strong>: Embedded directly in
+nodes via <code>via</code> property</li>
+</ul>
+<h4 id="link-labeled-edge-embedding">🔗 Labeled Edge Embedding</h4>
+<p>Labeled edges are automatically embedded into connected nodes as
+directional <code>from</code> and <code>to</code> arrays, preserving
+flow semantics while creating self-contained relationship data.</p>
+<p><strong>Transformation behavior:</strong></p>
+<p><strong>Labeled edges</strong> (edges with <code>label</code>
+property):</p>
+<ul>
+<li>Embedded into connected nodes as directional arrays</li>
+<li><code>from</code> array: incoming relationships (what this node
+receives)</li>
+<li><code>to</code> array: outgoing relationships (what this node
+sends)</li>
+<li>Each entry:
+<code>{"node": "target_id", "label": "relationship_name"}</code></li>
+<li>Preserves directional flow semantics</li>
+<li>Removed from main <code>edges</code> array (no duplication)</li>
+</ul>
+<p><strong>Unlabeled edges</strong> (edges without <code>label</code>
+property):</p>
+<ul>
+<li>Follow existing behavior (stripped or preserved based on flow
+settings)</li>
+<li>Remain in main <code>edges</code> array when preserved</li>
+</ul>
+<p><strong>Example transformation:</strong></p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="er">//</span> <span class="er">Before:</span> <span class="er">Traditional</span> <span class="er">edge</span> <span class="er">array</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Start Process&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;End Process&quot;</span><span class="fu">}</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;edge1&quot;</span><span class="fu">,</span> <span class="dt">&quot;fromNode&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span> <span class="dt">&quot;toNode&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">,</span> <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;triggers&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;edge2&quot;</span><span class="fu">,</span> <span class="dt">&quot;fromNode&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span> <span class="dt">&quot;toNode&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">}</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="er">//</span> <span class="er">After:</span> <span class="er">Labeled</span> <span class="er">edges</span> <span class="er">embedded</span> <span class="er">with</span> <span class="er">directionality,</span> <span class="er">unlabeled</span> <span class="er">preserved</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Start Process&quot;</span><span class="fu">,</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;to&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">,</span> <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;triggers&quot;</span><span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">,</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;End Process&quot;</span><span class="fu">,</span> </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;from&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;node&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span> <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;triggers&quot;</span><span class="fu">}</span><span class="ot">]</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;edge2&quot;</span><span class="fu">,</span> <span class="dt">&quot;fromNode&quot;</span><span class="fu">:</span> <span class="st">&quot;A&quot;</span><span class="fu">,</span> <span class="dt">&quot;toNode&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">}</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li><strong>Self-contained nodes</strong>: Each node carries its
+relationship context</li>
+<li><strong>Semantic preservation</strong>: Relationship labels
+maintained and accessible</li>
+<li><strong>Directional flow</strong>: Clear distinction between
+incoming and outgoing relationships</li>
+<li><strong>Efficient traversal</strong>: Easy to navigate relationships
+in either direction</li>
+<li><strong>Cleaner structure</strong>: Reduces edge array size, focuses
+on meaningful connections</li>
+<li><strong>LLM-friendly</strong>: Relationships co-located with node
+content for better context</li>
+</ul>
+<h4 id="bar_chart-edge-processing-rules">📊 Edge Processing Rules</h4>
+<p><strong>Edge stripping behavior:</strong></p>
+<p>When <strong>flow sorting is enabled</strong> OR <strong>strip edges
+when flow-sorted</strong> is enabled:</p>
+<ul>
+<li>Unlabeled edges are automatically removed from pure JSON
+exports</li>
+<li>Edge topology is <strong>compiled into node sequence order</strong>
+(when flow sorting enabled)</li>
+<li>The directed graph becomes a sequential narrative</li>
+<li>Relationships are implicit in array position (nodes appear in
+execution/dependency order)</li>
+</ul>
+<p>When <strong>flow sorting is disabled</strong> AND <strong>strip
+edges when flow-sorted</strong> is disabled:</p>
+<ul>
+<li>Unlabeled edges are preserved in pure JSON exports</li>
+<li>Graph topology remains explicit</li>
+<li>Relationships require edges array for interpretation</li>
+</ul>
+<p><strong>Rationale:</strong> When flow sorting compiles edge topology
+into node sequence order, edges become presentation scaffolding—their
+semantic meaning (source → intermediate → sink) is already encoded in
+the linear array position. Stripping edges produces minimal data
+artifacts where relationships are implicit in ordering rather than
+explicit in graph structure.</p>
+<p><strong>Use cases:</strong></p>
+<ul>
+<li><strong>Labeled relationship networks</strong>: Knowledge graphs,
+semantic models, workflow diagrams</li>
+<li><strong>Flow-sorted exports</strong>: Sequential workflows,
+execution plans, dependency lists (edges stripped by default)</li>
+<li><strong>Spatial exports</strong>: Network diagrams, relationship
+maps (edges preserved by default)</li>
+</ul>
+<h3 id="inbox_tray-unified-import-system">📥 Unified Import System</h3>
+<p>The <strong>unified import system</strong> provides enhanced
+JSON/JSONL import capabilities with automatic file type detection and
+advanced visual features.</p>
+<h4 id="dart-unified-import-command">🎯 Unified Import Command</h4>
+<p><strong>Primary Interface:</strong></p>
+<ul>
+<li><strong>CLI:</strong> <code>--import &lt;file&gt;</code>
+(auto-detects JSON/JSONL format)</li>
+<li><strong>Plugin:</strong> "Import to canvas" command (auto-detects
+JSON/JSONL format)</li>
+<li><strong>Plugin:</strong> "Assign Semantic IDs" command (LLM-based
+semantic ID assignment with taxonomy inference)</li>
+</ul>
+<p><strong>Legacy/Compatibility Commands (Plugin only):</strong></p>
+<ul>
+<li>"Import JSON to canvas" - specifically for JSON files</li>
+<li>"Import JSONL to canvas" - specifically for JSONL files</li>
+</ul>
+<p><strong>Recommendation:</strong> Use the unified commands
+(<code>--import</code> for CLI, "Import to canvas" for plugin) for the
+best experience with automatic format detection and optimal visual
+styling.</p>
+<p><strong>Input:</strong> JSON files (.json), JSONL files (.jsonl), or
+auto-detected based on content <strong>Output:</strong> Valid
+<code>.canvas</code> file with enhanced visual representation</p>
+<p><strong>Unified Command Behavior:</strong></p>
+<ul>
+<li><strong>JSON Input:</strong> Applies hierarchical color mutations,
+creates nested group structures with depth-based coloring</li>
+<li><strong>JSONL Input:</strong> Applies rainbow gradient coloring,
+arranges records in optimal grid layout with monitor-friendly aspect
+ratios</li>
+<li><strong>Auto-Detection:</strong> Analyzes file extension and content
+structure to determine optimal import strategy</li>
+</ul>
+<h4 id="rainbow-enhanced-visual-features">🌈 Enhanced Visual
+Features</h4>
+<p><strong>Rainbow Gradient Coloring (JSONL)</strong>:</p>
+<ul>
+<li>Each JSONL record gets a unique color from a rainbow gradient</li>
+<li>Colors cycle through: Red → Orange → Yellow → Green → Cyan → Blue →
+Purple</li>
+<li>Multiple cycles add hue variations for visual distinction</li>
+<li>Optimal for datasets with many records</li>
+</ul>
+<p><strong>Hierarchical Color Mutations (JSON)</strong>:</p>
+<ul>
+<li>Nested structures use depth-based color variations</li>
+<li>Each nesting level gets progressively more muted colors</li>
+<li>Hue shifts by 25° per level for clear visual hierarchy</li>
+<li>Saturation reduces and lightness increases with depth</li>
+</ul>
+<p><strong>Automatic Grid Layout (JSONL)</strong>:</p>
+<ul>
+<li>Records arranged in monitor-friendly aspect ratios (16:9 to
+16:10)</li>
+<li>Grid dimensions calculated automatically based on record count</li>
+<li>Optimal spacing prevents visual clutter</li>
+<li>Collision avoidance ensures readable layouts</li>
+</ul>
+<h4 id="clipboard-transformation-rules">📋 Transformation Rules</h4>
+<p><strong>Objects</strong> → Group nodes</p>
+<ul>
+<li>Keys become child text nodes with hierarchical coloring</li>
+<li>Object label = key name or "Root Object" for top-level</li>
+<li>Nested objects = nested groups with color mutations</li>
+<li>Dynamic width based on nesting depth</li>
+</ul>
+<p><strong>Arrays</strong> → Group nodes</p>
+<ul>
+<li>Elements become child nodes (groups for objects, text for
+primitives)</li>
+<li>Array label = <code>[array_name]</code> or <code>[...]</code> if
+anonymous</li>
+<li>Spatial layout: vertical stacking by default</li>
+</ul>
+<p><strong>Primitives</strong> (strings, numbers, booleans, null) → Text
+nodes</p>
+<ul>
+<li>Value rendered as Markdown text</li>
+<li>Node label = value (truncated if long)</li>
+</ul>
+<p><strong>JSONL-specific layout:</strong></p>
+<ul>
+<li>Each JSON object becomes a "Record N" group</li>
+<li>Records are arranged in a grid with monitor-friendly aspect ratio
+(approximately 16:9)</li>
+<li>Grid dimensions are automatically calculated based on record
+count</li>
+<li>Alternating colors for visual separation</li>
+<li>All transformation rules apply within each record group</li>
+</ul>
+<p><strong>Generated Canvas metadata:</strong></p>
+<p>All imported nodes receive:</p>
+<ul>
+<li><code>x</code>, <code>y</code>: Spatial position (auto-calculated
+grid layout)</li>
+<li><code>width</code>, <code>height</code>: Node dimensions (based on
+content size)</li>
+<li><code>color</code>: Optional (can apply taxonomy colors based on
+data type, alternating for JSONL records)</li>
+<li><code>id</code>: Deterministic (derived from JSON path:
+<code>root.users.0.name</code>)</li>
+</ul>
+<p><strong>Spatial layout algorithm:</strong></p>
+<ol type="1">
+<li><strong>Hierarchical positioning</strong>: Parent groups positioned
+first</li>
+<li><strong>Grid-based arrangement</strong>: Children laid out in
+predictable grid</li>
+<li><strong>Depth offset</strong>: Nested groups indented/offset for
+visual hierarchy</li>
+<li><strong>Collision avoidance</strong>: Nodes never overlap</li>
+<li><strong>JSONL grid layout</strong>: Records arranged in
+monitor-friendly grid with optimal aspect ratio</li>
+</ol>
+<p><strong>Use cases:</strong></p>
+<ul>
+<li>Visualize JSON data structures (API responses, config files,
+etc.)</li>
+<li>Visualize JSONL datasets (logs, streaming data, batch records)</li>
+<li>Author structured data visually in Canvas, export as clean JSON</li>
+<li>Round-trip editing: JSON/JSONL → Canvas (visual edit) → JSON</li>
+</ul>
+<p><strong>Reversibility:</strong> Import then export (with metadata
+stripping) should produce semantically equivalent JSON, though
+formatting may differ (whitespace, key order).</p>
+<h3 id="triangular_ruler-validation-rules">📐 Validation Rules</h3>
+<p>Compilation enforces strict validation:</p>
+<ul>
+<li>All nodes must have unique, non-empty <code>id</code></li>
+<li>All edges must have unique, non-empty <code>id</code></li>
+<li>Edges must reference existing node IDs in <code>fromNode</code> and
+<code>toNode</code></li>
+<li>Node IDs are normalized (trimmed whitespace, string coercion for
+numbers/booleans)</li>
+</ul>
+<p>Invalid canvases throw descriptive errors during compilation.</p>
+<h4 id="serialization-format">Serialization Format</h4>
+<p>Compiled output uses stable JSON formatting:</p>
+<ul>
+<li>2-space indentation (optimal for diffs)</li>
+<li>Trailing newline (POSIX compliance)</li>
+<li>UTF-8 encoding (universal compatibility)</li>
+<li>Deterministic key ordering (consistent serialization)</li>
+</ul>
+<p>This format is optimized for:</p>
+<ul>
+<li><strong>Git diffs</strong>: Minimal line changes, easy to
+review</li>
+<li><strong>LLM ingestion</strong>: Token-efficient, semantically
+ordered</li>
+<li><strong>Human readability</strong>: Consistent structure,
+predictable layout, real-time feedback</li>
+</ul>
+<hr />
+<h2 id="iv-fish_cake-the-anticompiler">IV. 🍥 The Anticompiler</h2>
+<h5 id="what-this-is-and-isnt">What This Is (And Isn't)</h5>
+<p>Semantic JSON is an <strong>anticompiler</strong> — a system that
+inverts the classical compilation process.</p>
+<p>A classical compiler does this:</p>
+<blockquote>
+<p><strong>Human-legible → machine-legible</strong> ambiguity ↓
+constraint ↑ degrees of freedom ↓</p>
+</blockquote>
+<p>Semantic JSON does the reverse:</p>
+<blockquote>
+<p><strong>Machine-dense → human-legible</strong> opacity ↓ semantic
+surface ↑ affordances ↑</p>
+</blockquote>
+<p>It <strong>decompresses intent</strong> rather than freezing it. It
+does not "execute." It <strong>reveals</strong>.</p>
+<h3 id="-the-structural-inversion">⇅ The Structural Inversion</h3>
+<p>A compiler:</p>
+<ul>
+<li>Collapses alternatives into one path</li>
+<li>Erases provenance</li>
+<li>Optimizes away explanation</li>
+<li>Targets determinism</li>
+</ul>
+<p>An anticompiler:</p>
+<ul>
+<li>Restores structure</li>
+<li>Makes implicit relations explicit</li>
+<li>Preserves semantic neighborhoods</li>
+<li>Targets <strong>interpretability across minds</strong> (human +
+model)</li>
+</ul>
+<p>It performs a <strong>partial inverse of compilation</strong> without
+requiring lossless round-tripping. It's not reconstructing the original
+source, but a <strong>usable cognitive representation</strong>.</p>
+<h3 id="robot-why-this-matters-for-llms">🤖 Why This Matters for
+LLMs</h3>
+<p>Canvas files already contain all the metadata needed to reconstruct
+spatial intent—coordinates, colors, edge topology. An LLM <em>can</em>
+trace through the raw <code>.canvas</code> format and understand the
+visual structure.</p>
+<p>But what's clearer for humans is clearer for models too.</p>
+<p>Semantic JSON:</p>
+<ul>
+<li>🏷️ <strong>Restores naming</strong> — IDs become memorable, not
+random hashes</li>
+<li>🌳 <strong>Restores hierarchy</strong> — Spatial clustering →
+sequential grouping</li>
+<li>🔗 <strong>Restores local context</strong> — Related nodes appear
+adjacent in reading order</li>
+<li>📊 <strong>Reduces token entropy</strong> — Predictable structure =
+better compression <em>without</em> reducing meaning</li>
+</ul>
+<p>The difference isn't capability—it's <strong>cognitive load</strong>.
+Vanilla JSON Canvas asks both humans and models to mentally compile
+spatial coordinates into reading order. Semantic JSON does that work
+once, deterministically, preserving the result as structure.</p>
+<h3 id="cyclone-the-wyrd-framing">🌀 The Wyrd Framing</h3>
+<blockquote>
+<p>A compiler binds symbol to causality. An anticompiler <strong>unbinds
+causality back into symbol</strong>.</p>
+</blockquote>
+<p>Where the compiler says:</p>
+<blockquote>
+<p>"This must now mean exactly one thing."</p>
+</blockquote>
+<p>The anticompiler replies:</p>
+<blockquote>
+<p>"Let me show you what was compressed, assumed, or forgotten."</p>
+</blockquote>
+<p>This is <strong>semantic unzipping</strong>:</p>
+<ul>
+<li>JSON as ossified ritual form</li>
+<li>Expanded into a surface where humans can <em>think again</em></li>
+<li>And LLMs can <em>reason instead of hallucinate</em></li>
+</ul>
+<hr />
+<p><em>A compiler makes thought executable; an anticompiler makes
+execution thinkable again.</em></p>
+<hr />
+<h2 id="brain-llm-integration">🧠 <strong>LLM Integration</strong></h2>
+<p>The LLM Integration system extends Semantic JSON with intelligent
+content analysis and semantic ID assignment capabilities. This system
+transforms Canvas files from generic node IDs to meaningful semantic
+identifiers with optional taxonomy inference.</p>
+<h3 id="robot-semantic-id-assignment">🤖 Semantic ID Assignment</h3>
+<p>The <strong>"Assign Semantic IDs"</strong> command analyzes canvas
+content using Large Language Models to generate meaningful node
+identifiers that reflect the actual content and relationships within the
+canvas.</p>
+<h4 id="process-flow">Process Flow</h4>
+<ol type="1">
+<li><strong>Content Extraction</strong>: All node content (text, file
+paths, URLs, labels) is extracted</li>
+<li><strong>LLM Analysis</strong>: Complete canvas structure is sent to
+configured LLM provider</li>
+<li><strong>Taxonomy Inference</strong>: LLM optionally generates a
+coherent type system for the canvas</li>
+<li><strong>ID Assignment</strong>: Semantic IDs are assigned in format
+<code>type::variant::hash</code></li>
+<li><strong>Reference Updates</strong>: All edge references are updated
+to maintain graph connectivity</li>
+<li><strong>Fallback Handling</strong>: Generic kebab-case IDs
+(<code>node-001</code>, <code>node-002</code>) when LLM fails</li>
+</ol>
+<h4 id="example-transformation">Example Transformation</h4>
+<p><strong>Before (Generic IDs):</strong></p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;a1b2c3d4e5f6&quot;</span><span class="fu">,</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Machine Learning Fundamentals&quot;</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;f6e5d4c3b2a1&quot;</span><span class="fu">,</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Data preprocessing steps&quot;</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;edge123&quot;</span><span class="fu">,</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;fromNode&quot;</span><span class="fu">:</span> <span class="st">&quot;a1b2c3d4e5f6&quot;</span><span class="fu">,</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;toNode&quot;</span><span class="fu">:</span> <span class="st">&quot;f6e5d4c3b2a1&quot;</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>After (Semantic IDs with Taxonomy):</strong></p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;concept::machine-learning::fundamentals&quot;</span><span class="fu">,</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Machine Learning Fundamentals&quot;</span><span class="fu">,</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;1&quot;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;process::data-preprocessing::steps&quot;</span><span class="fu">,</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Data preprocessing steps&quot;</span><span class="fu">,</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;2&quot;</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;edges&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;relation::depends-on::ml-preprocessing&quot;</span><span class="fu">,</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;fromNode&quot;</span><span class="fu">:</span> <span class="st">&quot;concept::machine-learning::fundamentals&quot;</span><span class="fu">,</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;toNode&quot;</span><span class="fu">:</span> <span class="st">&quot;process::data-preprocessing::steps&quot;</span><span class="fu">,</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;4&quot;</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="label-taxonomy-inference">🏷️ Taxonomy Inference</h3>
+<p>The LLM system generates a <strong>locally-appropriate
+taxonomy</strong> specific to each canvas content domain, with built-in
+complexity constraints and visual representation.</p>
+<h4 id="taxonomy-features">Taxonomy Features</h4>
+<ul>
+<li><strong>Domain-Specific</strong>: Generated based on actual canvas
+content, not generic categories</li>
+<li><strong>Complexity-Constrained</strong>: Limited to 6 types maximum
+(matching Canvas color palette 1-6)</li>
+<li><strong>Visually Represented</strong>: Each taxonomy type gets a
+distinct color visible in Canvas UI</li>
+<li><strong>Human-Parsable</strong>: Colors provide immediate visual
+understanding since semantic IDs are hidden in JSON</li>
+<li><strong>Coherent Classification</strong>: Types form a logical
+system relevant to the specific use case</li>
+<li><strong>Optional Legend</strong>: A normal text node can be added to
+the canvas to display taxonomy types, descriptions, and colors</li>
+</ul>
+<h4 id="example-taxonomies">Example Taxonomies</h4>
+<p><strong>Software Architecture Canvas (legend node
+example):</strong></p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;legend-taxonomy&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Legend</span><span class="ch">\\</span><span class="st">n- component (1): System components and modules</span><span class="ch">\\</span><span class="st">n- service (2): External services and APIs</span><span class="ch">\\</span><span class="st">n- data (3): Data stores and models</span><span class="ch">\\</span><span class="st">n- flow (4): Information and control flow&quot;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Research Canvas (legend node example):</strong></p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;legend-taxonomy&quot;</span><span class="fu">,</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Legend</span><span class="ch">\\</span><span class="st">n- hypothesis (1): Research hypotheses and questions</span><span class="ch">\\</span><span class="st">n- method (2): Research methods and approaches</span><span class="ch">\\</span><span class="st">n- finding (3): Results and discoveries</span><span class="ch">\\</span><span class="st">n- source (4): References and citations&quot;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="wrench-multi-provider-support">🔧 Multi-Provider Support</h3>
+<p>The system supports both local and cloud-based LLM providers for
+maximum flexibility.</p>
+<h4 id="supported-providers">Supported Providers</h4>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Type</th>
+<th>Base URL</th>
+<th>API Key Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LMStudio</strong></td>
+<td>Local</td>
+<td><code>http://localhost:1234</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Ollama</strong></td>
+<td>Local</td>
+<td><code>http://localhost:11434</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>OpenRouter</strong></td>
+<td>Cloud</td>
+<td><code>https://openrouter.ai/api/v1</code></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>Cloud</td>
+<td><code>https://api.openai.com/v1</code></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Anthropic</strong></td>
+<td>Cloud</td>
+<td><code>https://api.anthropic.com</code></td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="configuration">Configuration</h4>
+<p>LLM integration is configured through the plugin settings:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">interface</span> LLMSettings {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  provider<span class="op">:</span> <span class="st">&#39;lmstudio&#39;</span> <span class="op">|</span> <span class="st">&#39;ollama&#39;</span> <span class="op">|</span> <span class="st">&#39;openrouter&#39;</span> <span class="op">|</span> <span class="st">&#39;openai&#39;</span> <span class="op">|</span> <span class="st">&#39;anthropic&#39;</span><span class="op">;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  baseUrl<span class="op">:</span> <span class="dt">string</span><span class="op">;</span>      <span class="co">// Provider endpoint</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  apiKey<span class="op">:</span> <span class="dt">string</span><span class="op">;</span>       <span class="co">// For cloud providers</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  model<span class="op">:</span> <span class="dt">string</span><span class="op">;</span>        <span class="co">// Specific model name</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  enabled<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span>     <span class="co">// Enable/disable LLM features</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h4 id="provider-specific-defaults">Provider-Specific Defaults</h4>
+<ul>
+<li><strong>LMStudio</strong>:
+<code>microsoft/Phi-3.5-mini-instruct</code> model, localhost
+endpoint</li>
+<li><strong>Ollama</strong>: <code>llama3.3</code> model, localhost
+endpoint</li>
+<li><strong>OpenRouter</strong>:
+<code>meta-llama/llama-3.3-70b-instruct</code> model</li>
+<li><strong>OpenAI</strong>: <code>gpt-4o</code> model</li>
+<li><strong>Anthropic</strong>: <code>claude-3-5-sonnet-20241022</code>
+model</li>
+</ul>
+<h4 id="error-handling--fallbacks">Error Handling &amp; Fallbacks</h4>
+<p>The system provides robust error handling:</p>
+<ol type="1">
+<li><strong>Network Failures</strong>: Graceful degradation to generic
+IDs</li>
+<li><strong>Invalid Responses</strong>: Fallback to kebab-case
+numbering</li>
+<li><strong>Partial Failures</strong>: Mixed semantic and generic IDs as
+needed</li>
+<li><strong>Graph Validation</strong>: Ensures all edge references
+remain valid</li>
+</ol>
+<h4 id="privacy--security">Privacy &amp; Security</h4>
+<ul>
+<li><strong>Local-First Option</strong>: LMStudio and Ollama keep data
+on-device</li>
+<li><strong>No Data Retention</strong>: Cloud providers configured for
+single-request processing</li>
+<li><strong>Content Analysis Only</strong>: Only node content is sent,
+no vault metadata</li>
+<li><strong>User Control</strong>: Explicit opt-in required, disabled by
+default</li>
+</ul>
+
+
+        </article>
+        
+        <footer class="lex-footer">
+            <p><a href="/lexemantika-index.html">← Back to Lexemantika</a></p>
+        </footer>
+    </main>
+</body>
+</html>
