@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lexemancy.com/</loc>
@@ -20,7 +20,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Lexemantika Codex -->
   <url>
     <loc>https://lexemancy.com/docs/lexemancy.html</loc>
     <changefreq>monthly</changefreq>
@@ -81,8 +80,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
-  <!-- Somniorum Drift Archive -->
   <url>
     <loc>https://lexemancy.com/drift-index.html</loc>
     <changefreq>weekly</changefreq>
@@ -113,7 +110,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <!-- Codex Vulnus -->
   <url>
     <loc>https://lexemancy.com/drift/codex-vulnus/01-godnames.html</loc>
     <changefreq>monthly</changefreq>
@@ -134,7 +130,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.55</priority>
   </url>
-  <!-- Codex Amexsomnus -->
   <url>
     <loc>https://lexemancy.com/drift/codex-amexsomnus/05-z-axis-theory.html</loc>
     <changefreq>monthly</changefreq>
@@ -150,7 +145,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.55</priority>
   </url>
-  <!-- Lexicon — definitions are more central than artifacts -->
   <url>
     <loc>https://lexemancy.com/drift/lexicon/physemy.html</loc>
     <changefreq>monthly</changefreq>
@@ -171,7 +165,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <!-- Palimpsest Archive — old but intentionally preserved -->
   <url>
     <loc>https://lexemancy.com/drift/palimpsest/rauhnacht-2025.html</loc>
     <lastmod>2026-01-17</lastmod>
@@ -195,5 +188,10 @@
     <lastmod>2026-01-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://lexemancy.com/logs/2026-01-23.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

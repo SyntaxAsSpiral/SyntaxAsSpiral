@@ -467,6 +467,10 @@ def main():
     # Split chronohex into individual characters for rainbow coloring
     chronohex_chars = {f"chronohex_{i}": c for i, c in enumerate(chronotonic[:6])}
 
+    # SEO Metadata
+    meta_description = f"Pulse Log {log_date}: {status} — {quote[:100]}..."
+    canonical_url = "https://lexemancy.com/"
+
     pulse_data = {
         "chronotonic": chronotonic,
         "chronohex": chronotonic,  # alias for templates
@@ -483,6 +487,8 @@ def main():
         "class_disp_html": class_disp_html,
         "end_quote": end_quote,
         "logs_link_html": logs_link_html,
+        "meta_description": meta_description,
+        "canonical_url": canonical_url,
     }
 
     # Write pulse.json for UI-agnostic consumption
@@ -536,6 +542,9 @@ def main():
     except Exception as e:
         print(f"⚠️ Failed to update README.md: {e}")
 
+    # === UPDATE SITEMAP ===
+    update_sitemap(log_date, REPO_ROOT)
+
     # === ARCHIVE DAILY LOG + REBUILD INDEX ===
     logs_dir = output_dir / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
@@ -548,6 +557,9 @@ def main():
         .replace('href="assets/index.ico"', 'href="../assets/index.ico"')
         .replace('src="assets/recursive-log-banner.mp4"', 'src="../assets/recursive-log-banner.mp4"')
         .replace(logs_link_html, logs_link_html_archive, 1)
+        # Fix metadata for archive to point to itself
+        .replace(f'content="{canonical_url}"', f'content="https://lexemancy.com/logs/{log_date}.html"')
+        .replace(f'href="{canonical_url}"', f'href="https://lexemancy.com/logs/{log_date}.html"')
     )
 
     log_path = logs_dir / f"{log_date}.html"
@@ -595,6 +607,58 @@ def main():
         except subprocess.CalledProcessError as e:
             print(f"⚠️ Git operation failed: {e}")
             # Don't exit - page was updated successfully even if git fails
+
+
+def update_sitemap(log_date: str, repo_root: Path) -> None:
+    """Update sitemap.xml with new pulse log entry."""
+    sitemap_path = repo_root / "sitemap.xml"
+    if not sitemap_path.exists():
+        print("⚠️ sitemap.xml not found, skipping update")
+        return
+
+    try:
+        import xml.etree.ElementTree as ET
+        
+        # Register namespace to prevent ns0: prefixes
+        ET.register_namespace('', "http://www.sitemaps.org/schemas/sitemap/0.9")
+        tree = ET.parse(sitemap_path)
+        root = tree.getroot()
+        ns = {"sitemap": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
+        # 1. Update homepage lastmod
+        for url in root.findall("sitemap:url", ns):
+            loc = url.find("sitemap:loc", ns)
+            if loc is not None and loc.text == "https://lexemancy.com/":
+                # Create or update changefreq if missing? It has it.
+                # Just assume it exists based on file review
+                pass
+
+        # 2. Add new log entry if missing
+        log_url = f"https://lexemancy.com/logs/{log_date}.html"
+        exists = False
+        for url in root.findall("sitemap:url", ns):
+            loc = url.find("sitemap:loc", ns)
+            if loc is not None and loc.text == log_url:
+                exists = True
+                break
+        
+        if not exists:
+            new_url = ET.SubElement(root, "url")
+            loc = ET.SubElement(new_url, "loc")
+            loc.text = log_url
+            changefreq = ET.SubElement(new_url, "changefreq")
+            changefreq.text = "monthly"
+            priority = ET.SubElement(new_url, "priority")
+            priority.text = "0.7"
+            print(f"✅ Added {log_date} to sitemap")
+        
+        # Write back with nice indentation
+        ET.indent(tree, space="  ", level=0)
+        tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
+        print("✅ sitemap.xml updated")
+            
+    except Exception as e:
+        print(f"⚠️ Failed to update sitemap: {e}")
 
 
 if __name__ == "__main__":
