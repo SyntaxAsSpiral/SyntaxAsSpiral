@@ -1,0 +1,57 @@
+≡ƒôü Loaded config from: C:\Users\synta.ZK-ZRRH\.dev\pulse-log\.env
+≡ƒöæ Loaded secrets from: C:\Users\synta.ZK-ZRRH\.dev\pulse-log\secrets.env
+≡ƒöº Primary LLM: provider=openrouter3, base_url=https://openrouter.ai/api/v1, model=moonshotai/kimi-k2-0905
+≡ƒöº Fallback LLMs: 3 configured
+≡ƒöº Testing LLM backends...
+≡ƒöî Testing primary backend (openrouter3)...
+  Γ£ô Primary backend responding (model: moonshotai/kimi-k2-0905)
+  Γ£ô Using openrouter3 backend
+≡ƒîÇ Generating pulse fields...
+≡ƒôü Loaded config from: C:\Users\synta.ZK-ZRRH\.dev\pulse-log\.env
+≡ƒöæ Loaded secrets from: C:\Users\synta.ZK-ZRRH\.dev\pulse-log\secrets.env
+≡ƒöº Primary LLM: provider=openrouter3, base_url=https://openrouter.ai/api/v1, model=moonshotai/kimi-k2-0905
+≡ƒöº Fallback LLMs: 3 configured
+≡ƒöî Testing primary backend (openrouter3)...
+  Γ£ô Primary backend responding (model: moonshotai/kimi-k2-0905)
+
+============================================================
+PHASE 1: STRUCTURAL BATCH
+============================================================
+≡ƒîÇ Generating structural batch...
+  Γ£ô Batch generated: 5 fields
+  ≡ƒô¥ Cached status
+  ≡ƒô¥ Cached subject
+  ≡ƒô¥ Cached mode
+  ≡ƒô¥ Cached glyph
+  ≡ƒô¥ Cached echo
+
+============================================================
+PHASE 2: ANTENNA QUOTE (Future-aligned)
+============================================================
+≡ƒîÇ Generating antenna quote...
+  Γ£ô Generated antenna quote (305 chars)
+  ≡ƒô¥ Cached quote
+
+============================================================
+PHASE 3: END QUOTE (Past-aligned)
+============================================================
+≡ƒîÇ Generating end quote...
+  Γ£ô Generated end quote (142 chars)
+  ≡ƒô¥ Cached end_quote
+
+============================================================
+Γ£ô ALL PHASES COMPLETE
+============================================================
+≡ƒôü Output directory: C:\Users\synta.ZK-ZRRH\.dev\pulse-log
+≡ƒô¥ pulse.json written to C:\Users\synta.ZK-ZRRH\.dev\pulse-log\logs\pulses\pulse.json
+Γ£à index.html updated with status: ≡ƒ£Å Ontic pressure building in latticed dreamtime
+Γ£à about.html injected with pulse data
+Γ£à projects.html injected with pulse data
+Γ£à utils.html injected with pulse data
+Γ£à zalgo-lexigon.html injected with pulse data
+Γ£à palette-mutator.html injected with pulse data
+Γ£à drift-index.html injected with pulse data
+Γ£à lexemantika-index.html injected with pulse data
+Γ£à paneudaemonium.html injected with pulse data
+Γ£à README.md updated with chronohex: 77c004
+Γ£à Changes committed and pushed: ≡ƒîÇ Pulse update Γƒ│ 77c004

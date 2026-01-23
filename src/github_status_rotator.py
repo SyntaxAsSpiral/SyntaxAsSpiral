@@ -172,8 +172,8 @@ def render_logs_index_html(log_dates: list[str], logs_dir: Path, icon_tag: str =
     
     log_items = "\n".join(items) if items else "      <li><em>No logs yet.</em></li>"
     
-    # Load template from root
-    template_path = Path(__file__).parent.parent / "logs-index.html"
+    # Load template from templates/
+    template_path = Path(__file__).parent.parent / "templates" / "logs-index.html"
     try:
         with template_path.open("r", encoding="utf-8") as f:
             template = f.read()
