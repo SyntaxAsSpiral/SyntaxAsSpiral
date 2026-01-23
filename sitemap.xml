@@ -27,6 +27,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://lexemancy.com/docs/semantic-json.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://lexemancy.com/docs/wyzyrdry.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

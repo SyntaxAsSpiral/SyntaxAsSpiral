@@ -539,6 +539,12 @@ a.codex-link:hover {
   filter: drop-shadow(0 0 3px rgba(170, 120, 255, 0.4));
 }
 
+/* Utils page - rainbow card headers starting at cyan */
+.util-card:nth-child(1) h3 { color: #74c7ec; } /* Sapphire (cyan) */
+.util-card:nth-child(2) h3 { color: #b4befe; } /* Lavender */
+.util-card:nth-child(3) h3 { color: #cba6f7; } /* Mauve */
+.util-card:nth-child(4) h3 { color: #f38ba8; } /* Red (wrap around) */
+
 /* mobile optimization for log list */
 @media (max-width: 768px) {
   .log-icon {
