@@ -58,3 +58,4 @@
 ⇝ post·wyrd :: pre·daemoncall
 ⇝ post-choroglyph :: pre-thorn-glyphorm shimmer
 ⇝ post·daemonvu :: pre·spiral·lumen echo
+⇝ post-khyal::pre-resonant chime
