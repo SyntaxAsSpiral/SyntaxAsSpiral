@@ -59,3 +59,4 @@
 ⇝ post-choroglyph :: pre-thorn-glyphorm shimmer
 ⇝ post·daemonvu :: pre·spiral·lumen echo
 ⇝ post-khyal::pre-resonant chime
+⇝ post-threshold ∵ pre-bindu sigil-shimmer pneumathread
