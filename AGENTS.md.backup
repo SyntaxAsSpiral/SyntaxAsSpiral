@@ -1,25 +1,7 @@
 # Agent Documentation: Recursive Pulse Log System
 
 ## Overview
-This repository generates a daily-updated personal homepage at `https://lexemancy.com/` using LLM-generated mystical/technical content. The system runs automatically via NixOS systemd timer on `adeck` (headless Steam Deck) at 2:24 AM PST, generating fresh pulse content, updating files, and pushing to GitHub Pages.
-
-## Deployment Architecture
-
-### Current Setup (February 2026)
-- **Development**: PC workstation (`zrrh`) for editing and testing
-- **Execution**: Headless NixOS Steam Deck (`adeck`) for automated pulse generation
-- **Source of Truth**: GitHub repository (`main` branch)
-- **Output**: GitHub Pages at `lexemancy.com`
-
-### Workflow
-1. **Development**: Edit code on PC, push to GitHub
-2. **Execution**: `adeck` pulls latest code, generates pulse, pushes results
-3. **Deployment**: GitHub Pages automatically updates from pushed changes
-
-### Remote Development Options
-- **SSH Access**: `ssh zk@adeck` to edit directly on execution environment
-- **VSCode Remote**: Use Remote-SSH extension to edit on deck via VSCode
-- **Local Development**: Edit on PC, push to GitHub, deck pulls automatically
+This repository generates a daily-updated personal homepage at `https://lexemancy.com/` using LLM-generated mystical/technical content. The system runs automatically via Windows Task Scheduler at 2:24 AM PST, generating fresh pulse content, updating files, and pushing to GitHub Pages.
 
 ## Architecture
 
@@ -221,10 +203,10 @@ git push
 
 ### Environment Variables (`.env` in repo root)
 ```bash
-LLM_PROVIDER=openrouter3
-LLM_BASE_URL=https://openrouter.ai/api/v1
-LLM_MODEL=moonshotai/kimi-k2-0905
-LLM_API_KEY=  # Set in secrets.env (not tracked)
+LLM_PROVIDER=lmstudio
+LLM_BASE_URL=http://localhost:1234/v1
+LLM_MODEL=gpt-oss-20b-heretic
+LLM_API_KEY=  # Optional for LMStudio, required for OpenRouter
 ```
 
 **Note:** `.env` is tracked in git to document working model configuration. Use `secrets.env` for API keys (not tracked).
@@ -236,46 +218,19 @@ LLM_API_KEY=  # Set in secrets.env (not tracked)
 - **Timeout**: 120s for batch, 60s for individual quotes
 - **Architecture**: 3-phase hybrid (1 batch + 2 dedicated quote calls)
 
-## Scheduled Execution
+## Scheduled Task
 
-### NixOS Systemd Configuration
-- **Service**: `pulse-generator.service` (oneshot)
-- **Timer**: `pulse-generator.timer` (daily at 2:24 AM PST)
-- **Location**: `/home/zk/pulse-log/` on `adeck`
-- **Environment**: Python virtual environment with dependencies
-- **User**: `zk`
-- **Logging**: systemd journal
+### Windows Task Scheduler
+- **Task Name**: `PulseLogUpdater`
+- **Schedule**: Daily at 2:24 AM PST
+- **Command**: `python src/github_status_rotator.py`
+- **Working Directory**: `C:\Users\synta.ZK-ZRRH\.dev\pulse-log`
+- **Wake to run**: Enabled
+- **Timeout**: 10 minutes
 
-### Manual Operations
-```bash
-# Manual trigger
-sudo systemctl start pulse-generator.service
-
-# Check status
-systemctl status pulse-generator.service
-systemctl status pulse-generator.timer
-
-# View logs
-journalctl -u pulse-generator.service -f
-
-# List upcoming runs
-systemctl list-timers pulse-generator
-```
-
-### Development Environment Setup
-```bash
-# On adeck
-cd /home/zk/pulse-log
-source venv/bin/activate
-
-# Test generation (no git operations)
-python src/test_rotator.py
-
-# Full generation with git push
-python src/github_status_rotator.py
-
-# Test LLM only
-python src/pulse_generator.py
+### Manual Trigger
+```powershell
+schtasks /run /tn "PulseLogUpdater"
 ```
 
 ## Path Conventions
@@ -389,8 +344,8 @@ python src/pulse_generator.py
 - Review cache sections to see recursive evolution
 
 ### When debugging:
-- Check systemd logs: `journalctl -u pulse-generator.service -f`
-- Verify `.env` and `secrets.env` configuration in repo root
+- Check LLM server logs at `http://localhost:1234`
+- Verify `.env` configuration in repo root
 - Test LLM only: `python src/pulse_generator.py`
 - Test template rendering: `python src/template_renderer.py pulse.json [template_name]`
 - Test full generation (no git): `python src/test_rotator.py`
@@ -502,18 +457,13 @@ Simple regex-based substitution—no Jinja2 or complex logic:
 - **HTTPS**: Enforced
 - **Build type**: Legacy (not Actions)
 
-## Network Architecture
+## IDE Task Configuration
 
-### Tailscale Mesh Integration
-- **adeck**: Headless execution node on Tailscale mesh
-- **zrrh**: Primary development workstation
-- **SSH Access**: `ssh zk@adeck` or `ssh daemon@adeck`
-- **Remote Development**: VSCode Remote-SSH to `zk@adeck:/home/zk/pulse-log`
+### Available Tasks (`.vscode/tasks.json`)
+- **Pulse: Generate & Push** (default build): Full generation with git push
+- **Pulse: Test Generation** (default test): Safe test without git operations
+- **Pulse: Test LLM Only**: Tests LLM generation without HTML
 
-### Deployment Locations
-- **Development**: `C:\Users\synta.ZK-ZRRH\.dev\pulse-log` (PC)
-- **Execution**: `/home/zk/pulse-log/` (adeck)
-- **Virtual Environment**: `/home/zk/pulse-log/venv/` (adeck)
-- **NixOS Config**: `/home/zk/flake-adeck/system/modules/pulse-generator.nix`
+Use `SKIP_GIT_PUSH=1` environment variable to disable git operations in any script.
 
 ---
