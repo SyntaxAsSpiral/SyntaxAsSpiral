@@ -8,8 +8,11 @@ import os
 import random
 import json
 import sys
+import time
+import subprocess
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urlparse
 import requests
 
 # Set UTF-8 encoding for Windows console
@@ -20,6 +23,17 @@ if sys.platform == 'win32':
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CACHE_DIR = REPO_ROOT / "logs" / "pulses"
 TEMPLATES_DIR = REPO_ROOT / "templates" / "prompts"
+
+WOL_TARGETS = {
+    "zrrh": {
+        "broadcast": "10.77.0.255",
+        "mac": "60:cf:84:61:d8:00",
+    },
+    "nxiz": {
+        "broadcast": "192.168.0.255",
+        "mac": "fc:34:97:3b:6e:99",
+    },
+}
 
 
 def load_seeds(field_name: str) -> tuple[list[str], list[str]]:
@@ -323,18 +337,48 @@ def load_llm_config() -> dict:
         }
     
     # Select primary (or first available as fallback)
-    primary_config = backends.get(primary_backend)
+    primary_name = primary_backend
+    primary_config = backends.get(primary_name)
     if not primary_config:
-        print(f"⚠️ Primary backend '{primary_backend}' not found, using first available")
-        primary_config = list(backends.values())[0]
-    
-    # Build fallback list (all backends except primary, in order)
-    fallback_configs = [config for name, config in backends.items() if name != primary_backend]
-    
+        print(f"⚠️ Primary backend '{primary_name}' not found, using first available")
+        primary_name = next(iter(backends.keys()))
+        primary_config = backends[primary_name]
+
+    # Build fallback list (all backends except primary)
+    fallback_configs = [config for name, config in backends.items() if name != primary_name]
+
+    # Prefer an explicit fallback backend name (default: lmstudio)
+    fallback_name = os.getenv("LLM_FALLBACK_BACKEND", "lmstudio").lower()
+    fallback_config = backends.get(fallback_name)
+    if fallback_config and fallback_name != primary_name:
+        fallback_configs = [fallback_config] + [
+            config for name, config in backends.items()
+            if name not in {primary_name, fallback_name}
+        ]
+
+    # Optional explicit fallback endpoint/model overrides
+    fallback_base_url = os.getenv("LLM_FALLBACK_BASE_URL", "").strip()
+    fallback_model = os.getenv("LLM_FALLBACK_MODEL", "").strip()
+    if fallback_base_url:
+        if fallback_configs:
+            fallback_configs[0] = {
+                **fallback_configs[0],
+                "base_url": fallback_base_url,
+                "model": fallback_model or fallback_configs[0]["model"],
+            }
+        else:
+            fallback_configs = [{
+                "provider": "lmstudio",
+                "base_url": fallback_base_url,
+                "model": fallback_model or "gpt-oss-20b-heretic",
+                "api_key": os.getenv("LMSTUDIO_API_KEY", ""),
+            }]
+
     print(f"🔧 Primary LLM: provider={primary_config['provider']}, base_url={primary_config['base_url']}, model={primary_config['model']}")
     if fallback_configs:
-        print(f"🔧 Fallback LLMs: {len(fallback_configs)} configured")
-    
+        first = fallback_configs[0]
+        print(f"🔧 Fallback LLMs: {len(fallback_configs)} configured (first={first['provider']} @ {first['base_url']})")
+
     return {
         "primary": primary_config,
         "fallback": fallback_configs[0] if fallback_configs else primary_config,
@@ -372,40 +416,88 @@ def find_workspace_env() -> Optional[Path]:
     return None
 
 
-def test_llm_backend(backend_config: dict) -> bool:
+def send_wol_for_backend(backend_config: dict) -> bool:
+    """Send a Wake-on-LAN packet for known backend hosts (zrrh/nxiz)."""
+    base_url = backend_config.get("base_url", "")
+    host = urlparse(base_url).hostname
+    if not host:
+        return False
+
+    target = WOL_TARGETS.get(host.lower())
+    if not target:
+        return False
+
+    try:
+        subprocess.run(
+            ["wakeonlan", "-i", target["broadcast"], target["mac"]],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        print(f"  ⚡ Sent WOL to {host} ({target['mac']}) via {target['broadcast']}")
+        return True
+    except FileNotFoundError:
+        print("  ⚠️ wakeonlan command not found")
+        return False
+    except subprocess.CalledProcessError as e:
+        msg = (e.stderr or e.stdout or str(e)).strip()
+        print(f"  ⚠️ WOL send failed for {host}: {msg}")
+        return False
+
+
+def _probe_backend(endpoint: str, headers: dict, warmup_body: dict, timeout: int = 30) -> bool:
+    """Single backend probe request."""
+    response = requests.post(endpoint, json=warmup_body, headers=headers, timeout=timeout)
+    response.raise_for_status()
+    return True
+
+
+def test_llm_backend(backend_config: dict, try_wol: bool = True) -> bool:
     """
     Test if an LLM backend is reachable.
     Returns True if backend responds, False otherwise.
     """
     if not backend_config.get("base_url"):
         return False
-    
+
     endpoint = f"{backend_config['base_url']}/chat/completions"
     headers = {"Content-Type": "application/json"}
-    
+
     if backend_config.get("api_key"):
         headers["Authorization"] = f"Bearer {backend_config['api_key']}"
-    
+
     warmup_body = {
         "model": backend_config["model"],
         "messages": [{"role": "user", "content": "Say hello in 3 words."}],
         "temperature": 0.1
     }
-    
+
     try:
-        response = requests.post(endpoint, json=warmup_body, headers=headers, timeout=30)
-        response.raise_for_status()
-        return True
+        return _probe_backend(endpoint, headers, warmup_body, timeout=30)
     except requests.exceptions.HTTPError as e:
         print(f"  ⚠️ HTTP {e.response.status_code}: {e}")
         try:
             error_data = e.response.json()
             print(f"  Response: {error_data}")
-        except:
+        except Exception:
             print(f"  Response: {e.response.text[:200]}")
         return False
     except Exception as e:
         print(f"  ⚠️ Connection failed: {e}")
+
+        # Optional wake + retry path for mesh LMStudio hosts.
+        if try_wol and send_wol_for_backend(backend_config):
+            print("  ⏳ Waiting for backend wake-up...")
+            for attempt in range(1, 7):
+                time.sleep(5)
+                try:
+                    if _probe_backend(endpoint, headers, warmup_body, timeout=15):
+                        print(f"  ✓ Backend reachable after WOL (attempt {attempt})")
+                        return True
+                except Exception:
+                    pass
+            print("  ✗ Backend still unreachable after WOL retries")
+
         return False
 
 
