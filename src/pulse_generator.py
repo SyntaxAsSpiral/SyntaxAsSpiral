@@ -330,7 +330,7 @@ def load_llm_config() -> dict:
             },
             "lmstudio": {
                 "provider": "lmstudio",
-                "base_url": "http://localhost:1234/v1",
+                "base_url": "http://adeck:1234/v1",
                 "model": "gpt-oss-20b-heretic",
                 "api_key": os.getenv("LMSTUDIO_API_KEY", ""),
             },
