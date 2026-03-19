@@ -114,3 +114,4 @@
 ⇝ post-threshold::pre-shatter glyphbraid thorn
 ⇝ post-lexemantic :: pre-shiver bindu-pulse
 ⇝ post·bindu :: pre·shimmer lattice
+⇝ post·hadean :: pre·symmorphy lattice-throb
