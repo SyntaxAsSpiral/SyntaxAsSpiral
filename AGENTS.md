@@ -1,7 +1,7 @@
-# Agent Documentation: Recursive Pulse Log System
+# Agent Documentation: Lexemancy Site
 
 ## Overview
-This repository generates a daily-updated personal homepage at `https://lexemancy.com/` using LLM-generated mystical/technical content. The system runs automatically via NixOS systemd timer on `adeck` (headless Steam Deck) at 2:24 AM PST, generating fresh pulse content, updating files, and pushing to GitHub Pages.
+This repository is the website repo for `https://lexemancy.com/`. It includes the daily-generated pulse-log surface, but the repository itself is now broader than that one feature. The system runs automatically via NixOS systemd timer on `adeck` (headless Steam Deck) at 2:24 AM PST, generating fresh homepage/pulse content, updating files, and pushing to GitHub Pages.
 
 ## Deployment Architecture
 
@@ -36,7 +36,7 @@ This repository generates a daily-updated personal homepage at `https://lexemanc
 ### Output Structure
 ```
 root/
-├── index.html                    # Main homepage (Pulse Log - rendered from templates/default.html)
+├── index.html                    # Main homepage (includes the pulse-log surface, rendered from templates/default.html)
 ├── about.html                    # About page (source file with {{placeholders}} for pulse data)
 ├── projects.html                 # Projects page (rendered with pulse data)
 ├── utils.html                    # Utils page (rendered with pulse data)
@@ -241,7 +241,7 @@ LLM_API_KEY=  # Set in secrets.env (not tracked)
 ### NixOS Systemd Configuration
 - **Service**: `pulse-generator.service` (oneshot)
 - **Timer**: `pulse-generator.timer` (daily at 2:24 AM PST)
-- **Location**: `/home/zk/pulse-log/` on `adeck`
+- **Location**: `/home/zk/lexemancy-site/` on `adeck`
 - **Environment**: Python virtual environment with dependencies
 - **User**: `zk`
 - **Logging**: systemd journal
@@ -264,9 +264,9 @@ systemctl list-timers pulse-generator
 
 ### Development Environment Setup
 ```bash
-# On adeck
-cd /home/zk/pulse-log
-source venv/bin/activate
+# On nxiz (dev shell via flake)
+cd /mnt/repository/lexemancy-site
+nix develop
 
 # Test generation (no git operations)
 python src/test_rotator.py
@@ -508,12 +508,11 @@ Simple regex-based substitution—no Jinja2 or complex logic:
 - **adeck**: Headless execution node on Tailscale mesh
 - **zrrh**: Primary development workstation
 - **SSH Access**: `ssh zk@adeck` or `ssh daemon@adeck`
-- **Remote Development**: VSCode Remote-SSH to `zk@adeck:/home/zk/pulse-log`
+- **Remote Development**: VSCode Remote-SSH to `zk@adeck:/home/zk/lexemancy-site`
 
 ### Deployment Locations
-- **Development**: `C:\Users\synta.ZK-ZRRH\.dev\pulse-log` (PC)
-- **Execution**: `/home/zk/pulse-log/` (adeck)
-- **Virtual Environment**: `/home/zk/pulse-log/venv/` (adeck)
-- **NixOS Config**: `/home/zk/flake-adeck/system/modules/pulse-generator.nix`
+- **Development**: local workstation clone path varies; the canonical workspace path is `/mnt/repository/lexemancy-site`
+- **Execution**: `/home/zk/lexemancy-site/` (adeck)
+- **NixOS Config**: `/mnt/repository/nix-os/modules/pulse-generator.nix`
 
 ---
