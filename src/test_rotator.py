@@ -11,7 +11,7 @@ import shutil
 
 def test_pulse_generation():
     """Test pulse generation by running the actual script with a temp output directory."""
-    script_path = Path(__file__).resolve().parent / "github_status_rotator.py"
+    script_path = Path(__file__).resolve().parent / "pulse_rotator.py"
     
     # Create temp directory for output
     with tempfile.TemporaryDirectory() as tmp_dir:
