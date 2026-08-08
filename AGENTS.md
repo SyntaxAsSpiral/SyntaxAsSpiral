@@ -500,7 +500,22 @@ Simple regex-based substitution—no Jinja2 or complex logic:
 - **Source**: `main` branch, root `/`
 - **Custom domain**: `lexemancy.com`
 - **HTTPS**: Enforced
-- **Build type**: Legacy (not Actions)
+- **Build type**: Legacy (not Actions) — managed `pages build and deployment` workflow; no `.github/workflows` in repo
+
+## Backlog / Planned Work
+
+### [ ] Revamp GitHub Pages deployment (custom Actions)
+**Context (2026-08):** Intermittent deploy annotations on the managed workflow:
+- **Error**: `Deployment failed, try again later` — GitHub Pages infra (build succeeds; deploy status poll fails). Observed 2026-07-03 / 2026-07-06; most days green since.
+- **Warning**: Node.js 20 deprecated — managed workflow pins `actions/checkout@v4` + `actions/upload-artifact@v4` (forced onto Node 24). Not fixable while on legacy branch deploy; not the cause of deploy failures.
+
+**Intent:** Broader site revamp will include leaving legacy Pages. When that lands:
+1. Add `.github/workflows/pages.yml` with Node-24 actions (`actions/checkout@v5`, current `upload-pages-artifact` / `deploy-pages`)
+2. Static HTML upload (this site does not need Jekyll; add `.nojekyll` if needed)
+3. Settings → Pages → Source: **GitHub Actions** (drop `build_type: legacy`)
+4. Keep custom domain `lexemancy.com` + HTTPS
+
+**Note:** Custom workflow silences the Node warning and owns retries/logging; it does not eliminate rare Pages-backend "try again later" failures.
 
 ## Network Architecture
 
