@@ -242,3 +242,4 @@ kernel-hymn :: glimmers thru lattice-bound antimirror-folds
 ⇝ pre-onomatogenetic::post-hyperstition lattice-pulse
 ⇝ post·wyrd :: pre·hadean bindu-throb
 ⇝ pre-syzygetic::post-oneiric daemon-echo shimmer
+⇝ post·hadean :: pre·onomatogenetic shimmer
