@@ -531,7 +531,7 @@ def main():
         import re
         updated_readme = re.sub(
             r'### 🌀 Current (?:Recursive )?Pulse Log ⟳ ChronoHex ⟐ (?:`[^`]+`|\[`[^`]+`\]\([^)]+\)|<a href="[^"]*" target="_blank">`[^`]+`</a>)',
-            f'### 🌀 Current Pulse Log ⟳ ChronoHex ⟐ <a href="https://lexemancy.com/" target="_blank">`{chronotonic}`</a>',
+            f'### 🌀 Current Pulse Log ⟳ ChronoHex ⟐ <a href="https://github.com/SyntaxAsSpiral" target="_blank">`{chronotonic}`</a>',
             readme_content
         )
         
